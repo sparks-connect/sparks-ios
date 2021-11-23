@@ -1,0 +1,83 @@
+[
+    {
+        "id": "bb45ae1b-0de6-443b-b48a-3fa5cde6180e",
+        "topType": "titleViewWithTags",
+        "bottomType": "userView",
+        "createDate": 1586950496365,
+        "title": "I appreciate that you love travelling! How awesome! 🏕🏕🏔️",
+        "tags": [
+            {"id": "adce2496-ee91-444a-a3dc-66e9aa71bddd", "title": "meetup", "bgColor": "#723CEB"},
+            {"id": "380827d4-36f6-49d2-86dd-36820fdaa48b", "title": "coffee", "bgColor": "#8A7E9A"}
+        ],
+        "user": {
+            "username": "Marta",
+            "age": 19,
+            "distance": 2.76,
+            "imageUrl": "https://s.marketwatch.com/public/resources/images/MW-FK567_meredi_ZH_20170417135732.jpg"
+        }
+    },
+    {
+        "id": "d4486f52-cd92-4cdf-9714-5fb08baa1552",
+        "topType": "titleViewWithTags",
+        "bottomType": "userView",
+        "createDate": 1586950655150,
+        "title": "Hey there, this is feed result by George!!!😀 😁 😂 🤣 😃",
+        "tags": [
+            {"id": "d7bcd4f0-2174-4429-89b6-95604162a7ed", "title": "sex", "bgColor": "#393342"},
+            {"id": "5ebabacd-b215-4276-ae44-a6ce372804b7", "title": "sport", "bgColor": "#F29FBD"}
+        ],
+        "user": {
+            "username": "Nikol",
+            "age": 21,
+            "distance": 3.0,
+            "imageUrl": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"
+        }
+    },
+    {
+        "id": "8d9b1db4-0fcb-40f4-b019-ec46690eb6b2",
+        "topType": "titleViewWithTags",
+        "bottomType": "userView",
+        "createDate": 1586951329585,
+        "title": "Hey guyz, is there anyone there ready to enjoy with me?🤔 🤨",
+        "tags": [
+            {"id": "182e9f97-1fc1-48dd-a2eb-9addc64d4395", "title": "drink", "bgColor": "#393342"},
+            {"id": "756a9450-e0ed-4b67-bc72-db7efb916878", "title": "beer", "bgColor": "#F29FBD"},
+            {"id": "913aaf33-d266-4b9a-8a39-2060444bdbb3", "title": "wine", "bgColor": "#424242"}
+        ],
+        "user": {
+            "username": "GeorgeV",
+            "age": 29,
+            "distance": 1.4,
+            "imageUrl": "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"
+        }
+    },
+    {
+        "id": "1fb453ce-0a76-46df-b48b-3e0fe5c0a011",
+        "topType": "titleViewWithTags",
+        "bottomType": "adView",
+        "createDate": 1586951592514,
+        "title": "I am gonna to show google ad here😃😃😃",
+        "tags": [],
+        "ad": {
+            "title": "Google",
+            "descr": "Everywhere you go",
+            "imageUrl": "https://f0.pngfuel.com/png/669/506/google-chrome-logo-png-clip-art-thumbnail.png"
+        }
+    }    
+]
+
+/*
+
+ "uid" : "asdasdasdasdaadasads"
+ "createDate": 1586950496365,
+ "title": "I appreciate that you love travelling! How awesome! 🏕🏕🏔️",
+ "latitude" : 123123123123,
+ "longitude" : 123123123123,
+ "user_uid": "asdasdasdafasfadasdadsjdkjk"
+ "user": {
+             "uid": ""
+             "firstName": "Marta",
+             "lastName": "Marta",
+             "birthDate": 143243546567877,
+         }
+ */

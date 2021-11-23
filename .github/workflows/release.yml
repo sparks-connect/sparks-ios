@@ -1,0 +1,41 @@
+name: Release-CI
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+jobs:
+  release:
+    if: contains(github.event.pull_request.title, '[SKIP ACTIONS]') == false && contains(github.event.pull_request.labels.*.name, 'skip-ci') == false && github.event.pull_request.merged == true
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: SSH Agent to get Apple certificates
+        uses: webfactory/ssh-agent@v0.2.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_CERTS }}
+      - name: Hotfix Release
+        if: startsWith(github.head_ref,'hotfix') == true
+        run: fastlane release bump:"patch"
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      - name: Minor Release
+        if: startsWith(github.head_ref,'release') == true
+        run: fastlane release bump:"minor"
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      - name: Major Release
+        if: startsWith(github.head_ref,'major-release') == true
+        run: fastlane release bump:"major"
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}

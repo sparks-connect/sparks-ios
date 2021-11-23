@@ -1,0 +1,27 @@
+name: Staging-CI
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [development]
+
+jobs:
+  release:
+    if: contains(github.event.pull_request.title, '[SKIP ACTIONS]') == false && contains(github.event.pull_request.labels.*.name, 'skip-ci') == false && github.event.pull_request.merged == true
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: SSH Agent to get Apple certificates
+        uses: webfactory/ssh-agent@v0.2.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_CERTS }}
+      - name: Minor Release
+        run: fastlane alpha bump:"minor"
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

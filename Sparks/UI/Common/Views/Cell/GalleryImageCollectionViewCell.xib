@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="FiraGO-Regular.ttf">
+            <string>FiraGO-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="GalleryImageCollectionViewCell" customModule="appwork" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Dr-xd-k3l" customClass="ImageView" customModule="appwork" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="89T-kX-9EU">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWg-V1-l9t">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="UqI-nY-kKS">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="278"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="djf-Wg-txU" customClass="CircleLoadingButton" customModule="appwork" customModuleProvider="target">
+                                <rect key="frame" x="118" y="107" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="djf-Wg-txU" secondAttribute="height" id="cai-2l-Evf"/>
+                                    <constraint firstAttribute="width" constant="64" id="szp-b0-GgH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FiraGO-Regular" family="FiraGO" pointSize="17"/>
+                                <state key="normal" title="Send"/>
+                                <connections>
+                                    <action selector="sendClickedWithSender:" destination="gTV-IL-0wX" eventType="touchUpInside" id="sRb-1i-YNm"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="djf-Wg-txU" firstAttribute="centerX" secondItem="89T-kX-9EU" secondAttribute="centerX" id="7vR-Ts-3iN"/>
+                            <constraint firstItem="UWg-V1-l9t" firstAttribute="leading" secondItem="89T-kX-9EU" secondAttribute="leading" id="MCW-nf-pCE"/>
+                            <constraint firstItem="UWg-V1-l9t" firstAttribute="top" secondItem="89T-kX-9EU" secondAttribute="top" id="WFw-2T-XQp"/>
+                            <constraint firstAttribute="bottom" secondItem="UWg-V1-l9t" secondAttribute="bottom" id="i9H-2q-986"/>
+                            <constraint firstAttribute="trailing" secondItem="UWg-V1-l9t" secondAttribute="trailing" id="pM4-96-gmk"/>
+                            <constraint firstItem="djf-Wg-txU" firstAttribute="centerY" secondItem="89T-kX-9EU" secondAttribute="centerY" id="yHN-ZI-udD"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="4Dr-xd-k3l" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1ZW-wg-fKP"/>
+                <constraint firstAttribute="trailing" secondItem="4Dr-xd-k3l" secondAttribute="trailing" id="LNu-jF-Osi"/>
+                <constraint firstAttribute="bottom" secondItem="4Dr-xd-k3l" secondAttribute="bottom" id="Wp4-rb-Jl7"/>
+                <constraint firstItem="89T-kX-9EU" firstAttribute="leading" secondItem="4Dr-xd-k3l" secondAttribute="leading" id="Yzb-e0-Kro"/>
+                <constraint firstItem="89T-kX-9EU" firstAttribute="trailing" secondItem="4Dr-xd-k3l" secondAttribute="trailing" id="b3T-ik-U5n"/>
+                <constraint firstItem="89T-kX-9EU" firstAttribute="bottom" secondItem="4Dr-xd-k3l" secondAttribute="bottom" id="scg-M0-MHD"/>
+                <constraint firstItem="4Dr-xd-k3l" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ujq-1C-uEp"/>
+                <constraint firstItem="89T-kX-9EU" firstAttribute="top" secondItem="4Dr-xd-k3l" secondAttribute="top" id="zDa-IK-sKQ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="300" height="278"/>
+            <connections>
+                <outlet property="blurContainerView" destination="89T-kX-9EU" id="jcL-r5-cvY"/>
+                <outlet property="buttonSend" destination="djf-Wg-txU" id="JDa-yc-FOf"/>
+                <outlet property="imageView" destination="4Dr-xd-k3l" id="gyL-xI-WCP"/>
+            </connections>
+            <point key="canvasLocation" x="252.80000000000001" y="151.12443778110946"/>
+        </collectionViewCell>
+    </objects>
+</document>

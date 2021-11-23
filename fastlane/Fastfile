@@ -1,0 +1,128 @@
+fastlane_require "ostruct"
+fastlane_require "spaceship"
+
+import "Secret.rb"
+import "Versionfile.rb"
+import "Slackfile.rb"
+import "Gitfile.rb"
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do |lane, options|
+    @branch = sh("git rev-parse --abbrev-ref HEAD")
+    @secret = Secret.new
+    @secret.set_general_environment_variables(lane, @branch)
+    @passed_version = options[:version]
+    unless lane == :signing || lane == :test
+      setup_environment
+      signing
+      # get_versions
+      versionize(bump: options[:bump])
+      begin
+        cocoapods
+      rescue => exception
+        sh("pod install")
+      end
+    end
+  end
+
+  after_all do |lane, options|
+    unless lane == :signing || lane == :test
+      prepare_changelog
+      tag
+      create_release unless lane != :release && lane != :beta
+      slackify
+    end
+  end
+
+  private_lane :slacktest do
+    @secret.env = Secret.alpha
+    UI.success("It will send slack message")
+    @download_links ||= {}
+    @download_links[@secret.env.release_environment] = "https://appdistribution.firebase.dev/app_distro/projects/5f3d8334ee8c3d7454000006"
+  end
+
+  lane :signing do
+    match(type: "development", readonly: true)
+    match(type: "adhoc", readonly: true)
+    match(type: "appstore", readonly: true)
+  end
+
+  desc "Deploy the app to firebase app distribution"
+  lane :alpha do |options|
+    @secret.env = Secret.alpha
+    deploy
+  end
+
+  desc "Deploy the app to Testflight"
+  lane :beta do |options|
+    @secret.env = Secret.beta
+    deploy
+  end
+
+  desc "Deploy"
+  private_lane :deploy do |options|
+    archive
+    @secret.is_alpha ? firebase : send_testflight
+    upload_dsym
+  end
+
+  def archive
+
+    build_app(
+      workspace: @secret.project.workspace,
+      clean: true,
+      scheme: @secret.env.scheme,
+      configuration: @secret.env.configuration,
+      export_method: @secret.env.export_method
+    )
+  end
+
+  def upload_dsym
+    upload_symbols_to_crashlytics(
+      gsp_path: @secret.env.googlePlist,
+      dsym_path: "./" + @secret.app_target + ".app.dSYM.zip",
+    )
+  end
+
+  def send_testflight
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+    @download_links ||= {}
+    @download_links["TestFlight"] = "Use TestFlight application to download it"
+  end
+
+  def firebase
+    unzip(file: "firebase_cli.zip")
+    firebase_app_distribution(
+      app: @secret.firebase.app_id,
+      firebase_cli_token: @secret.firebase.token,
+      firebase_cli_path: "./firebase_cli",
+      ipa_path: "Sparks.ipa",
+      groups: "founders",
+      release_notes: ''
+    )
+    @download_links ||= {}
+    @download_links[@secret.env.release_environment] = "https://appdistribution.firebase.dev/app_distro/projects/5f3d8334ee8c3d7454000006"
+    send_appcenter
+  end
+
+  def send_appcenter
+    appcenter_upload(
+      api_token: @secret.app_center.token,
+      owner_name: @secret.app_center.owner,
+      app_name: @secret.app_center.app_name,
+      ipa: "./#{@secret.app_target}.ipa",
+      notify_testers: false,
+    )
+  end 
+
+  def setup_environment
+    unless is_ci
+      @secret.appleId = "sparkschatdev@gmail.com" # prompt(text: "Enter your AppleID:")
+      @secret.appleIdPassword = "SparksDev0" # prompt(text: "Enter your password")
+    else
+      setup_ci(provider: "travis")
+    end
+  end
+end

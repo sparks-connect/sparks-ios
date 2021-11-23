@@ -1,0 +1,86 @@
+{
+  "products" : [
+
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "0A21F29F",
+      "localizations" : [
+
+      ],
+      "name" : "",
+      "subscriptions" : [
+
+      ]
+    },
+    {
+      "id" : "4781EE0F",
+      "localizations" : [
+
+      ],
+      "name" : "monthlygroup",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "C061ECA3",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly subscription",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.appwork.sparks.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "sparks-subscription-monthly",
+          "subscriptionGroupID" : "4781EE0F",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    },
+    {
+      "id" : "F0B7E931",
+      "localizations" : [
+
+      ],
+      "name" : "annualgroup",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "35.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "B2323205",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Save up to 12$ for annual subscription",
+              "displayName" : "Annual",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.appwork.sparks.annualsub",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "sparks-subscription-annual",
+          "subscriptionGroupID" : "F0B7E931",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 0
+  }
+}
