@@ -297,8 +297,7 @@ extension FirebaseAPIImpl {
                 return
             }
             
-            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { [weak self](connection, result, error) -> Void in
-                
+            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start { [weak self] con, result, error in
                 guard let user = result as? [String: Any], error == nil else {
                     completion(.failure(CIError.unauthorized))
                     return
@@ -306,7 +305,8 @@ extension FirebaseAPIImpl {
 
                 let credential = FacebookAuthProvider.credential(withAccessToken: token.tokenString)
                 self?.fireAuth(credential, userData: user, completion: completion)
-            })
+            }
+            
         }
     }
     

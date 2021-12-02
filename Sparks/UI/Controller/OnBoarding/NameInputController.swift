@@ -30,8 +30,8 @@ class NameInputController: PageBaseController {
         return view
     }()
     
-    private lazy var input: UITextField = {
-        let view = UITextField()
+    private lazy var input: Label = {
+        let view = Label()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.systemFont(ofSize: 20)
         view.textColor = .white
@@ -50,17 +50,6 @@ class NameInputController: PageBaseController {
         return view
     }()
     
-    private lazy var descriptionLabel : UILabel = {
-        let view = Label()
-        view.textAlignment = .center
-        view.font =  Font.regular.uiFont(ofSize: 15)
-        view.textColor = .lightGray
-        view.adjustsFontSizeToFitWidth = true
-        view.contentScaleFactor = 0.5
-        view.text = "Spin and get more sparks"
-        return view
-    }()
-    
     private lazy var updateButton: PrimaryButton = {
         let view = PrimaryButton()
         view.setTitle("Next", for: .normal)
@@ -74,10 +63,28 @@ class NameInputController: PageBaseController {
         self.layout()
     }
     
+    override func willAppear() {
+        super.willAppear()
+        
+    }
+    
+//    
+//    private func loadFullnameEditMode(type: EditKey, value: String) {
+//        let controller = OnKbdEditorViewController
+//            .createModule(text: value,
+//                          viewTitle: "Edit Profile",
+//                          inputTitle: type.rawValue,
+//                          placeholder: type.rawValue,
+//                          customKey: type.rawValue,
+//                          delegate: self)
+//        controller.inputKind = type.inputKind
+//        controller.modalPresentationStyle = .overFullScreen
+//        self.present(controller, animated: true, completion: nil)
+//    }
+    
     private func layout() {
         
         self.view.addSubview(titleLabel)
-        self.view.addSubview(descriptionLabel)
         self.view.addSubview(inputContainer)
         self.view.addSubview(updateButton)
         
@@ -88,17 +95,10 @@ class NameInputController: PageBaseController {
             make.height.equalTo(100)
         }
         
-        descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(titleLabel.snp.left)
-            make.right.equalTo(titleLabel.snp.right)
-            make.top.equalTo(titleLabel.snp.bottom).inset(8)
-            make.height.equalTo(30)
-        }
-        
         inputContainer.snp.makeConstraints { (make) in
             make.left.equalTo(16)
             make.right.equalTo(-16)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.height.equalTo(60)
         }
         

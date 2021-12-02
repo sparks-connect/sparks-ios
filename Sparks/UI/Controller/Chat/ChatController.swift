@@ -422,7 +422,7 @@ extension ChatController : ChatNavBarViewDelegate {
     func didTapProfile() {
         guard let channel = presenter.channel else { return }
         _ = self.presenter.checkProfileShareStatus()
-        let profileViewController = ProfileViewController(channelUid: channel.uid)
+        let profileViewController = OldProfileViewController(channelUid: channel.uid)
         profileViewController.delegate = self
         present(profileViewController, animated: true, completion: nil)
     }

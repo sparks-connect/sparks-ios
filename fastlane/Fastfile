@@ -119,8 +119,8 @@ platform :ios do
 
   def setup_environment
     unless is_ci
-      @secret.appleId = "sparkschatdev@gmail.com" # prompt(text: "Enter your AppleID:")
-      @secret.appleIdPassword = "SparksDev0" # prompt(text: "Enter your password")
+      @secret.appleId = prompt(text: "Enter your AppleID:")
+      @secret.appleIdPassword = prompt(text: "Enter your password")
     else
       setup_ci(provider: "travis")
     end

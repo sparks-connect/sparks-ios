@@ -12,7 +12,7 @@ import RealmSwift
 
 protocol ProfileDelegate : BasePresenterView {
 }
-class ProfilePresenter: BasePresenter< ProfileDelegate > {
+class OldProfilePresenter: BasePresenter< ProfileDelegate > {
     
     private var datasource = [UserProfileItem]()
     private var userPhotosDataSource = [URL]()

@@ -115,16 +115,6 @@ class EditProfileViewController: BaseController {
         self.present(controller, animated: true, completion: nil)
     }
     
-    private func loadBirthdateEditMode(mlsc: Int64) {
-        let controller = BirthDateController()
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    private func loadGenderEditMode(gender: Gender) {
-        let controller = GenderController()
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
     override func reloadView() {
         super.reloadView()
         self.listView.reloadData()

@@ -18,7 +18,7 @@ class MainTabBarController: UITabBarController {
     }
     
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
-    private let settingsController = UINavigationController(rootViewController: MyProfileController())
+    private let settingsController = UINavigationController(rootViewController: ProfileController())
     let tabbarView = MainTabbarView()
     
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ class MainTabBarController: UITabBarController {
         backgroundImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-16)
-            make.width.equalTo(220)
+            make.width.equalTo(320)
             make.height.equalTo(Sizes.kHeight)
         }
         

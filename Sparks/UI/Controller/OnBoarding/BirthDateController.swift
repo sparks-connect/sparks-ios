@@ -17,12 +17,6 @@ class BirthDateController : PageBaseController {
         return presenter
     }
     
-    private let navigationBar : NavigationBar = {
-        let view = NavigationBar()
-        view.title = "Onboarding"
-        return view
-    }()
-    
     private let titeLabel : Label = {
         let view = Label()
         view.textAlignment = .center
@@ -46,6 +40,11 @@ class BirthDateController : PageBaseController {
     private let datePicker : UIDatePicker = {
         let view = UIDatePicker()
         view.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            view.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         view.setValue(Color.fadedPurple.uiColor, forKey: "textColor")
         return view
     }()
@@ -61,15 +60,6 @@ class BirthDateController : PageBaseController {
         return view
     }()
     
-    var isEditMode: Bool = false {
-        didSet {
-            if self.isEditMode {
-                self.navigationBar.isHidden = true
-                self.nextButton.setTitle("Update", for: .normal)
-            }
-        }
-    }
-    
     override func loadView() {
         super.loadView()
         layout()
@@ -80,20 +70,13 @@ class BirthDateController : PageBaseController {
         nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
         datePicker.addTarget(self, action: #selector(didChangeDate), for: .valueChanged)
         self.presenter.birthDate = Int64(datePicker.date.milliseconds)
-        navigationBar.delegate = self
     }
     
     private func layout() {
-        view.addSubview(navigationBar)
-        navigationBar.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.height.equalTo(60)
-        }
         
         view.addSubview(titeLabel)
         titeLabel.snp.makeConstraints{
-            $0.top.equalTo(navigationBar.snp.bottom).inset(-100)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(-100)
             $0.width.equalTo(220)
             $0.left.equalToSuperview().offset(45)
         }
@@ -155,10 +138,6 @@ extension BirthDateController : NavigationBarDelegate {
 extension BirthDateController: BirthDateView {
     func didUpdateBirthdate() {
         self.nextButton.stopAnimatingLoader()
-        if !isEditMode {
-            AppDelegate.updateRootViewController()
-        } else {
-            self.pageViewController?.didTapAtCloseButton()
-        }
+        AppDelegate.updateRootViewController()
     }
 }

@@ -9,10 +9,10 @@
 import UIKit
 
 
-class MyProfileController: BaseController {
+class ProfileController: BaseController {
     
     private var mainPhotoUpload = false
-    let presenter = MyProfilePresenter()
+    let presenter = ProfilePresenter()
     override func getPresenter() -> Presenter {
         return self.presenter
     }
@@ -209,7 +209,7 @@ class MyProfileController: BaseController {
             make.height.equalTo(12)
         }
         
-        stackView.addArrangedSubview(labelPhotosDesc)
+       // stackView.addArrangedSubview(labelPhotosDesc)
         
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
@@ -252,7 +252,7 @@ class MyProfileController: BaseController {
     var cell: UICollectionViewCell!
 }
 
-extension MyProfileController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -327,12 +327,12 @@ extension MyProfileController: UICollectionViewDataSource, UICollectionViewDeleg
     }
 }
 
-extension MyProfileController: MyProfileView {
+extension ProfileController: MyProfileView {
     
 }
 
 
-extension MyProfileController: UserProfileImageCellDelegate, ImageCropperUtilDelegate, MainHeaderViewDelegate {
+extension ProfileController: UserProfileImageCellDelegate, ImageCropperUtilDelegate, MainHeaderViewDelegate {
     
     func didCropImage(image: UIImage) {
         self.presenter.uploadImage(image: image, isMain: mainPhotoUpload)
@@ -351,7 +351,7 @@ extension MyProfileController: UserProfileImageCellDelegate, ImageCropperUtilDel
     }
 }
 
-extension MyProfileController: UIViewControllerTransitioningDelegate {
+extension ProfileController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return AnimateTransition(withDuration: 0.25, forTransitionType: .Dismissing, originFrame: (self.cell?.frame)!, collectionView: collectionView)
     }
@@ -365,7 +365,7 @@ extension MyProfileController: UIViewControllerTransitioningDelegate {
 
 }
 
-extension MyProfileController: PhotoViewControllerDelegate {
+extension ProfileController: PhotoViewControllerDelegate {
     func willDeletePhoto(photo: UserPhoto) {
         self.presenter.deletePhoto(photo: photo)
     }

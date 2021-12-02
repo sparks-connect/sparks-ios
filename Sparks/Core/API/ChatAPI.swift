@@ -325,7 +325,6 @@ class ChatAPIImpl: ChatAPI {
                 tokens.append(token)
             }
         })
-      
         
         API.http.send(for: Consts.Firebase.fcmURL, method: .post,
                       params: ["registration_ids": tokens,

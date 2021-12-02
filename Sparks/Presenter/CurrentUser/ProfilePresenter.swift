@@ -1,5 +1,5 @@
 //
-//  MyProfilePresenter.swift
+//  ProfilePresenter.swift
 //  Sparks
 //
 //  Created by Irakli Vashakidze on 05.08.21.
@@ -13,7 +13,7 @@ protocol MyProfileView: BasePresenterView {
 
 }
 
-class MyProfilePresenter: BasePresenter<MyProfileView> {
+class ProfilePresenter: BasePresenter<MyProfileView> {
     
     private var token: NotificationToken?
     let itemsPerRow: CGFloat = 3

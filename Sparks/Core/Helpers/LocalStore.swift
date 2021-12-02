@@ -11,6 +11,7 @@ import Foundation
 class LocalStore {
     
     private static let kFirstLaunchTime = "firstLaunchTime"
+    private static let kHasSeenOnboarding = "hasSeenOnboarding"
     private static let kLastChannelSeenTime = "lastChannelSeenTime"
     
     static func markFirstLaunch() {
@@ -30,5 +31,13 @@ class LocalStore {
     
     static var lastRecievedChannelRequestTime: Int64 {
         return UserDefaults.standard.value(forKey: kLastChannelSeenTime) as? Int64 ?? 0
+    }
+    
+    static var hasSeenOnboarding: Bool {
+        return UserDefaults.standard.value(forKey: kHasSeenOnboarding) as? Bool ?? false
+    }
+    
+    static func markSeenOnboarding() {
+        return UserDefaults.standard.setValue(true, forKey: kHasSeenOnboarding)
     }
 }

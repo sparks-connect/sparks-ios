@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // return TestViewController() // In-app purchases
         
-        guard let user = User.current, !user.isMissingRequredInfo else {
+        guard let user = User.current else {
             return OnboardingPageViewController()
         }
         

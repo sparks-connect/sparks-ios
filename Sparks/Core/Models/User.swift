@@ -283,7 +283,11 @@ extension User {
     }
     
     var isMissingRequredInfo: Bool {
-        self.isMissingName || self.isMissingGender || self.isMissingBirthdate || self.isMissingInterests
+        self.isMissingName || self.isMissingGender || self.isMissingBirthdate || self.isMissingPhoto
+    }
+    
+    static var hasSeenOnboarding: Bool {
+        return LocalStore.hasSeenOnboarding
     }
     
     var isMissingName: Bool {
@@ -299,7 +303,7 @@ extension User {
     }
     
     var isMissingPhoto: Bool {
-        return !SDImageCache.shared.diskImageDataExists(withKey: self.photoUrl)
+        return self.photos.isEmpty
     }
     
     var isMissingInterests: Bool {

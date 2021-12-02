@@ -14,10 +14,10 @@ protocol ProfileViewDelegate: AnyObject {
     func didAcceptUnlock()
 }
 
-class ProfileViewController : BaseController {
+class OldProfileViewController : BaseController {
     
     weak var delegate : ProfileViewDelegate?
-    private var presenter: ProfilePresenter!
+    private var presenter: OldProfilePresenter!
     
     override func getPresenter() -> Presenter {
         return self.presenter
@@ -118,7 +118,7 @@ class ProfileViewController : BaseController {
 
     convenience init(channelUid: String){
         self.init()
-        self.presenter = ProfilePresenter(channelUid: channelUid)
+        self.presenter = OldProfilePresenter(channelUid: channelUid)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -286,7 +286,7 @@ class ProfileViewController : BaseController {
     }
 }
 
-extension ProfileViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension OldProfileViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let scrollViewOffset = scrollView.contentOffset.x
@@ -321,6 +321,6 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
     }
 }
 
-extension ProfileViewController : ProfileDelegate {
+extension OldProfileViewController : ProfileDelegate {
 
 }
