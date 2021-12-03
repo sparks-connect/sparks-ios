@@ -93,7 +93,7 @@ platform :ios do
   end
 
   def firebase
-    unzip(file: "firebase_cli.zip")
+    
     firebase_app_distribution(
       app: @secret.firebase.app_id,
       firebase_cli_token: @secret.firebase.token,
