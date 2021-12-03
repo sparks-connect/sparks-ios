@@ -27,7 +27,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_CERTS }}
       - name: Update Fastlane
-        run: bundle update fastlane
+        run: bundle install fastlane
       - name: Minor Release
         run: bundle exec fastlane alpha"
         env:
@@ -51,7 +51,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_CERTS }}
       - name: Update Fastlane
-        run: bundle update fastlane
+        run: bundle install fastlane
       - name: Minor Release
         run: bundle exec fastlane beta
         env:
