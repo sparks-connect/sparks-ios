@@ -1672,7 +1672,7 @@
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sparks/Preview Content\"";
 				DEVELOPMENT_TEAM = 7F3S9H3KXA;
 				ENABLE_PREVIEWS = YES;
@@ -1813,7 +1813,7 @@
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Sparks/Preview Content\"";
 				DEVELOPMENT_TEAM = 7F3S9H3KXA;
@@ -1841,7 +1841,7 @@
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sparks/Preview Content\"";
 				DEVELOPMENT_TEAM = 7F3S9H3KXA;
 				ENABLE_PREVIEWS = YES;
