@@ -40,7 +40,7 @@ class Secret
 
   def firebase
     OpenStruct.new(
-      token: "4/1AX4XfWgU7KoKZeHLnDU86pDYRRWYftUs95H0F3OHK-4Ta_0MneDsuiYyevI",
+      token: "1//09pOzJOuKo8pzCgYIARAAGAkSNwF-L9IrLQMKxtoxmhBjX62znrfpwB6zFLYtBYq0HqFqCD6slJASBSYSPvi5Jb6AESPostCSW_M",
       app_id: "1:640617421139:ios:83905a9c729824356129a6",
     )
   end
