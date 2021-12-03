@@ -32,8 +32,8 @@ class Secret
 
   def app_center
     OpenStruct.new(
-      token: "bd7fbdb3e05108da95fe98a29d3575d9ce11a847",
-      owner: "Sparks",
+      token: "904bb25ce41b22b3429b24c123bb92b6b83b49d8",
+      owner: "Appwork",
       app_name: "Sparks",
     )
   end
@@ -58,7 +58,7 @@ class Secret
   end
 
   def repository_name
-    "GeorgeVashakidze/appwork_iOS"
+    "sparks-connect/sparks-ios"
   end
 
   def head_branch
