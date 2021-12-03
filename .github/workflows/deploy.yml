@@ -31,7 +31,7 @@ jobs:
       - name: Update Fastlane
         run: bundle update fastlane
       - name: Minor Release
-        run: bundle exec fastlane alpha"
+        run: bundle exec fastlane alpha
         env:
           GIHUB_PAYLOAD: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -52,6 +52,8 @@ jobs:
         uses: webfactory/ssh-agent@v0.4.1
         with:
           ssh-private-key: ${{ secrets.SSH_CERTS }}
+      - name: Install bundle
+        run: bundle install
       - name: Update Fastlane
         run: bundle update fastlane
       - name: Minor Release
