@@ -25,8 +25,8 @@ class Secret
 
   def slack
     OpenStruct.new(   
-      url: "https://hooks.slack.com/services/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",
-      channel: "#sparks-release"
+      url: "https://hooks.slack.com/services/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",
+      channel: "#builds"
     )
   end
 
@@ -149,7 +149,7 @@ class Secret
       configuration: "Adhoc",
       export_method: "ad-hoc",
       distribution_channel: "Firebase",
-      release_environment: "Staging",
+      release_environment: "Alpha",
       purpose: "Alpha",
       googlePlist: self.google.plistQA,
       profile: "match AdHoc com.appwork.sparks"
