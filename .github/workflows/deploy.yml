@@ -1,0 +1,67 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [labeled, closed]
+    branches: [main]
+
+jobs:
+  cancel:
+    runs-on: macos-latest
+    steps:
+      - uses: styfle/cancel-workflow-action@0.7.0
+        with:
+            access_token: ${{ github.token }}
+  adhoc:
+    if: contains(github.event.pull_request.labels.*.name, 'skip-build') == false && contains(github.event.pull_request.labels.*.name, 'testflight') == false && (github.event.pull_request.merged == true || contains(github.event.pull_request.labels.*.name, 'deploy'))
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+            node-version: 12.x
+      - name: npm install
+        run: npm install
+      - name: SSH Agent to get Apple certificates
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_CERTS }}
+      - name: Install bundle
+        run: bundle install
+      - name: Update Fastlane
+        run: bundle update fastlane
+      - name: Minor Release
+        run: bundle exec fastlane alpha
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  appstore:
+    if: contains(github.event.pull_request.labels.*.name, 'skip-build') == false && contains(github.event.pull_request.labels.*.name, 'testflight') && (github.event.pull_request.merged == true || contains(github.event.pull_request.labels.*.name, 'deploy'))
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+            node-version: 12.x
+      - name: npm install
+        run: npm install
+      - name: SSH Agent to get Apple certificates
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_CERTS }}
+      - name: Install bundle
+        run: bundle install
+      - name: Update Fastlane
+        run: bundle update fastlane
+      - name: Minor Release
+        run: bundle exec fastlane beta
+        env:
+          GIHUB_PAYLOAD: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  

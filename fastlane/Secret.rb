@@ -25,22 +25,22 @@ class Secret
 
   def slack
     OpenStruct.new(   
-      url: "https://hooks.slack.com/services/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",
-      channel: "#sparks-release"
+      url: "https://hooks.slack.com/services/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",
+      channel: "#builds"
     )
   end
 
   def app_center
     OpenStruct.new(
-      token: "bd7fbdb3e05108da95fe98a29d3575d9ce11a847",
-      owner: "Sparks",
+      token: "904bb25ce41b22b3429b24c123bb92b6b83b49d8",
+      owner: "Appwork",
       app_name: "Sparks",
     )
   end
 
   def firebase
     OpenStruct.new(
-      token: ENV["FIREBASE_TOKEN"],
+      token: "1//09pOzJOuKo8pzCgYIARAAGAkSNwF-L9IrLQMKxtoxmhBjX62znrfpwB6zFLYtBYq0HqFqCD6slJASBSYSPvi5Jb6AESPostCSW_M",
       app_id: "1:640617421139:ios:83905a9c729824356129a6",
     )
   end
@@ -58,7 +58,7 @@ class Secret
   end
 
   def repository_name
-    "GeorgeVashakidze/appwork_iOS"
+    "sparks-connect/sparks-ios"
   end
 
   def head_branch
@@ -149,7 +149,7 @@ class Secret
       configuration: "Adhoc",
       export_method: "ad-hoc",
       distribution_channel: "Firebase",
-      release_environment: "Staging",
+      release_environment: "Alpha",
       purpose: "Alpha",
       googlePlist: self.google.plistQA,
       profile: "match AdHoc com.appwork.sparks"

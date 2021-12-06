@@ -19,7 +19,7 @@ def slack_payload
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": ":tada: *App successfully released to #{@secret.env.distribution_channel}!* :eyes:",
+          "text": ":tada: *Sparks released to #{@secret.env.distribution_channel}!* :eyes:",
         },
       },
       {
