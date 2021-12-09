@@ -8,8 +8,12 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class MainTabBarController: UITabBarController {
+    
+    private var channelsToken: NotificationToken?
+    private var count: Int = 0
     
     struct Sizes {
         static let kHeight: CGFloat = 60
@@ -25,6 +29,15 @@ class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         self.setupViewControllers()
         self.configureTabbar()
+        observeChannels()
+    }
+    
+    private func observeChannels() {
+        // TODO: This count need to be set on UI
+        channelsToken?.invalidate()
+        channelsToken = Channel.observeUnreadCounts({ count in
+            self.count = count
+        })
     }
     
     private func configureTabbar() {

@@ -15,8 +15,6 @@ final class StandardUserDefaults {
         case arrayKeyHere
     }
     
-    //TODO: This is for demonstration
-    //TODO: Replace with real values
     static var boolKeyHere: Bool {
         get {
             return bool(forKey: .boolKeyHere)
@@ -26,8 +24,6 @@ final class StandardUserDefaults {
         }
     }
     
-    //TODO: This is for demonstration
-    //TODO: Replace with real values
     static var arrayKeyHere: [Int64]? {
         get {
             return decodable(forKey: .arrayKeyHere)
