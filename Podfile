@@ -59,8 +59,15 @@ end
 
 target 'Sparks' do
   
-  platform :ios, '13'
+  platform :ios, '14.5'
   use_frameworks!
   shared_pods
 
 end
+
+target 'SparksNotificationExtension' do
+  platform :ios, '14.5'
+  use_frameworks!
+  pod 'Firebase/Messaging'
+end
+

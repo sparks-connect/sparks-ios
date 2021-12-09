@@ -18,14 +18,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate
     
     //MARK:- SetupNotification Method While initialize
     func setupNotification(_ application: UIApplication, completion:@escaping DeviceTokenHandler) {
-        UNUserNotificationCenter.current().delegate = self
+        //UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 print("D'oh: \(error.localizedDescription)")
             } else {
                 DispatchQueue.main.async {
-                        application.registerForRemoteNotifications()
+                    application.registerForRemoteNotifications()
                 }
             }
         }

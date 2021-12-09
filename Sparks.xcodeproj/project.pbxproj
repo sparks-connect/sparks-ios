@@ -115,6 +115,8 @@
 		385D57EE27627DE700D845F6 /* TripsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57ED27627DE700D845F6 /* TripsService.swift */; };
 		385D57F027627E4300D845F6 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57EF27627E4300D845F6 /* Trip.swift */; };
 		385D57F2276282D000D845F6 /* TripCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57F1276282D000D845F6 /* TripCriteria.swift */; };
+		385D57FB2762935000D845F6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57FA2762935000D845F6 /* NotificationService.swift */; };
+		385D57FF2762935000D845F6 /* SparksNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 385D57F82762935000D845F6 /* SparksNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		386C876C2630BFCD00A1A7FE /* UserBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386C876B2630BFCD00A1A7FE /* UserBalance.swift */; };
 		387E89C72480069200BF54CE /* UserPreferencesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387E89C62480069200BF54CE /* UserPreferencesPresenter.swift */; };
 		387EDE6A24C21B6A00FCCE68 /* PhoneInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387EDE6924C21B6A00FCCE68 /* PhoneInputPresenter.swift */; };
@@ -238,9 +240,35 @@
 		DDD9F0EA23FF1175002E59E9 /* TldLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD9F0E723FF1175002E59E9 /* TldLists.swift */; };
 		DDD9F0EB23FF1175002E59E9 /* ContentAnalyser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD9F0E823FF1175002E59E9 /* ContentAnalyser.swift */; };
 		E05770B6039E9438891DE979 /* Pods_Sparks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9918F892AD81A0A76DB3721 /* Pods_Sparks.framework */; };
+		EDDDDCE47DC82E40E3FFFB3A /* Pods_SparksNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		385D57FD2762935000D845F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD43F56B23F00244005EC025 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 385D57F72762935000D845F6;
+			remoteInfo = SparksNotificationExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		385D58002762935100D845F6 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				385D57FF2762935000D845F6 /* SparksNotificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0B1192A52A20ED8C3079386E /* Pods-SparksNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.release.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		0C1D493024460CB3007C906A /* MainTabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarView.swift; sourceTree = "<group>"; };
 		0C1D493424460D5B007C906A /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		0C1D493524460D5B007C906A /* MainTabbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainTabbarView.xib; sourceTree = "<group>"; };
@@ -311,6 +339,7 @@
 		0CEA93C4242B9D780084D08E /* RemoteConfigDefaults-Dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RemoteConfigDefaults-Dev.plist"; sourceTree = "<group>"; };
 		0CED1825248D303800432E58 /* ImageCropperUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropperUtil.swift; sourceTree = "<group>"; };
 		0CED1827248D342000432E58 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		215852F5257B8230A477C88C /* Pods-SparksNotificationExtension.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.adhoc.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.adhoc.xcconfig"; sourceTree = "<group>"; };
 		3804FAA326BB34F00067A2BF /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		3804FAA526BB40B90067A2BF /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		3804FAA726BBE65D0067A2BF /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
@@ -350,6 +379,9 @@
 		385D57ED27627DE700D845F6 /* TripsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsService.swift; sourceTree = "<group>"; };
 		385D57EF27627E4300D845F6 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		385D57F1276282D000D845F6 /* TripCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCriteria.swift; sourceTree = "<group>"; };
+		385D57F82762935000D845F6 /* SparksNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SparksNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		385D57FA2762935000D845F6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		385D57FC2762935000D845F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		386C876B2630BFCD00A1A7FE /* UserBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBalance.swift; sourceTree = "<group>"; };
 		387E89C62480069200BF54CE /* UserPreferencesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesPresenter.swift; sourceTree = "<group>"; };
 		387EDE6924C21B6A00FCCE68 /* PhoneInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneInputPresenter.swift; sourceTree = "<group>"; };
@@ -384,6 +416,8 @@
 		38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRequestsController.swift; sourceTree = "<group>"; };
 		38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRequestsPresenter.swift; sourceTree = "<group>"; };
 		38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomService.swift; sourceTree = "<group>"; };
+		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SparksNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86834E812D7C8D422FFBD688 /* Pods-appwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appwork.release.xcconfig"; path = "Target Support Files/Pods-appwork/Pods-appwork.release.xcconfig"; sourceTree = "<group>"; };
 		91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sparks.adhoc.xcconfig"; path = "Target Support Files/Pods-Sparks/Pods-Sparks.adhoc.xcconfig"; sourceTree = "<group>"; };
 		A11D4221256BF60100FF20FC /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
@@ -483,6 +517,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		385D57F52762935000D845F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDDDDCE47DC82E40E3FFFB3A /* Pods_SparksNotificationExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DD43F57023F00244005EC025 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -749,6 +791,15 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		385D57F92762935000D845F6 /* SparksNotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				385D57FA2762935000D845F6 /* NotificationService.swift */,
+				385D57FC2762935000D845F6 /* Info.plist */,
+			);
+			path = SparksNotificationExtension;
+			sourceTree = "<group>";
+		};
 		387E89C52480068200BF54CE /* CurrentUser */ = {
 			isa = PBXGroup;
 			children = (
@@ -835,6 +886,7 @@
 			children = (
 				0C1EC4752519D1C900FFEA60 /* StoreKit.framework */,
 				A9918F892AD81A0A76DB3721 /* Pods_Sparks.framework */,
+				6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -963,6 +1015,9 @@
 				AAA66C9F962ACD28D0CF9ACA /* Pods-Sparks.debug.xcconfig */,
 				E8FAF79E2480975EDB4F44D7 /* Pods-Sparks.release.xcconfig */,
 				91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */,
+				3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */,
+				0B1192A52A20ED8C3079386E /* Pods-SparksNotificationExtension.release.xcconfig */,
+				215852F5257B8230A477C88C /* Pods-SparksNotificationExtension.adhoc.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1090,6 +1145,7 @@
 			children = (
 				DD43F57523F00244005EC025 /* Sparks */,
 				3881F1E624ED785600231463 /* Resources */,
+				385D57F92762935000D845F6 /* SparksNotificationExtension */,
 				DD43F57423F00244005EC025 /* Products */,
 				C155A0F8AB634A883B179871 /* Pods */,
 				66A4002509A657AF3390BA2B /* Frameworks */,
@@ -1100,6 +1156,7 @@
 			isa = PBXGroup;
 			children = (
 				DD43F57323F00244005EC025 /* Sparks.app */,
+				385D57F82762935000D845F6 /* SparksNotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1248,6 +1305,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		385D57F72762935000D845F6 /* SparksNotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 385D58042762935100D845F6 /* Build configuration list for PBXNativeTarget "SparksNotificationExtension" */;
+			buildPhases = (
+				0D6013049ADFE1FE78C52694 /* [CP] Check Pods Manifest.lock */,
+				385D57F42762935000D845F6 /* Sources */,
+				385D57F52762935000D845F6 /* Frameworks */,
+				385D57F62762935000D845F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SparksNotificationExtension;
+			productName = SparksNotificationExtension;
+			productReference = 385D57F82762935000D845F6 /* SparksNotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		DD43F57223F00244005EC025 /* Sparks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DD43F58723F00246005EC025 /* Build configuration list for PBXNativeTarget "Sparks" */;
@@ -1258,10 +1333,12 @@
 				DD43F57123F00244005EC025 /* Resources */,
 				D9CB602FDA7D2B879D7CC541 /* [CP] Embed Pods Frameworks */,
 				A161C531244FAD940016EC0A /* FirebaseCrashlytics */,
+				385D58002762935100D845F6 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				385D57FE2762935000D845F6 /* PBXTargetDependency */,
 			);
 			name = Sparks;
 			productName = appwork;
@@ -1274,10 +1351,13 @@
 		DD43F56B23F00244005EC025 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = AppWork;
 				TargetAttributes = {
+					385D57F72762935000D845F6 = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					DD43F57223F00244005EC025 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -1297,11 +1377,19 @@
 			projectRoot = "";
 			targets = (
 				DD43F57223F00244005EC025 /* Sparks */,
+				385D57F72762935000D845F6 /* SparksNotificationExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		385D57F62762935000D845F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DD43F57123F00244005EC025 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1360,6 +1448,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0D6013049ADFE1FE78C52694 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SparksNotificationExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		68093B982A3AED602842DCEE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1420,6 +1530,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		385D57F42762935000D845F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				385D57FB2762935000D845F6 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DD43F56F23F00244005EC025 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1610,6 +1728,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		385D57FE2762935000D845F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 385D57F72762935000D845F6 /* SparksNotificationExtension */;
+			targetProxy = 385D57FD2762935000D845F6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		DD43F58123F00246005EC025 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1622,6 +1748,78 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		385D58012762935100D845F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 7F3S9H3KXA;
+				INFOPLIST_FILE = SparksNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks.SparksNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.appwork.sparks.SparksNotificationExtension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		385D58022762935100D845F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B1192A52A20ED8C3079386E /* Pods-SparksNotificationExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 7F3S9H3KXA;
+				INFOPLIST_FILE = SparksNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks.SparksNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.appwork.sparks.SparksNotificationExtension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		385D58032762935100D845F6 /* Adhoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 215852F5257B8230A477C88C /* Pods-SparksNotificationExtension.adhoc.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 7F3S9H3KXA;
+				INFOPLIST_FILE = SparksNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks.SparksNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.appwork.sparks.SparksNotificationExtension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Adhoc;
+		};
 		3881F1E824EEA80200231463 /* Adhoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1680,6 +1878,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -1822,6 +2021,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AAA66C9F962ACD28D0CF9ACA /* Pods-Sparks.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1851,6 +2051,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E8FAF79E2480975EDB4F44D7 /* Pods-Sparks.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ./Resources/Sparks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -1878,6 +2079,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		385D58042762935100D845F6 /* Build configuration list for PBXNativeTarget "SparksNotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				385D58012762935100D845F6 /* Debug */,
+				385D58022762935100D845F6 /* Release */,
+				385D58032762935100D845F6 /* Adhoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DD43F56E23F00244005EC025 /* Build configuration list for PBXProject "Sparks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
