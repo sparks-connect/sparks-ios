@@ -15,11 +15,13 @@ class Service {
     let auth: UserService
     let chat: ChatService
     let tags: TagsService
-
+    let trips: TripsService
+    
     private init() {
         auth = UserServiceImpl(api: API.firebase)
         chat = ChatServiceImpl(chat: API.chat, firebase: API.firebase)
         tags = TagsServiceImpl(firebase: API.firebase)
+        trips = TripsServiceImpl(firebase: API.firebase)
     }
 
     class var auth: UserService {
@@ -32,6 +34,10 @@ class Service {
     
     class var tags: TagsService {
         return instance.tags
+    }
+    
+    class var trips: TripsService {
+        return instance.trips
     }
     
     class func logout() {

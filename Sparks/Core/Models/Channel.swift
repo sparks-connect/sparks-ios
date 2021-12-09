@@ -34,7 +34,8 @@ class Channel: BaseModelObject {
     @objc dynamic private(set) var createdAt: Int64 = 0
     @objc dynamic private(set) var senderLon: Double = 0
     @objc dynamic private(set) var senderLat: Double = 0
-
+    @objc dynamic private(set) var unreadCount: Int = 0
+    
     private var _sharedBy: [String]?
     private var _user_keys = [String]()
     private var _users: [User]?
@@ -125,15 +126,33 @@ class Channel: BaseModelObject {
         }
     }
     
-    func save(message: Message) {
+    func save(message: Message, bumpsUnreadCount: Bool = false) {
         guard !message.isInvalidated else { return }
         
+        func bumpUnreadIfNeeded() {
+            if (bumpsUnreadCount) {
+                self.unreadCount += 1
+            }
+        }
+        
         if let _ = RealmUtils.first(type: Message.self, message.uid) {
+            
+            try? self.realm?.write {
+                bumpUnreadIfNeeded()
+            }
+            
             RealmUtils.save(object: message)
         } else {
             try? self.realm?.write {
+                bumpUnreadIfNeeded()
                 self.messages.append(message)
             }
+        }
+    }
+    
+    func resetUnreadCount() {
+        try? self.realm?.write {
+            self.unreadCount = 0
         }
     }
     
@@ -264,5 +283,19 @@ extension Channel {
         return NSPredicate(format: "createdBy == %@ AND status == %i AND createdAt > \(time)",
                            User.current?.uid ?? "",
                            ChannelState.requested.rawValue)
+    }
+    
+    static func observeUnreadCounts(_ completion:@escaping(Int) -> Void) -> NotificationToken? {
+        return RealmUtils.observe(predicate: ChannelCriteria.matches.predicate) { (change: RealmCollectionChange<Results<Channel>>) in
+            switch change {
+            case .initial(let result):
+                completion(result.map({$0.unreadCount}).reduce(0, +))
+                break
+            case .update(let result, _, _, _):
+                completion(result.map({$0.unreadCount}).reduce(0, +))
+                break
+            default: break
+            }
+        }
     }
 }

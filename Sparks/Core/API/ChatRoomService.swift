@@ -195,7 +195,7 @@ class ChatRoomService: NSObject {
     for message in event.messages {
         let messageChannel = realm?.object(ofType: Channel.self, forPrimaryKey: message.roomId)
         message.user = messageChannel?.users.first(where: { $0.uid == message.senderId })
-        messageChannel?.save(message: message)
+        messageChannel?.save(message: message, bumpsUnreadCount: message.senderId != User.current?.uid)
     }
     
     self.emit(.messages(.success(event)))

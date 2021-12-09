@@ -74,9 +74,9 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
     
     static func setup() {
         FirebaseApp.configure()
-//        #if DEBUG
-//        Auth.auth().settings?.isAppVerificationDisabledForTesting = true
-//        #endif
+        #if DEBUG
+        Auth.auth().settings?.isAppVerificationDisabledForTesting = true
+        #endif
         FirebaseConfigManager.shared.refetch({ _ in })
     }
 

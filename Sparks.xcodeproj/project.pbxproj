@@ -112,6 +112,9 @@
 		385947392528F2B700B2A6B2 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385947382528F2B700B2A6B2 /* Security.swift */; };
 		38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38594771252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift */; };
 		385947752529038500B2A6B2 /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385947742529038500B2A6B2 /* MemoryStore.swift */; };
+		385D57EE27627DE700D845F6 /* TripsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57ED27627DE700D845F6 /* TripsService.swift */; };
+		385D57F027627E4300D845F6 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57EF27627E4300D845F6 /* Trip.swift */; };
+		385D57F2276282D000D845F6 /* TripCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385D57F1276282D000D845F6 /* TripCriteria.swift */; };
 		386C876C2630BFCD00A1A7FE /* UserBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386C876B2630BFCD00A1A7FE /* UserBalance.swift */; };
 		387E89C72480069200BF54CE /* UserPreferencesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387E89C62480069200BF54CE /* UserPreferencesPresenter.swift */; };
 		387EDE6A24C21B6A00FCCE68 /* PhoneInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387EDE6924C21B6A00FCCE68 /* PhoneInputPresenter.swift */; };
@@ -344,6 +347,9 @@
 		385947382528F2B700B2A6B2 /* Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 		38594771252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+DynamicLinks.swift"; sourceTree = "<group>"; };
 		385947742529038500B2A6B2 /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
+		385D57ED27627DE700D845F6 /* TripsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsService.swift; sourceTree = "<group>"; };
+		385D57EF27627E4300D845F6 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		385D57F1276282D000D845F6 /* TripCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCriteria.swift; sourceTree = "<group>"; };
 		386C876B2630BFCD00A1A7FE /* UserBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBalance.swift; sourceTree = "<group>"; };
 		387E89C62480069200BF54CE /* UserPreferencesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesPresenter.swift; sourceTree = "<group>"; };
 		387EDE6924C21B6A00FCCE68 /* PhoneInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneInputPresenter.swift; sourceTree = "<group>"; };
@@ -1146,6 +1152,8 @@
 				386C876B2630BFCD00A1A7FE /* UserBalance.swift */,
 				3891C5B526A9F4D100278903 /* ProfileTag.swift */,
 				3891C5C426B9818900278903 /* UserPhoto.swift */,
+				385D57EF27627E4300D845F6 /* Trip.swift */,
+				385D57F1276282D000D845F6 /* TripCriteria.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1214,6 +1222,7 @@
 				DDC7C71023F57E78002ABCD8 /* ServiceProvider.swift */,
 				DDD9F0E323F6E8BC002E59E9 /* ChatService.swift */,
 				3891C5BF26B04AE900278903 /* TagsService.swift */,
+				385D57ED27627DE700D845F6 /* TripsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1535,6 +1544,7 @@
 				38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */,
 				DDD9F0E923FF1175002E59E9 /* ContentRegex.swift in Sources */,
 				0C8E566F2427DF940099C1CE /* RangeSlider.swift in Sources */,
+				385D57F027627E4300D845F6 /* Trip.swift in Sources */,
 				3881F21024FBED6900231463 /* LocationEnableController.swift in Sources */,
 				0C6E32ED2445F1E1008528FE /* CardContentBuilder.swift in Sources */,
 				3804FAAC26C1537B0067A2BF /* MyProfileAddPhotoCollectionViewCell.swift in Sources */,
@@ -1546,7 +1556,9 @@
 				387E89C72480069200BF54CE /* UserPreferencesPresenter.swift in Sources */,
 				A1B2A3D4243F82B100DC3F71 /* Date+Ext.swift in Sources */,
 				A1D09D5D24FD7085001455FA /* GradientView.swift in Sources */,
+				385D57EE27627DE700D845F6 /* TripsService.swift in Sources */,
 				0C39411D24D6E0CD00B09C85 /* DiscoverPresenter.swift in Sources */,
+				385D57F2276282D000D845F6 /* TripCriteria.swift in Sources */,
 				DD3252FA24085B3E001FEC5F /* GalleryImagelCollectionViewCell.swift in Sources */,
 				A14D6E48243213A100C0D39E /* ChatController.swift in Sources */,
 				A18E980A2464536F006878A6 /* AbstractCustomCell.swift in Sources */,

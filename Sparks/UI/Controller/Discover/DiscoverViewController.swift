@@ -437,9 +437,6 @@ extension DiscoverViewController: VerticalCardSwiperDelegate, VerticalCardSwiper
         let index = Int(verticalCardSwiperView.contentOffset.y / verticalCardSwiperView.bounds.size.height)
         let lastItemIndex = self.presenter.numberOfChannels - 1
         if index == lastItemIndex && verticalCardSwiperView.contentOffset.y - (heightPerItem * CGFloat(lastItemIndex)) > 15 {
-            //We need to talk if we really need this...
-            //TODO: onReply()
-            //We need to talk if we really need this...
             return
         }
         

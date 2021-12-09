@@ -133,11 +133,17 @@ class ChatPresenter: BasePresenter< ChatViewDelegate > {
             switch change {
             case .initial(let result):
                 self?.channel = result.first
+                if (self?.channel?.unreadCount ?? 0 > 0) {
+                    self?.channel?.resetUnreadCount()
+                }
                 self?.observeMessagesIfNeeded()
                 self?.view?.reloadView()
             case .update(let result, let deletions, _, let modifications):
                 if let index = modifications.first {
                     self?.channel = result[index]
+                    if (self?.channel?.unreadCount ?? 0 > 0) {
+                        self?.channel?.resetUnreadCount()
+                    }
                     self?.observeMessagesIfNeeded()
                 } else if !deletions.isEmpty {
                     self?.view?.popScreen()
