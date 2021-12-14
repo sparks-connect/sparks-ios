@@ -10,7 +10,15 @@ import Foundation
 
 protocol TripsService {
     func fetch(completion:@escaping(Result<[Trip], Error>)->Void)
-    func create(_ trip: Trip)
+    func create(city: String,
+                purpose: PurposeEnum,
+                startDate: Int64,
+                endDate: Int64,
+                community: TripCommunityEnum,
+                plan: String?,
+                completion:@escaping(Result<Trip, Error>)->Void)
+    func addToFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
+    func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
 }
 
 class TripsServiceImpl: TripsService {
@@ -30,7 +38,23 @@ class TripsServiceImpl: TripsService {
         firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: TripCriteria.predicates(), completion: completion)
     }
     
-    func create(_ trip: Trip) {
+    func create(city: String,
+                purpose: PurposeEnum,
+                startDate: Int64,
+                endDate: Int64,
+                community: TripCommunityEnum,
+                plan: String?,
+                completion:@escaping(Result<Trip, Error>)->Void) {
+        
+    }
+    
+    func addToFavourites(uid: String,
+                        completion:@escaping(Result<Any, Error>)->Void) {
+        
+    }
+    
+    func removeFromFavourites(uid: String,
+                             completion:@escaping(Result<Any, Error>)->Void) {
         
     }
 }
