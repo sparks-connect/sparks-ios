@@ -346,12 +346,19 @@ extension User {
         ]
     }
     
+    var photosMapArray: [[String: Any]] {
+        return self.photos.map({ $0.values })
+    }
+    
     var values: [String: Any] {
         return [
             User.CodingKeys.firstName.rawValue: firstName ?? NSNull(),
             User.CodingKeys.lastName.rawValue: lastName ?? NSNull(),
             User.CodingKeys.gender.rawValue: gender ?? NSNull(),
-            User.CodingKeys.birthDate.rawValue: birthDate
+            User.CodingKeys.birthDate.rawValue: birthDate,
+            BaseModelObject.BaseCodingKeys.uid.rawValue: uid,
+            User.CodingKeys._photos.rawValue: photosMapArray,
+            User.CodingKeys.deviceTokens.rawValue: deviceTokens.map({ $0 })
         ]
     }
 }

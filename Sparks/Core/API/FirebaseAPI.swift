@@ -38,7 +38,7 @@ protocol FirebaseAPI: AnyObject {
     func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void)
     func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) -> String
     func setNode(path: String, values: [String: Any], mergeFields fields:[Any]?, completion: @escaping (Result<Any?, Error>) -> Void)
-    func addNode(path: String, values: [String: Any], completion: @escaping (Result<Any?, Error>) -> Void)
+    func addNode(path: String, values: [String: Any], completion: @escaping (Result<String?, Error>) -> Void)
     func updateNode(path: String, values: [String: Any], completion: ((Result<Any?, Error>) -> Void)?)
     func arrayUnion(_ elements: [Any]) -> Any
     func removeListener(forKey key: String?)
@@ -241,12 +241,13 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
         }
     }
 
-    func addNode(path: String, values: [String: Any], completion: @escaping (Result<Any?, Error>) -> Void) {
-        database.collection(path).addDocument(data: values) { (error) in
+    func addNode(path: String, values: [String: Any], completion: @escaping (Result<String?, Error>) -> Void) {
+        var ref: DocumentReference?
+        ref = database.collection(path).addDocument(data: values) { (error) in
             if let e = error {
                 completion(.failure(e))
             } else {
-                completion(.success(nil))
+                completion(.success(ref?.documentID))
             }
         }
     }

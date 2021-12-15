@@ -49,6 +49,28 @@ class Trip: BaseModelObject {
         super.init()
     }
     
+    
+    init(uid: String,
+         userId: String,
+         city: String,
+         purpose: PurposeEnum,
+         startDate: Int64,
+         endDate: Int64,
+         community: TripCommunityEnum,
+         plan: String?,
+         user: User) {
+        super.init()
+        self.uid = uid
+        self.city = city
+        self.startDate = startDate
+        self.endDate = endDate
+        self.purpose = purpose.rawValue
+        self.community = community.rawValue
+        self.plan = plan
+        self.userId = userId
+        self.user = user
+    }
+    
     required init(from decoder: Decoder) throws {
         
         try super.init(from: decoder)

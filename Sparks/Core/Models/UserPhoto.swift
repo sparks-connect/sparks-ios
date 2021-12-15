@@ -48,4 +48,14 @@ class UserPhoto: BaseModelObject {
             self.main = photo.main
         }
     }
+    
+    var values: [String: Any] {
+        guard let url = url else { return [:] }
+        return [
+            BaseModelObject.BaseCodingKeys.uid.rawValue: self.uid,
+            UserPhoto.CodingKeys.url.rawValue: url,
+            UserPhoto.CodingKeys.createdAt.rawValue: createdAt,
+            UserPhoto.CodingKeys.main.rawValue: main
+        ]
+    }
 }

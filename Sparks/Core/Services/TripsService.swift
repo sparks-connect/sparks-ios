@@ -16,7 +16,7 @@ protocol TripsService {
                 endDate: Int64,
                 community: TripCommunityEnum,
                 plan: String?,
-                completion:@escaping(Result<Trip, Error>)->Void)
+                completion:@escaping(Result<String, Error>)->Void)
     func addToFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
 }
@@ -44,8 +44,37 @@ class TripsServiceImpl: TripsService {
                 endDate: Int64,
                 community: TripCommunityEnum,
                 plan: String?,
-                completion:@escaping(Result<Trip, Error>)->Void) {
+                completion:@escaping(Result<String, Error>)->Void) {
+     
+        guard let u = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
         
+        var object: [String: Any] = [
+            Trip.CodingKeys.city.rawValue: city,
+            Trip.CodingKeys.startDate.rawValue: startDate,
+            Trip.CodingKeys.endDate.rawValue: endDate,
+            Trip.CodingKeys.purpose.rawValue: purpose.rawValue,
+            Trip.CodingKeys.community.rawValue: community.rawValue,
+            Trip.CodingKeys.userId.rawValue: u.uid,
+            Trip.CodingKeys.user.rawValue: u.values
+         ]
+        
+        if let plan = plan {
+            object[Trip.CodingKeys.plan.rawValue] = plan
+        }
+        
+        firebase.addNode(path: Trip.kPath, values: object) { result in
+            switch result {
+            case .success(let id):
+                completion(.success(id ?? ""))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
     }
     
     func addToFavourites(uid: String,
