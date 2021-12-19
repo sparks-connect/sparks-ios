@@ -250,7 +250,7 @@ class ChatServiceImpl: ChatService {
             return
         }
         
-        firebase.callFunction(type: ConnectUserResponse.self, functionName: Consts.Firebase.apiCall_connectToUser, params: ["connectUserId": userUid], completion: { response in
+        firebase.callFunction(type: ConnectUserResponse.self, functionName: Consts.Firebase.apiCall_connectToUser, params: ["connectToUserId": userUid], completion: { response in
             
             switch response {
             case .success(let resp):
