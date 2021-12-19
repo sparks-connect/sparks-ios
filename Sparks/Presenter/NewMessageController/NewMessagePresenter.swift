@@ -27,10 +27,10 @@ class NewMessagePresenter : BasePresenter<NewMessageView>{
     }
     
     func sendRequestwith(text: String){
-        service.sendSpark(withLetter: text) {[weak self] (resp) in
-            self?.handleResponse(response: resp, preReloadHandler: {
-                self?.view?.didSentMessage()
-            })
-        }
+//        service.sendSpark(withLetter: text) {[weak self] (resp) in
+//            self?.handleResponse(response: resp, preReloadHandler: {
+//                self?.view?.didSentMessage()
+//            })
+//        }
     }
 }

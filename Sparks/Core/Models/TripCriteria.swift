@@ -9,12 +9,27 @@
 import Foundation
 
 class TripCriteria: BaseModelObject {
-    @objc dynamic private(set) var city: String?
+    @objc dynamic private(set) var city: String = ""
     @objc dynamic private(set) var startDate: Int64 = 0
     @objc dynamic private(set) var endDate: Int64 = 2524593600000000
-    @objc dynamic private(set) var ageFrom: Int64 = 18
-    @objc dynamic private(set) var geTo: Int64 = 90
     @objc dynamic private(set) var gender: String = Gender.both.rawValue
+    
+    override init() {
+        super.init()
+    }
+    
+    init(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both) {
+        super.init()
+        self.uid = UUID().uuidString
+        self.city = city
+        self.startDate = startDate
+        self.endDate = endDate
+        self.gender = gender.rawValue
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
     
     class func defaultCriteria() -> TripCriteria {
         let object = TripCriteria()
@@ -22,15 +37,24 @@ class TripCriteria: BaseModelObject {
         return object
     }
     
-    class func predicates() -> [Predicate] {
-        let criteria = RealmUtils.fetch(TripCriteria.self).first ?? defaultCriteria()
-        var predicate: [Predicate] = []
-
-        if let city = criteria.city {
-            predicate.append((Trip.CodingKeys.city.rawValue, .equals, city))
-        }
+    private class func randomPredicates(randomQueryInt: Int) -> [Predicate] {
+        return [(Trip.CodingKeys.randomQueryInt.rawValue, .greaterThanOrEqual, randomQueryInt)]
+    }
+    
+    class func predicates(startDate: Double?, randomQueryInt: Int?) -> [Predicate] {
         
-        predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, criteria.startDate))
+        var predicate: [Predicate] = []
+        
+        if let startDate = startDate {
+            predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, startDate))
+        } else {
+            guard let criteria = RealmUtils.fetch(TripCriteria.self).first else {
+                return randomPredicates(randomQueryInt: randomQueryInt ?? 0)
+            }
+        
+            predicate.append((Trip.CodingKeys.city.rawValue, .equals, criteria.city))
+            predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, criteria.startDate))
+        }
         
         return predicate
     }

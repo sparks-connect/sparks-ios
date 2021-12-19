@@ -15,7 +15,7 @@ import SDWebImage
 protocol ChatService {
     func refreshHistory(channel: String, start: Int64?, end: Int64?, limit: UInt?, completion: (() -> Void)?)
     func send(channelId: String, text: String, completion:@escaping(Result<ChatMessageResponse, Error>)->Void, willSendMessage:((Result<Message, Error>)->Void)?)
-    func sendSpark(withLetter text: String, completion:@escaping(Result<ChatMessageResponse, Error>)->Void)
+    func connectToUser(_ userUid: String, completion: @escaping (Result<String, Error>) -> Void)
     func sendRequest(channelId: String, requestType: Message.RequestType, completion:@escaping(Result<ChatMessageResponse, Error>)->Void, willSendMessage:((Result<Message, Error>)->Void)?)
     
     func acceptChannel(_ channelId: String, completion: @escaping (Result<ChannelStateUpdateResponse, Error>) -> Void)
@@ -242,31 +242,31 @@ class ChatServiceImpl: ChatService {
         }
     }
     
-    func sendSpark(withLetter text: String, completion:@escaping(Result<ChatMessageResponse, Error>)->Void) {
-        self.firebase.sendOutBottle(letter: text) { (response) in
+    
+    ///MARK:  Functions
+    func connectToUser(_ userUid: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard User.current != nil else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        firebase.callFunction(type: ConnectUserResponse.self, functionName: Consts.Firebase.apiCall_connectToUser, params: ["connectUserId": userUid], completion: { response in
+            
             switch response {
-            case .failure(let error):
-                if error.isCIError(CIError.sparkBalance) || error.isCIError(CIError.missingLocation) {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(ChatMessageResponseImpl()))
-                }
-                debugPrint("SPARK SEND FAILED: \(error)")
-                break
-            case .success(let response):
-                guard let channelId = response.channelId else {
-                    completion(.success(ChatMessageResponseImpl()))
-                    //completion(.failure(response.error ?? CIError.unknown))
+            case .success(let resp):
+                guard let channelId = resp.channelId else {
+                    completion(.failure(resp.error ?? CIError.unknown))
                     return
                 }
-                self._send(channelId: channelId,
-                           json: [Consts.PubNub.kMessageBodyText: text],
-                           notificationType: .spark,
-                           completion: completion,
-                           willSendMessage: nil)
+                
+                completion(.success(channelId))
+                break
+                
+            case .failure(let e):
+                completion(.failure(e))
                 break
             }
-        }
+        })
     }
     
     func acceptChannel(_ channelId: String, completion: @escaping (Result<ChannelStateUpdateResponse, Error>) -> Void) {

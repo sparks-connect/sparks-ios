@@ -66,6 +66,7 @@ struct Consts {
 
     struct Firebase {
         static let firaStorageBaseUrl = "https://firebasestorage.googleapis.com/v0/b/appwork-f831d.appspot.com/o/users%2F"
+        static let apiCall_connectToUser = "connectToUser"
         static let apiCall_channelCreate = "getBottleRecipients"
         static let apiCall_acceptChannel = "acceptChannel"
         static let apiCall_rejectChannel = "rejectChannel"

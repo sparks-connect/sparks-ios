@@ -36,12 +36,20 @@ protocol FirebaseAPI: AnyObject {
     func fetchNode<T: Codable>(type: T.Type, at collection: String, uid: String, completion: @escaping (Result<T?, Error>) -> Void)
     func observe<T: Codable>(type: T.Type, at collection: String, uid: String, completion: @escaping (Result<T?, Error>) -> Void) -> String
     func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void)
+    func fetchItems<T: Codable>(type: T.Type,
+                                at path: String,
+                                predicates: [Predicate],
+                                orderBy: [String]?,
+                                desc: Bool?,
+                                limit: Int?,
+                                completion: @escaping (Result<[T], Error>) -> Void)
     func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) -> String
     func setNode(path: String, values: [String: Any], mergeFields fields:[Any]?, completion: @escaping (Result<Any?, Error>) -> Void)
     func addNode(path: String, values: [String: Any], completion: @escaping (Result<String?, Error>) -> Void)
     func updateNode(path: String, values: [String: Any], completion: ((Result<Any?, Error>) -> Void)?)
     func arrayUnion(_ elements: [Any]) -> Any
     func removeListener(forKey key: String?)
+    func deleteNode(path: String, completion: @escaping (Result<Any?, Error>) -> Void)
     
     /// Auth
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
@@ -52,12 +60,13 @@ protocol FirebaseAPI: AnyObject {
     func logOut()
 
     /// Functions
-    func sendOutBottle(letter: String, completion: @escaping (Result<SendBottleResponse, Error>) -> Void)
     func acceptChannel(_ channelId: String, completion: @escaping (Result<ChannelStateUpdateResponse, Error>) -> Void)
     func rejectChannel(_ channelId: String, completion: @escaping (Result<ChannelStateUpdateResponse, Error>) -> Void)
     func shareChannel(_ channelId: String, completion: @escaping (Result<ChannelStateUpdateResponse, Error>) -> Void)
     func updateToken(_ token: String, completion: @escaping (Result<Any?, Error>) -> Void)
     var serverTimestamp: Any { get }
+    
+    func callFunction<T: Codable>(type: T.Type, functionName: String, params: [String: Any], completion: @escaping (Result<T, Error>) -> Void)
 }
 
 fileprivate typealias GoogleSignInResult = (Result<Any?, Error>) -> Void
@@ -180,20 +189,45 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
     }
 
     func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) {
+        fetchItems(type: type, at: path, predicates: predicates, orderBy: nil, desc: nil, limit: nil, completion: completion)
+    }
+    
+    func fetchItems<T: Codable>(type: T.Type,
+                                at path: String,
+                                predicates: [Predicate],
+                                orderBy: [String]?,
+                                desc: Bool?,
+                                limit: Int?,
+                                completion: @escaping (Result<[T], Error>) -> Void) {
 
-        let ref = database.collection(path)
-
+        var ref: Query!
+        if let order = orderBy {
+            
+            ref = database.collection(path)
+            order.forEach { ord in
+                ref = ref.order(by: ord, descending: desc ?? false)
+            }
+            
+        } else {
+            ref = database.collection(path)
+        }
+        
+        if let limit = limit {
+            ref = ref.limit(to: limit)
+        }
+        
         if predicates.isEmpty {
+            
             ref.getDocuments { [weak self] (snap, error) in
                 self?.process(snap: snap, error: error, completion: completion)
             }
         } else {
-            var query: Query!
+            
             predicates.forEach { predicate in
-                query = self.getQueryObj(for: query ?? ref, predicate: predicate)
+                ref = self.getQueryObj(for: ref, predicate: predicate)
             }
 
-            query.getDocuments { [weak self] (snap, error) in
+            ref.getDocuments { [weak self] (snap, error) in
                 self?.process(snap: snap, error: error, completion: completion)
             }
         }
@@ -258,6 +292,16 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
                 completion?(.failure(e))
             } else {
                 completion?(.success(nil))
+            }
+        }
+    }
+    
+    func deleteNode(path: String, completion: @escaping (Result<Any?, Error>) -> Void) {
+        database.document(path).delete { error in
+            if let e = error {
+                completion(.failure(e))
+            } else {
+                completion(.success(nil))
             }
         }
     }
@@ -489,27 +533,21 @@ extension FirebaseAPIImpl {
         userObserveIdent = nil
         balanceObserveIdent = nil
     }
-
-    ///MARK:  Functions
-    func sendOutBottle(letter: String, completion: @escaping (Result<SendBottleResponse, Error>) -> Void) {
+    
+    func callFunction<T: Codable>(type: T.Type, functionName: String, params: [String: Any], completion: @escaping (Result<T, Error>) -> Void) {
         guard User.current != nil else {
             completion(.failure(CIError.unauthorized))
             return
         }
         
-        functions.httpsCallable(Consts.Firebase.apiCall_channelCreate).call(["initialMessage": letter]) { (result, error) in
+        functions.httpsCallable(functionName).call(params) { (result, error) in
             guard let res = result?.data as? [String: Any], error == nil,
-                    let enc = JSONDecoder.decode(SendBottleResponse.self, from: res) else {
+                    let enc = JSONDecoder.decode(T.self, from: res) else {
                 completion(.failure(error ?? CIError.unknown))
                 return
             }
-
-            if let e = enc.error {
-                completion(.failure(e))
-            } else {
-                completion(.success(enc))
-            }
             
+            completion(.success(enc))
         }
     }
     

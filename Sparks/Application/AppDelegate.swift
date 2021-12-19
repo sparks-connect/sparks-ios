@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.setupNotification(application, completion: {(token, error) in })
         
         debugPrint(Date().currentUTCDateStr)
+        
         return true
     }
     

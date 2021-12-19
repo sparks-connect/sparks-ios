@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SendBottleResponse: Codable {
+struct ConnectUserResponse: Codable {
     
     let channelId: String?
     private let errorCode: Int?

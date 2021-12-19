@@ -347,10 +347,14 @@ extension User {
     }
     
     var photosMapArray: [[String: Any]] {
-        return self.photos.map({ $0.values })
+        let result: [[String: Any]] = self.photos.map({ $0.values })
+        return result
     }
     
     var values: [String: Any] {
+        
+        let tokens: [String] = deviceTokens.map({ $0 })
+        
         return [
             User.CodingKeys.firstName.rawValue: firstName ?? NSNull(),
             User.CodingKeys.lastName.rawValue: lastName ?? NSNull(),
@@ -358,7 +362,7 @@ extension User {
             User.CodingKeys.birthDate.rawValue: birthDate,
             BaseModelObject.BaseCodingKeys.uid.rawValue: uid,
             User.CodingKeys._photos.rawValue: photosMapArray,
-            User.CodingKeys.deviceTokens.rawValue: deviceTokens.map({ $0 })
+            User.CodingKeys.deviceTokens.rawValue: tokens
         ]
     }
 }

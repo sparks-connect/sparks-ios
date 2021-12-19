@@ -33,7 +33,10 @@ class Trip: BaseModelObject {
              community,
              plan,
              user,
-             userId
+             userId,
+             lat,
+             lng,
+             randomQueryInt
     }
     
     @objc dynamic private(set) var userId: String?
@@ -44,6 +47,9 @@ class Trip: BaseModelObject {
     @objc dynamic private(set) var community: Int = TripCommunityEnum.alone.rawValue
     @objc dynamic private(set) var plan: String?
     @objc dynamic private(set) var user: User?
+    @objc dynamic private(set) var lat: Double = 0
+    @objc dynamic private(set) var lng: Double = 0
+    @objc dynamic private(set) var randomQueryInt: Int = 0
     
     override init() {
         super.init()
@@ -53,11 +59,14 @@ class Trip: BaseModelObject {
     init(uid: String,
          userId: String,
          city: String,
+         lat: Double,
+         lng: Double,
          purpose: PurposeEnum,
          startDate: Int64,
          endDate: Int64,
          community: TripCommunityEnum,
          plan: String?,
+         randomQueryInt: Int,
          user: User) {
         super.init()
         self.uid = uid
@@ -69,6 +78,9 @@ class Trip: BaseModelObject {
         self.plan = plan
         self.userId = userId
         self.user = user
+        self.lat = lat
+        self.lng = lng
+        self.randomQueryInt = randomQueryInt
     }
     
     required init(from decoder: Decoder) throws {
@@ -83,6 +95,9 @@ class Trip: BaseModelObject {
         self.plan = try container.decodeIfPresent(String.self, forKey: .plan)
         self.userId = try container.decodeIfPresent(String.self, forKey: .userId)
         self.user = try container.decodeIfPresent(User.self, forKey: .user)
+        self.lat = try container.decodeIfPresent(Double.self, forKey: .lat) ?? 0
+        self.lng = try container.decodeIfPresent(Double.self, forKey: .lng) ?? 0
+        self.randomQueryInt = try container.decodeIfPresent(Int.self, forKey: .randomQueryInt) ?? 0
     }
     
 }
