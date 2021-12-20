@@ -25,17 +25,23 @@ class LoginController: PageBaseController {
     
     private lazy var welcomeLabel : UILabel = {
         let view = Label()
-        view.font =  Font.regular.uiFont(ofSize: 22)
+        view.font =  Font.bold.uiFont(ofSize: 22)
         view.textColor = .white
         view.text = "Welcome"
         return view
+    }()
+    
+    private lazy var welcomeImg: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "walkthrough")
+        return imgView
     }()
     
     
     private lazy var pageControll : UIPageControl = {
         let view = UIPageControl()
         view.numberOfPages = OnboardingPageDataSource.items.count
-        view.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         view.pageIndicatorTintColor = Color.gray.uiColor
         view.currentPageIndicatorTintColor = .white
         return view
@@ -69,7 +75,7 @@ class LoginController: PageBaseController {
     
     private lazy var loginButton: PrimaryButton = {
         let view = PrimaryButton()
-        view.setTitle("Get started", for: .normal)
+        view.setTitle("Continue", for: .normal)
         view.addTarget(self, action: #selector(loginSmsAction), for: .touchUpInside)
         return view
     }()
@@ -87,6 +93,7 @@ class LoginController: PageBaseController {
         label.urlPartColor = Color.fadedPurple.uiColor
         label.backgroundColor = .clear
         label.alignment = .center
+        label.isHidden = true
         return label
     }()
     
@@ -106,38 +113,44 @@ class LoginController: PageBaseController {
     private func layout(){
         view.addSubview(welcomeLabel)
         welcomeLabel.snp.makeConstraints {
-            $0.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(20)
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(24)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
+        
+        view.addSubview(welcomeImg)
+        welcomeImg.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(welcomeLabel.snp.bottom).offset(24)
+        }
+            
+//        view.addSubview(termsLabel)
+//        termsLabel.snp.makeConstraints { (make) in
+//            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+//            make.left.equalTo(32)
+//            make.right.equalTo(-32)
+//            make.height.equalTo(64)
+//        }
+        
+        view.addSubview(loginButton)
+        loginButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            $0.left.equalToSuperview().inset(24)
+            $0.right.equalToSuperview().inset(24)
+            $0.height.equalTo(64)
         }
         
         view.addSubview(pageControll)
         pageControll.snp.makeConstraints {
-            $0.right.equalToSuperview().offset(16)
-            $0.centerY.equalTo(welcomeLabel.snp.centerY)
-        }
-        
-        
-        view.addSubview(termsLabel)
-        termsLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-            make.left.equalTo(32)
-            make.right.equalTo(-32)
-            make.height.equalTo(64)
-        }
-        
-        view.addSubview(loginButton)
-        loginButton.snp.makeConstraints {
-            $0.bottom.equalTo(termsLabel.snp.top).offset(-16)
-            $0.left.equalToSuperview().inset(45)
-            $0.right.equalToSuperview().inset(45)
-            $0.height.equalTo(64)
+            $0.bottom.equalTo(loginButton.snp.top).offset(-48)
+            $0.centerX.equalTo(loginButton.snp.centerX)
         }
         
         view.addSubview(swipingView)
         swipingView.snp.makeConstraints {
-            $0.top.equalTo(welcomeLabel.snp.bottom).offset(30)
-            $0.left.right.equalToSuperview()
-            $0.bottom.equalTo(loginButton.snp.top)
+            $0.top.equalTo(welcomeImg.snp.bottom).offset(24)
+            $0.left.equalToSuperview().inset(24)
+            $0.right.equalToSuperview().inset(24)
+            $0.bottom.equalTo(pageControll.snp.top).offset(-24)
         }
     }
     

@@ -8,6 +8,9 @@
 
 import UIKit
 import RealmSwift
+#if DEBUG
+import FLEX
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,7 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Service.tags.fetchTags()
         AppDelegate.updateRootViewController()
         self.setupNotification(application, completion: {(token, error) in })
-        
+        #if DEBUG
+        FLEXManager.shared.showExplorer()
+        #endif
         debugPrint(Date().currentUTCDateStr)
         
         return true

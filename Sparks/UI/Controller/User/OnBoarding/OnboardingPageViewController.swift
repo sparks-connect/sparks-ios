@@ -115,6 +115,7 @@ class OnboardingPageViewController: BaseController, BasePageViewController {
     private func setupScreens() -> [PageBaseController] {
         
         guard let user = User.current else {
+            labelHeader.isHidden = true
             return [ LoginController(), PhoneInputController(), SmsVerifyController() ]
         }
         
