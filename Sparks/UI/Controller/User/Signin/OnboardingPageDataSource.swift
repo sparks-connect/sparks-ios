@@ -11,13 +11,15 @@ import UIKit
 struct OnboardingPageDataItem {
     private(set) var title: String
     private(set) var desc: String
-    private(set) var image: UIImage
 }
 
 struct OnboardingPageDataSource {
     static let items = [
-        OnboardingPageDataItem(title: "Select the audience", desc: "Specify the filter criteria to deliver your message", image: #imageLiteral(resourceName: "page1")),
-        OnboardingPageDataItem(title: "Write a letter", desc: "Create a meaningful message", image: #imageLiteral(resourceName: "page2")),
-        OnboardingPageDataItem(title: "Send it", desc: "Deliver your message to someone", image: #imageLiteral(resourceName: "page3"))
+        OnboardingPageDataItem(title: "Ready for new trip adventure ?",
+                                                  desc:"Sparks allows you to connect with new people while travelling."),
+        OnboardingPageDataItem(title: "Explore travellers around the world",
+                                                  desc: "Checkout travellers in your desired region or anywhere in the world. Connect, share photos and more ..."),
+        OnboardingPageDataItem(title: "Share your upcoming trip with others",
+                                                  desc: "Let the people know about your next trip. You will get notified when someone wants to connect. ")
     ]
 }

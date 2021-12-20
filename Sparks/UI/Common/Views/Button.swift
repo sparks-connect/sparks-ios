@@ -360,7 +360,7 @@ class PrimaryButton: LoadingButton {
         self.setBorderColor(UIColor.white, forState: .disabled)
         self.setBorderWidth(1, forState: .disabled)
         self.setBorderWidth(0, forState: .normal)
-        self.layer.cornerRadius = 16
+        self.layer.cornerRadius = 32
         self.titleLabel?.font = UIFont.font(for: 14, style: .regular)
     }
 }

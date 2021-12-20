@@ -53,7 +53,8 @@ def  shared_pods
     
     # Image Cropper
     pod 'TOCropViewController'
-
+    
+    pod 'FLEX', :configurations => ['Debug']
 end
 
 

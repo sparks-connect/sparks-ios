@@ -471,6 +471,7 @@ PODS:
   - FirebaseStorage (8.6.0):
     - FirebaseCore (~> 8.0)
     - GTMSessionFetcher/Core (~> 1.5)
+  - FLEX (4.6.1)
   - GoogleAppMeasurement (8.6.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.6.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -587,6 +588,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Firebase/RemoteConfig
   - Firebase/Storage
+  - FLEX
   - GoogleSignIn
   - KeychainAccess
   - MessageKit
@@ -624,6 +626,7 @@ SPEC REPOS:
     - FirebaseMessaging
     - FirebaseRemoteConfig
     - FirebaseStorage
+    - FLEX
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
@@ -682,6 +685,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: ce0a5ee974f7bfe83b6cc5acce88c2d969e37c41
   FirebaseRemoteConfig: 9ee4672d4eacf646256e26cfac61021b3a390ea4
   FirebaseStorage: 2765944230981e63f8bd2938d9d5819158b7c34c
+  FLEX: bbc55d197f87d7cde2454c3981aa47069b694144
   GoogleAppMeasurement: 2c0c6e2a7ab3fe730ade6379f732bdefb46f50b0
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: c90b5bec45e780f54c6a8e1e3c182a86e3dda69d
@@ -708,6 +712,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 8dca60a427bb14a97b7174536badf02f385c0261
+PODFILE CHECKSUM: 4329a7288454a5d38837b51f89be4231ce3f7cac
 
 COCOAPODS: 1.11.2
