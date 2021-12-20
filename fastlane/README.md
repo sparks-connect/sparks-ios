@@ -16,6 +16,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
+### ios keygen
+```
+fastlane ios keygen
+```
+
 ### ios signing
 ```
 fastlane ios signing
