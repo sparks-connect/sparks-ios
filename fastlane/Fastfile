@@ -16,6 +16,7 @@ platform :ios do
     @passed_version = options[:version]
     unless lane == :signing || lane == :test
       setup_environment
+      keygen
       signing
       # get_versions
       versionize(bump: options[:bump])
@@ -43,10 +44,19 @@ platform :ios do
     @download_links[@secret.env.release_environment] = "https://appdistribution.firebase.dev/app_distro/projects/5f3d8334ee8c3d7454000006"
   end
 
-  lane :signing do
-    match(type: "development", readonly: false)
-    match(type: "adhoc", readonly: false)
-    match(type: "appstore", readonly: false)
+  lane :keygen do
+    @secret.apst_key = app_store_connect_api_key(
+      key_id: "767N26MG3W",
+      issuer_id: "578c9b43-0b13-486a-9077-52e8a2c6434d",
+      key_filepath: "./AuthKey_767N26MG3W.p8",
+    )
+  end
+  
+  lane :signing do |options|
+    readonly = options.empty? ? true : (options[:readonly] == nil ? true : options[:readonly] )
+    match(type: "development", readonly: readonly, api_key: @secret.apst_key)
+    match(type: "adhoc", readonly: readonly, api_key: @secret.apst_key)
+    match(type: "appstore", readonly: readonly, api_key: @secret.apst_key)
   end
 
   desc "Deploy the app to firebase app distribution"
@@ -87,7 +97,7 @@ platform :ios do
   end
 
   def send_testflight
-    upload_to_testflight(skip_waiting_for_build_processing: true)
+    upload_to_testflight(skip_waiting_for_build_processing: true, api_key: @secret.apst_key)
     @download_links ||= {}
     @download_links["TestFlight"] = "Use TestFlight application to download it"
   end

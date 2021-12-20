@@ -7,6 +7,14 @@ class Secret
     @env = env
   end
 
+  def apst_key
+    @apst_key
+  end
+
+  def apst_key=(apst_key)
+    @apst_key = apst_key
+  end
+  
   def appleId=(id)
     ENV["FASTLANE_USER"] = id
   end
