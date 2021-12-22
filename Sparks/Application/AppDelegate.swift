@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import FBSDKCoreKit
 #if DEBUG
 import FLEX
 #endif
@@ -36,7 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FLEXManager.shared.showExplorer()
         #endif
         debugPrint(Date().currentUTCDateStr)
-        
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         return true
     }
     

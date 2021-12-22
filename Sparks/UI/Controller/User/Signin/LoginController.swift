@@ -77,6 +77,7 @@ class LoginController: PageBaseController {
         let view = PrimaryButton()
         view.setTitle("Continue", for: .normal)
         view.addTarget(self, action: #selector(loginSmsAction), for: .touchUpInside)
+        view.layer.cornerRadius = 32
         return view
     }()
     

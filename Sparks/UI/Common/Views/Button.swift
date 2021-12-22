@@ -244,8 +244,10 @@ class ArrowButton : Button {
     
     override func configure() {
         super.configure()
-        layer.cornerRadius = 15
+        layer.cornerRadius = 22
         clipsToBounds = true
+        self.height(constant: 44)
+        self.width(constant: 238)
     }
     
     convenience init(image : UIImage? = nil, labelText : String){
@@ -272,15 +274,15 @@ class ArrowButton : Button {
     }
     
     func layout(){
-        self.addSubview(arrowImg)
-        arrowImg.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(20)
-            $0.centerY.equalToSuperview()
-        }
+//        self.addSubview(arrowImg)
+//        arrowImg.snp.makeConstraints {
+//            $0.right.equalToSuperview().inset(20)
+//            $0.centerY.equalToSuperview()
+//        }
         
         self.addSubview(imageLabel)
         imageLabel.snp.makeConstraints{
-            $0.left.equalToSuperview().inset(20)
+            $0.left.equalToSuperview().inset(10)
             $0.centerY.equalToSuperview()
         }
     }
@@ -360,7 +362,7 @@ class PrimaryButton: LoadingButton {
         self.setBorderColor(UIColor.white, forState: .disabled)
         self.setBorderWidth(1, forState: .disabled)
         self.setBorderWidth(0, forState: .normal)
-        self.layer.cornerRadius = 32
+        self.layer.cornerRadius = 16
         self.titleLabel?.font = UIFont.font(for: 14, style: .regular)
     }
 }

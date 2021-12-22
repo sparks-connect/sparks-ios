@@ -21,6 +21,9 @@ protocol UserService {
     /// Facebook Authentication
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
 
+    /// Facebook Authentication
+    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
+    
     /// Google authentication
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
     
@@ -63,7 +66,7 @@ protocol UserService {
 }
 
 class UserServiceImpl: UserService {
-        
+    
     let api: FirebaseAPI
     init(api: FirebaseAPI = API.firebase) {
         self.api = api
@@ -72,6 +75,10 @@ class UserServiceImpl: UserService {
 
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
         api.fbAuth(controller: controller, completion: completion)
+    }
+    
+    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
+        api.appleAuth(controller: controller, completion: completion)
     }
 
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {

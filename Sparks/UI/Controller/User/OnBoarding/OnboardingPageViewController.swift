@@ -70,7 +70,7 @@ class OnboardingPageViewController: BaseController, BasePageViewController {
     private func refresh() {
         self.progressView.percentage = self.percent
         self.labelHeader.text = self.header(at: self.currentViewControllerIndex)
-        self.buttonBack.isHidden = !self.displaysBack
+        self.buttonBack.isHidden = true //!self.displaysBack
     }
     
     override func configure() {
@@ -116,7 +116,8 @@ class OnboardingPageViewController: BaseController, BasePageViewController {
         
         guard let user = User.current else {
             labelHeader.isHidden = true
-            return [ LoginController(), PhoneInputController(), SmsVerifyController() ]
+            buttonBack.isHidden = true
+            return [ LoginController(), SocialSigninController() ]
         }
         
         var controllers: [PageBaseController] = []
