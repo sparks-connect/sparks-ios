@@ -53,7 +53,7 @@ protocol FirebaseAPI: AnyObject {
     
     /// Auth
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
-    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void)
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
     func verifyPhoneNumber(_ phoneNumber: String, completion:@escaping(_ response: Result<String, Error>) -> Void)
     func signIn(verificationID: String, verificationCode: String, completion:@escaping(_ response: Result<Any?, Error>) -> Void)
@@ -456,8 +456,8 @@ extension FirebaseAPIImpl {
         })
     }
     
-    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
-        self.appleSignInResult = completion
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void) {
+        self.fireAuth(credential, completion: completion)
     }
 
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {

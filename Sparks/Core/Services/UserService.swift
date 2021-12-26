@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreLocation
+import Firebase
 
 protocol UserService {
 
@@ -22,7 +23,7 @@ protocol UserService {
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
 
     /// Facebook Authentication
-    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void)
     
     /// Google authentication
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
@@ -77,8 +78,8 @@ class UserServiceImpl: UserService {
         api.fbAuth(controller: controller, completion: completion)
     }
     
-    func appleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
-        api.appleAuth(controller: controller, completion: completion)
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void) {
+        api.appleAuth(credential: credential, completion: completion)
     }
 
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
