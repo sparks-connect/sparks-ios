@@ -19,7 +19,7 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     func uploadImage(image: UIImage) {
         guard let user = User.current, let data = image.compressed else { return }
         SDImageCache.shared.removeImage(forKey: user.photoUrl, withCompletion: nil)
-        API.storage.uploadFile(to: "users/\(user.uid)/profileimage\(UUID().uuidString)",
+        API.storage.uploadFile(to: "users/\(user.uid)/\(UUID().uuidString).jpg",
                                file: data,
                                contentType: "image/jpeg",
                                completion: {[weak self] response in
