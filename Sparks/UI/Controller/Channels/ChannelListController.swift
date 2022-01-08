@@ -82,6 +82,18 @@ class ChannelListController: BaseController, TableViewCellDelegate {
         super.willAppear()
         view.backgroundColor = Color.background.uiColor
         listView.reloadData()
+        
+        if !LocationManager.sharedInstance.isLocationServiceEnabled() {
+            let controller = LocationEnableController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
+        
+        if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
+            let controller = ProfilePhotoAddController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
     }
     
     override func reloadView() {

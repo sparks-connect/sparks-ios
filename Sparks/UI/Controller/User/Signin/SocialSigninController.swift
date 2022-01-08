@@ -139,7 +139,11 @@ class SocialSigninController: PageBaseController {
                 debugPrint(error)
                 break
             case .success(_):
-                AppDelegate.updateRootViewController()
+                if User.current?.isMissingRequredInfo == true {
+                    AppDelegate.makeRootViewController(OnboardingPageViewController())
+                }else {
+                    AppDelegate.updateRootViewController()
+                }
                 break
             }
         }

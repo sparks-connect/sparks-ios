@@ -133,9 +133,9 @@ class OnboardingPageViewController: BaseController, BasePageViewController {
             controllers.append(BirthDateController())
         }
         
-        if user.isMissingInterests {
-            controllers.append(ProfileTagsController())
-        }
+//        if user.isMissingInterests {
+//            controllers.append(ProfileTagsController())
+//        }
         
         return controllers
     }

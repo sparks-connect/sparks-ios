@@ -137,5 +137,12 @@ extension AppDelegate {
             }
         }
     }
+    
+    static func makeRootViewController(_ controller: UIViewController) {
+        guard let instance = UIApplication.shared.delegate as? AppDelegate else { return }
+        instance.window = UIWindow(frame: UIScreen.main.bounds)
+        instance.window?.rootViewController = controller
+        instance.window?.makeKeyAndVisible()
+    }
 }
 
