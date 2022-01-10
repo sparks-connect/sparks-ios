@@ -153,6 +153,7 @@
 		38F0D0DD244DE36B00530B01 /* ChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */; };
 		6A0E6F4A2778327E003085C6 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0E6F492778327E003085C6 /* KeychainItem.swift */; };
 		6A32867327739D3D000819AD /* SocialSigninController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867227739D3D000819AD /* SocialSigninController.swift */; };
+		6A32867527739D76000819AD /* SocialInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867427739D76000819AD /* SocialInputPresenter.swift */; };
 		A11D4222256BF60100FF20FC /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D4221256BF60100FF20FC /* BasePageViewController.swift */; };
 		A12A8ED624FF12CD00DB8912 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12A8ED524FF12CD00DB8912 /* AsyncOperation.swift */; };
 		A14013732558A51200D9E590 /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14013722558A51200D9E590 /* RadarView.swift */; };
@@ -423,6 +424,7 @@
 		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6A0E6F492778327E003085C6 /* KeychainItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		6A32867227739D3D000819AD /* SocialSigninController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSigninController.swift; sourceTree = "<group>"; };
+		6A32867427739D76000819AD /* SocialInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialInputPresenter.swift; sourceTree = "<group>"; };
 		6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SparksNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86834E812D7C8D422FFBD688 /* Pods-appwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appwork.release.xcconfig"; path = "Target Support Files/Pods-appwork/Pods-appwork.release.xcconfig"; sourceTree = "<group>"; };
 		91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sparks.adhoc.xcconfig"; path = "Target Support Files/Pods-Sparks/Pods-Sparks.adhoc.xcconfig"; sourceTree = "<group>"; };
@@ -858,6 +860,7 @@
 			isa = PBXGroup;
 			children = (
 				387EDE6924C21B6A00FCCE68 /* PhoneInputPresenter.swift */,
+				6A32867427739D76000819AD /* SocialInputPresenter.swift */,
 				0C91FE2224C3243900D5E0C9 /* CountryChooserPresenter.swift */,
 				387EDE7F24C5BE8200FCCE68 /* SmsVerifyPresenter.swift */,
 			);
@@ -1574,6 +1577,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A32867527739D76000819AD /* SocialInputPresenter.swift in Sources */,
 				0CCDCEEF248B93920052FB4E /* EditProfileViewController.swift in Sources */,
 				A1FAF94124F5BB3500193963 /* OldProfilePresenter.swift in Sources */,
 				0C8E56692427DDC80099C1CE /* Image.swift in Sources */,
