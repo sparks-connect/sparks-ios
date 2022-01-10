@@ -461,7 +461,7 @@ extension FirebaseAPIImpl {
     }
 
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
-        let signInConfig = GIDConfiguration.init(clientID: "640617421139-pfl53bockpnc74fv5t16jnc37fj996bb.apps.googleusercontent.com")
+        let signInConfig = GIDConfiguration.init(clientID: Consts.Keys.google)
         GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: controller) { user, error in
             guard error == nil else { return }
             
