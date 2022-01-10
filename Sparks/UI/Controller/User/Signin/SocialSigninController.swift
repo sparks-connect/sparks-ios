@@ -14,11 +14,7 @@ import AuthenticationServices
 import Firebase
 
 class SocialSigninController: PageBaseController {
-    private let presenter = SocialInputPresenter()
-    override func getPresenter() -> Presenter {
-        return self.presenter
-    }
-    
+
     // Unhashed nonce.
     fileprivate var currentNonce: String?
     
