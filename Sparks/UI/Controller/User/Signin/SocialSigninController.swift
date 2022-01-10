@@ -131,17 +131,7 @@ class SocialSigninController: PageBaseController {
     }
     
     @objc private func loginFacebookAction(sender: AnyObject) {
-        
-        Service.auth.fbAuth(controller: self) { (result) in
-            switch result {
-            case .failure(let error):
-                debugPrint(error)
-                break
-            case .success(_):
-                self.setNavigation()
-                break
-            }
-        }
+        self.presenter.login(type: .facebook, controller: self)
     }
     
     @objc private func loginAppleAction(sender: AnyObject) {
@@ -175,25 +165,8 @@ class SocialSigninController: PageBaseController {
     }
     
     @objc private func loginGoogleAction(sender: AnyObject) {
-        
-        Service.auth.googleAuth(controller: self) { (result) in
-            switch result {
-            case .failure(let error):
-                debugPrint(error)
-                break
-            case .success(_):
-                self.setNavigation()
-                break
-            }
-        }
-    }
-    
-    private func setNavigation() {
-        if User.current?.isMissingRequredInfo == true {
-            AppDelegate.makeRootViewController(OnboardingPageViewController())
-        }else {
-            AppDelegate.updateRootViewController()
-        }
+        self.presenter.login(type: .google, controller: self)
+
     }
 }
 
@@ -226,17 +199,8 @@ extension SocialSigninController: ASAuthorizationControllerDelegate {
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
 
-            Service.auth.appleAuth(credential: credential) { (result) in
-                switch result {
-                case .failure(let error):
-                    debugPrint(error)
-                    break
-                case .success(_):
-                    self.setNavigation()
-                    break
-                }
-            }
-            
+            self.presenter.login(type: .apple(credential: credential), controller: self)
+
         case let passwordCredential as ASPasswordCredential:
             
             // Sign in using an existing iCloud Keychain credential.
@@ -280,5 +244,15 @@ extension SocialSigninController: ASAuthorizationControllerPresentationContextPr
     /// - Tag: provide_presentation_anchor
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
+    }
+}
+
+extension SocialSigninController: SocialInputView {
+    func navigate() {
+        if User.current?.isMissingRequredInfo == true {
+            AppDelegate.makeRootViewController(OnboardingPageViewController())
+        }else {
+            AppDelegate.updateRootViewController()
+        }
     }
 }
