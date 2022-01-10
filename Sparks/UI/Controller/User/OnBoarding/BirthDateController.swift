@@ -76,7 +76,7 @@ class BirthDateController : PageBaseController {
         
         view.addSubview(titeLabel)
         titeLabel.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(-100)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(100)
             $0.width.equalTo(220)
             $0.left.equalToSuperview().offset(45)
         }

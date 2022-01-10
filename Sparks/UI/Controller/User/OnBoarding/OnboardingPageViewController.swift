@@ -117,7 +117,8 @@ class OnboardingPageViewController: BaseController, BasePageViewController {
         guard let user = User.current else {
             labelHeader.isHidden = true
             buttonBack.isHidden = true
-            return [ LoginController(), SocialSigninController() ]
+            let isWalkthroughShown = StandardUserDefaults.bool(forKey: .walkthrough)
+            return !isWalkthroughShown ? [ LoginController(), SocialSigninController() ] : [SocialSigninController()]
         }
         
         var controllers: [PageBaseController] = []

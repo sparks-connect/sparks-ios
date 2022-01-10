@@ -184,6 +184,7 @@ class LoginController: PageBaseController {
     }
     
     @objc private func loginSmsAction(sender: AnyObject) {
+        StandardUserDefaults.set(true, forKey: .walkthrough)
         self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }
