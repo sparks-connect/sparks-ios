@@ -41,13 +41,13 @@ class ImageLabel : UIView {
             $0.height.equalToSuperview()
             $0.width.equalTo(imageView.snp.height)
             $0.centerY.equalToSuperview()
-            $0.left.equalToSuperview().inset(10)
+            $0.left.equalToSuperview()
         }
         
         addSubview(labelView)
         labelView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.left.equalTo(imageView.snp.right).inset(-10)
+            $0.left.equalTo(imageView.snp.right).inset(-16)
         }
     }
     

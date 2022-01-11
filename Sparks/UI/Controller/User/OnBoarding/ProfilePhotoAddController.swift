@@ -101,7 +101,7 @@ class ProfilePhotoAddController: PageBaseController {
     }
     
     @objc private func nextClicked() {
-        AppDelegate.updateRootViewController()
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func addPhotoClicked() {
@@ -114,6 +114,7 @@ class ProfilePhotoAddController: PageBaseController {
     
     override func reloadView() {
         super.reloadView()
+        self.nextButton.stopAnimatingLoader()
         self.addButton.imageURL = User.current?.photoUrl
     }
 }
@@ -122,6 +123,7 @@ extension ProfilePhotoAddController: ImageCropperUtilDelegate {
     
     func didCropImage(image: UIImage) {
         self.nextButton.isEnabled = false
+        self.nextButton.startAnimatingLoader()
         self.presenter.uploadImage(image: image)
     }
 }

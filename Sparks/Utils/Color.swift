@@ -27,6 +27,8 @@ enum Color: String {
     case red = "#E73B35"
     case buttonColor = "#24202A"
     case green = "#5AC500"
+    case fb = "#1A76F2"
+    case google = "#EB4131"
 
     var uiColor: UIColor {
         return UIColor(rgb: rawValue)

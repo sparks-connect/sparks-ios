@@ -89,6 +89,10 @@ struct Consts {
         static let kmDistance = 5
         static let otpLength = 6
     }
+    
+    struct Keys {
+        static let google = "640617421139-pfl53bockpnc74fv5t16jnc37fj996bb.apps.googleusercontent.com"
+    }
 
     struct Device {
         static let messageMetadata = ["platform": "iOS", "OS_version": UIDevice.current.systemVersion, "APP_version": Bundle.main.releaseVersionNumber]

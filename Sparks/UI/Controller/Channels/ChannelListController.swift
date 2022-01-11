@@ -74,6 +74,10 @@ class ChannelListController: BaseController, TableViewCellDelegate {
     override func configure() {
         super.configure()
         self.navigationItem.title = "Sparks"
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(authorizationChanged),
+                                               name: Consts.Notifications.didChangeLocationPermissions,
+                                               object: nil)
         layout()
         setupListView()
     }
@@ -82,6 +86,14 @@ class ChannelListController: BaseController, TableViewCellDelegate {
         super.willAppear()
         view.backgroundColor = Color.background.uiColor
         listView.reloadData()
+        
+        if !LocationManager.sharedInstance.isLocationServiceEnabled() {
+            let controller = LocationEnableController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
+        
+        addProfilePic()
     }
     
     override func reloadView() {
@@ -130,6 +142,19 @@ class ChannelListController: BaseController, TableViewCellDelegate {
         }
     }
     
+    private func addProfilePic() {
+        if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
+            let controller = ProfilePhotoAddController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func authorizationChanged(notification: Notification) {
+        main {
+            self.addProfilePic()
+        }
+    }
     
     @objc private func requestsClicked() {
         let channelList = ChannelListController(.allRecievedRequests)

@@ -283,7 +283,7 @@ extension User {
     }
     
     var isMissingRequredInfo: Bool {
-        self.isMissingName || self.isMissingGender || self.isMissingBirthdate || self.isMissingPhoto
+        self.isMissingName || self.isMissingGender || self.isMissingBirthdate
     }
     
     static var hasSeenOnboarding: Bool {

@@ -23,7 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb186640165981371</string>
+				<string>fb593507501719161</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,6 +39,8 @@
 	<string>1</string>
 	<key>FacebookAppID</key>
 	<string>593507501719161</string>
+	<key>FacebookClientToken</key>
+	<string>5ac257579e2e4096df3f56985f45f106</string>
 	<key>FacebookDisplayName</key>
 	<string>Sparks</string>
 	<key>LSApplicationCategoryType</key>

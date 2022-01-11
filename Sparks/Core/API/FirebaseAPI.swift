@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 import FirebaseFunctions
 import FBSDKLoginKit
-//import GoogleSignIn
+import GoogleSignIn
 import FirebaseCrashlytics
 import FirebaseMessaging
 
@@ -53,6 +53,7 @@ protocol FirebaseAPI: AnyObject {
     
     /// Auth
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void)
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void)
     func verifyPhoneNumber(_ phoneNumber: String, completion:@escaping(_ response: Result<String, Error>) -> Void)
     func signIn(verificationID: String, verificationCode: String, completion:@escaping(_ response: Result<Any?, Error>) -> Void)
@@ -70,17 +71,19 @@ protocol FirebaseAPI: AnyObject {
 }
 
 fileprivate typealias GoogleSignInResult = (Result<Any?, Error>) -> Void
+fileprivate typealias AppleSignInResult = (Result<Any?, Error>) -> Void
 
 /// Provides easy wrapped access to Firestore API
 class FirebaseAPIImpl: NSObject, FirebaseAPI {
-    
+ 
     private let database = Firestore.firestore()
     private lazy var listeners = [String : ListenerRegistration]()
     private var userObserveIdent: String?
     private var balanceObserveIdent: String?
     private let functions = Functions.functions()
     private var googleSignInResult: GoogleSignInResult?
-    
+    private var appleSignInResult: AppleSignInResult?
+
     static func setup() {
         FirebaseApp.configure()
         #if DEBUG
@@ -349,7 +352,7 @@ extension FirebaseAPIImpl {
                 }
 
                 let credential = FacebookAuthProvider.credential(withAccessToken: token.tokenString)
-                self?.fireAuth(credential, userData: user, completion: completion)
+                self?.fireAuth(credential, completion: completion)
             }
             
         }
@@ -362,7 +365,6 @@ extension FirebaseAPIImpl {
     }
     
     private func fireAuth(_ credential: AuthCredential,
-                          userData:[String: Any],
                           completion: @escaping (Result<Any?, Error>) -> Void) {
         
         Auth.auth().signIn(with: credential) {[weak self] (authResult, error) in
@@ -391,7 +393,6 @@ extension FirebaseAPIImpl {
                                        lastName: lastName,
                                        phoneNumber: u.phoneNumber ?? "",
                                        referrer: MemoryStore.sharedInstance.getValue(forKey: MemoryStore.MemoryKeys.userUid) as? String,
-                                       userData: userData,
                                        completion: completion)
                     }
                     break
@@ -425,7 +426,6 @@ extension FirebaseAPIImpl {
                           lastName: String,
                           phoneNumber: String,
                           referrer: String?,
-                          userData: [String: Any],
                           completion: ((Result<Any?, Error>) -> Void)? = nil) {
         var nodeData: [String: Any] = [
             User.CodingKeys.firstName.rawValue: firstName,
@@ -455,11 +455,27 @@ extension FirebaseAPIImpl {
             }
         })
     }
+    
+    func appleAuth(credential: AuthCredential, completion: @escaping (Result<Any?, Error>) -> Void) {
+        self.fireAuth(credential, completion: completion)
+    }
 
     func googleAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
-        self.googleSignInResult = completion
-//        GIDSignIn.sharedInstance()?.presentingViewController = controller
-//        GIDSignIn.sharedInstance().signIn()
+        let signInConfig = GIDConfiguration.init(clientID: Consts.Keys.google)
+        GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: controller) { user, error in
+            guard error == nil else { return }
+            
+            guard
+                let authentication = user?.authentication,
+                let idToken = authentication.idToken
+            else {
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            self.fireAuth(credential, completion: completion)
+        }
     }
     
     private func observeUser() {
@@ -595,7 +611,7 @@ extension FirebaseAPIImpl {
     
     func signIn(verificationID: String, verificationCode: String, completion:@escaping(_ response: Result<Any?, Error>) -> Void) {
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID, verificationCode: verificationCode)
-        self.fireAuth(credential, userData: [:], completion: completion)
+        self.fireAuth(credential, completion: completion)
     }
     
 }

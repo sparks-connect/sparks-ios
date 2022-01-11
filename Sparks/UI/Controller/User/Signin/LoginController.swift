@@ -77,6 +77,7 @@ class LoginController: PageBaseController {
         let view = PrimaryButton()
         view.setTitle("Continue", for: .normal)
         view.addTarget(self, action: #selector(loginSmsAction), for: .touchUpInside)
+        view.layer.cornerRadius = 32
         return view
     }()
     
@@ -183,6 +184,7 @@ class LoginController: PageBaseController {
     }
     
     @objc private func loginSmsAction(sender: AnyObject) {
+        StandardUserDefaults.set(true, forKey: .walkthrough)
         self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }

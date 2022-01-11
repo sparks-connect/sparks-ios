@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import FBSDKCoreKit
 #if DEBUG
 import FLEX
 #endif
@@ -36,7 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FLEXManager.shared.showExplorer()
         #endif
         debugPrint(Date().currentUTCDateStr)
-        
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         return true
     }
     
@@ -132,6 +136,13 @@ extension AppDelegate {
                 (UIApplication.shared.delegate as? AppDelegate)?.observeChannels()
             }
         }
+    }
+    
+    static func makeRootViewController(_ controller: UIViewController) {
+        guard let instance = UIApplication.shared.delegate as? AppDelegate else { return }
+        instance.window = UIWindow(frame: UIScreen.main.bounds)
+        instance.window?.rootViewController = controller
+        instance.window?.makeKeyAndVisible()
     }
 }
 
