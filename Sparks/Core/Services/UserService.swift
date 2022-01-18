@@ -64,6 +64,9 @@ protocol UserService {
     
     func deletePhoto(photo: UserPhoto,
                      completion: @escaping (Result<Any?, Error>) -> Void)
+    
+    func updatePhotos(urls: [URL],
+                      completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
 class UserServiceImpl: UserService {
@@ -138,6 +141,11 @@ class UserServiceImpl: UserService {
         ]
         
         api.updateNode(path: user.path, values: values, completion: completion)
+    }
+    
+    func updatePhotos(urls: [URL],
+                      completion: @escaping (Result<Any?, Error>) -> Void) {
+        
     }
     
     func updatePhoto(data: Data,

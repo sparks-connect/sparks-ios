@@ -19,6 +19,20 @@ class CollectionViewCell: UICollectionViewCell {
         self.indexPath = indexPath
         self.delegate = delegate
         self.section = section
+        setup()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        reset()
+    }
+    
+    func reset() {
+        
+    }
+    
+    func setup() {
+        
     }
     
     func willDisplayCell() {

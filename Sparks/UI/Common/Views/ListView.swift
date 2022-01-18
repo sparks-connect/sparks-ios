@@ -38,6 +38,16 @@ class TableViewCell: UITableViewCell {
         self.parameter = parameter
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.reset()
+    }
+    
+    func reset() {
+        
+    }
+    
     func willDisplayCell() {
         
     }
