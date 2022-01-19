@@ -44,6 +44,8 @@ class User: BaseModelObject, SenderType {
         token,
         deviceTokens,
         profileTags,
+        instaID,
+        instaToken,
         referrer = "referredBy",
         _photos = "photos"
     }
@@ -78,6 +80,11 @@ class User: BaseModelObject, SenderType {
     @objc dynamic private(set) var token: String?
     /// Referrer
     @objc dynamic private(set) var referrer: String?
+    /// insta user id
+    @objc dynamic private(set) var instaID: Int64 = 0
+    /// insta access token
+    @objc dynamic private(set) var instaToken: String?
+
     
     private var _profileTags: [String]?
     private var _deviceTokens: [String]?
@@ -186,6 +193,8 @@ class User: BaseModelObject, SenderType {
         self.lng = try container.decodeIfPresent(Double.self, forKey: CodingKeys.lng) ?? 0
         self.lastUpdated = try container.decodeIfPresent(Double.self, forKey: CodingKeys.lastUpdated) ?? 0
         self.birthDate = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.birthDate) ?? 0
+        self.instaID = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.instaID) ?? 0
+        self.instaToken = try container.decodeIfPresent(String.self, forKey: CodingKeys.instaToken)
         self._profileTags = try container.decodeIfPresent([String]?.self, forKey: .profileTags) ?? nil
         self._deviceTokens = try container.decodeIfPresent([String]?.self, forKey: .deviceTokens) ?? nil
         self._photos = try container.decodeIfPresent([UserPhoto]?.self, forKey: ._photos) ?? []
@@ -308,6 +317,10 @@ extension User {
     
     var isMissingInterests: Bool {
         return self.profileTags.isEmpty
+    }
+    
+    var isMissingInstaToken: Bool {
+        self.instaToken == nil || self.instaToken?.isEmpty == true
     }
     
     var tagsStr: String {

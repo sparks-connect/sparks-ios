@@ -51,6 +51,10 @@ extension AppDelegate {
     
     @available(iOS 9.0, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if self.topMostViewController is ProfilePhotoAddController {
+            //do something if it's an instance of that class
+            (self.topMostViewController as? ProfilePhotoAddController)?.setAccessToken(url.absoluteString)
+        }
         return self.application(app,
                                 open: url,
                                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,

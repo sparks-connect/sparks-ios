@@ -79,6 +79,14 @@ struct Consts {
         static let fcmAPIKey = "AAAAlSfGGVM:APA91bGJ4ksa19GfUCltfj3X6ekfpwJOEV02QU38qP10eBcFUdkYODpFyh5QT6zpBsxAnpOo8jK9JsrbZKdyY8jley8XRYZnLWMRvUMnjr7EzMkalIARW91dZJB-yUcs62d3sF_hWrHO"
     }
     
+    struct Insta {
+        static let instaBaseUrl = "https://api.instagram.com/oauth/"
+        static let graphBaseUrl = "https://graph.instagram.com/"
+        static let clientID = "1127826684741321"
+        static let clientSecret = "ab7a0ccdece975d0e475ac574ac3473d"
+        static let redirectURI = "https://sparks.ooo/deauthorize"
+    }
+    
     struct FirebaseCloudMessaging {
         static let profileUnlockRequestTitle = "Unlock"
         static let newSparkTitle             = "Spark"

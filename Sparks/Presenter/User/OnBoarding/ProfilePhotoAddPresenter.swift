@@ -12,7 +12,7 @@ import SDWebImage
 import Firebase
 
 protocol ProfilePhotoAddView: BasePresenterView {
-    func didAddProfilePhoto()
+    func showAuthorizationWindow(url: URL)
 }
 
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
@@ -22,4 +22,22 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
             self?.handleResponse(response: response)
         }
     }
+    
+    func showInstaAuthorization(){
+        let url  = Service.insta.getAuthorizationURL()
+        self.view?.showAuthorizationWindow(url: url)
+    }
+    
+    func getInstaAccessToken(code: String){
+        Service.insta.getAccessToken(code: code) {  [weak self] response in
+            self?.handleResponse(response: response)
+        }
+    }
+    
+    func getMedia() {
+        Service.insta.getMedia(completion: { [weak self] response in
+            self?.handleResponse(response: response)
+        })
+    }
+    
 }

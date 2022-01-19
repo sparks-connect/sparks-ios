@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SafariServices
+import WebKit
+
 
 class ProfilePhotoAddController: PageBaseController {
     
@@ -65,6 +68,10 @@ class ProfilePhotoAddController: PageBaseController {
         self.layout()
     }
     
+    override func willAppear() {
+        super.willAppear()
+    }
+    
     private func layout() {
         
         self.view.addSubview(titleLabel)
@@ -101,7 +108,7 @@ class ProfilePhotoAddController: PageBaseController {
     }
     
     @objc private func nextClicked() {
-        self.dismiss(animated: true, completion: nil)
+        self.presenter.showInstaAuthorization()
     }
     
     @objc private func addPhotoClicked() {
@@ -117,6 +124,11 @@ class ProfilePhotoAddController: PageBaseController {
         self.nextButton.stopAnimatingLoader()
         self.addButton.imageURL = User.current?.photoUrl
     }
+    
+    func setAccessToken(_ code: String) {
+        self.presenter.getInstaAccessToken(code: code)
+    }
+    
 }
 
 extension ProfilePhotoAddController: ImageCropperUtilDelegate {
@@ -125,7 +137,31 @@ extension ProfilePhotoAddController: ImageCropperUtilDelegate {
         self.nextButton.isEnabled = false
         self.nextButton.startAnimatingLoader()
         self.presenter.uploadImage(image: image)
+    }    
+}
+
+extension ProfilePhotoAddController: ProfilePhotoAddView {    
+    func showAuthorizationWindow(url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.delegate = self
+        self.present(safariVC, animated: true, completion: nil)
     }
 }
 
+extension ProfilePhotoAddController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo url: URL) {
+        if url.lastPathComponent != "authorize" {
+            if let callback = url.getQueryParameterValue(param: "u"),
+               let redirectURL = URL(string: callback),
+               let code = redirectURL.getQueryParameterValue(param: "code"){
+                self.setAccessToken(code)
+                controller.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+}
 

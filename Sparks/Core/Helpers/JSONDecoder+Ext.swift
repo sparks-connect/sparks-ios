@@ -10,7 +10,9 @@ import Foundation
 
 extension JSONDecoder {
     static func decode<T>(_ type: T.Type, from jsonObj: Any) -> T? where T : Decodable {
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj) else { return nil }
+        guard JSONSerialization.isValidJSONObject(jsonObj),
+              let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj)
+        else { return nil }
         do {
             let object = try JSONDecoder().decode(type, from: jsonData)
             return object
