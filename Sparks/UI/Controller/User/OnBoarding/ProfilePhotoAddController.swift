@@ -18,12 +18,6 @@ class ProfilePhotoAddController: PageBaseController {
         return self.presenter
     }
     
-    private lazy var cropper: ImageCropperUtil = {
-        let cropper = ImageCropperUtil(viewController: self)
-        cropper.delegate = self
-        return cropper
-    }()
-    
     private lazy var titleLabel : UILabel = {
         let view = Label()
         view.textAlignment = .center
@@ -32,34 +26,45 @@ class ProfilePhotoAddController: PageBaseController {
         view.adjustsFontSizeToFitWidth = true
         view.contentScaleFactor = 0.5
         view.numberOfLines = 0
-        view.text = "Add Profile Photo"
+        view.text = "Add Photos"
         return view
     }()
     
-    private lazy var descriptionLabel : UILabel = {
-        let view = Label()
-        view.textAlignment = .center
-        view.font =  Font.regular.uiFont(ofSize: 15)
-        view.textColor = .lightGray
-        view.adjustsFontSizeToFitWidth = true
-        view.contentScaleFactor = 0.5
-        view.text = "Your photo won't be shared unless you both unlock"
+    private lazy var stackView : UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.distribution = .fillProportionally
+        stack.spacing = 24
+        stack.alignment = .fill
+        return stack
+    }()
+    
+    private lazy var instaButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Connect Instagram", for: .normal)
+        view.setBackgroundImage(UIImage(named: "insta"), for: .normal)
+        view.setTitleColor(UIColor.white, for: .normal)
+        view.titleLabel?.font = UIFont.font(for: 14, style: .bold)
+        view.addTarget(self, action: #selector(instaClicked), for: .touchUpInside)
         return view
     }()
     
-    private lazy var nextButton: PrimaryButton = {
-        let view = PrimaryButton()
-        view.setTitle("Next", for: .normal)
-        view.isEnabled = false
-        view.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
+    private lazy var galleryButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Add photos from gallery", for: .normal)
+        view.setTitleColor(UIColor.white, for: .normal)
+        view.titleLabel?.font = UIFont.font(for: 14, style: .bold)
+        view.addTarget(self, action: #selector(galleryClicked), for: .touchUpInside)
         return view
     }()
     
-    private lazy var addButton: ProfilePhotoAddButton = {
-        let view = ProfilePhotoAddButton()
-        view.imageURL = User.current?.photoUrl
-        view.addTarget(self, action: #selector(addPhotoClicked), for: .touchUpInside)
-        view.addTarget(self, action: #selector(addPhotoValueChanged), for: .valueChanged)
+    private lazy var skipButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Remind me later", for: .normal)
+        view.setTitleColor(Consts.Colors.skipText, for: .normal)
+        view.titleLabel?.font = UIFont.font(for: 14, style: .regular)
+        view.addTarget(self, action: #selector(skipClicked), for: .touchUpInside)
         return view
     }()
     
@@ -75,9 +80,11 @@ class ProfilePhotoAddController: PageBaseController {
     private func layout() {
         
         self.view.addSubview(titleLabel)
-        self.view.addSubview(descriptionLabel)
-        self.view.addSubview(addButton)
-        self.view.addSubview(nextButton)
+        self.view.addSubview(stackView)
+        self.view.addSubview(skipButton)
+        
+        stackView.addArrangedSubview(instaButton)
+        stackView.addArrangedSubview(galleryButton)
         
         titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
@@ -86,20 +93,14 @@ class ProfilePhotoAddController: PageBaseController {
             make.height.equalTo(100)
         }
         
-        descriptionLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(titleLabel.snp.left)
-            make.right.equalTo(titleLabel.snp.right)
-            make.top.equalTo(titleLabel.snp.bottom).inset(8)
-            make.height.equalTo(30)
-        }
-        
-        addButton.snp.makeConstraints { (make) in
+        stackView.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(addButton.snp.width)
+            make.leading.equalTo(24)
+            make.trailing.equalTo(-24)
+            make.height.equalTo(120)
         }
         
-        nextButton.snp.makeConstraints { (make) in
+        skipButton.snp.makeConstraints { (make) in
             make.bottom.equalTo(-32)
             make.left.equalTo(32)
             make.right.equalTo(-32)
@@ -107,37 +108,30 @@ class ProfilePhotoAddController: PageBaseController {
         }
     }
     
-    @objc private func nextClicked() {
+    @objc private func instaClicked() {
         self.presenter.showInstaAuthorization()
     }
     
-    @objc private func addPhotoClicked() {
-        self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
+    @objc private func galleryClicked() {
+//        self.presenter.showInstaAuthorization()
     }
     
-    @objc private func addPhotoValueChanged() {
-        self.nextButton.isEnabled = self.addButton.imageIsSet
+    @objc private func skipClicked() {
+//        self.presenter.showInstaAuthorization()
+    }
+    
+    @objc private func nextClicked() {
+//        self.presenter.showInstaAuthorization()
     }
     
     override func reloadView() {
         super.reloadView()
-        self.nextButton.stopAnimatingLoader()
-        self.addButton.imageURL = User.current?.photoUrl
     }
     
     func setAccessToken(_ code: String) {
         self.presenter.getInstaAccessToken(code: code)
     }
     
-}
-
-extension ProfilePhotoAddController: ImageCropperUtilDelegate {
-    
-    func didCropImage(image: UIImage) {
-        self.nextButton.isEnabled = false
-        self.nextButton.startAnimatingLoader()
-        self.presenter.uploadImage(image: image)
-    }    
 }
 
 extension ProfilePhotoAddController: ProfilePhotoAddView {    

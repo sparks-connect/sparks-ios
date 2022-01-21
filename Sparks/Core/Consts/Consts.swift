@@ -116,6 +116,8 @@ struct Consts {
         static let BACKGROUND = color(from: "2A363B")
         static let LIGHT_GRAY = color(from: "d3d3d3")
         static let GRAY = color(from: "6B6B6B")
+        static let skipText = color(from: "B3B3B3")
+
     }
     
     public static var screenFactor: CGFloat {
