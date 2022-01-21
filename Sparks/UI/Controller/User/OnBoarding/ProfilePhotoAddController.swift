@@ -108,7 +108,8 @@ class ProfilePhotoAddController: PageBaseController {
     }
     
     @objc private func nextClicked() {
-        self.presenter.showInstaAuthorization()
+        //self.presenter.showInstaAuthorization()
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func addPhotoClicked() {
