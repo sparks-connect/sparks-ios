@@ -178,7 +178,7 @@ enum CIHttpMethod: String {
 }
 
 /// Main interface for Http request manager
-protocol HttpAPI: class {
+protocol HttpAPI: AnyObject {
     func send(for url: URL,
               method: CIHttpMethod,
               params: [String : Any]?,
@@ -263,13 +263,15 @@ final class HttpAPIImpl : NSObject, HttpAPI {
     private func createRequest(for url: URL, method: CIHttpMethod, params: [String : Any]? = nil, headers: [String : String]? = nil) -> DataRequest {
 
         var _headers = headers
-        if _headers == nil { _headers = [:] }
-        _headers?["Content-Type"] = "application/json"
-
+        if _headers == nil {
+            _headers = [:]
+            _headers?["Content-Type"] = "application/json"
+        }
+        
         return self.sessionManager.request(url,
                                            method: method.alamofireConverted,
                                            parameters: params,
-                                           encoding: JSONEncoding.default,
+                                           encoding: URLEncoding(),
                                            headers: _headers)
     }
 

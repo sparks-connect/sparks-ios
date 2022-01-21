@@ -16,12 +16,14 @@ class Service {
     let chat: ChatService
     let tags: TagsService
     let trips: TripsService
-    
+    let insta: InstaService
+
     private init() {
         auth = UserServiceImpl(api: API.firebase)
         chat = ChatServiceImpl(chat: API.chat, firebase: API.firebase)
         tags = TagsServiceImpl(firebase: API.firebase)
         trips = TripsServiceImpl(firebase: API.firebase)
+        insta = InstaServiceImpl(api: API.http, firebase: API.firebase)
     }
 
     class var auth: UserService {
@@ -38,6 +40,10 @@ class Service {
     
     class var trips: TripsService {
         return instance.trips
+    }
+    
+    class var insta: InstaService {
+        return instance.insta
     }
     
     class func logout() {
