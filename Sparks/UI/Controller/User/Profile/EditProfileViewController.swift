@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import SDWebImage
 
-fileprivate enum EditKey: String {
+enum EditKey: String {
     case name = "Name"
     case gender = "Gender"
     case birthDate = "Birth Date"

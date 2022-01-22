@@ -19,7 +19,8 @@ class NameInputController: PageBaseController {
         view.backgroundColor = Color.fadedBackground.uiColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
-        
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showEditor)))
         view.addSubview(input)
         input.snp.makeConstraints { (make) in
             make.left.equalTo(8)
@@ -53,6 +54,7 @@ class NameInputController: PageBaseController {
     private lazy var updateButton: PrimaryButton = {
         let view = PrimaryButton()
         view.setTitle("Next", for: .normal)
+        view.isEnabled = false
         view.addTarget(self, action: #selector(update), for: .touchUpInside)
         return view
     }()
@@ -68,19 +70,19 @@ class NameInputController: PageBaseController {
         
     }
     
-//    
-//    private func loadFullnameEditMode(type: EditKey, value: String) {
-//        let controller = OnKbdEditorViewController
-//            .createModule(text: value,
-//                          viewTitle: "Edit Profile",
-//                          inputTitle: type.rawValue,
-//                          placeholder: type.rawValue,
-//                          customKey: type.rawValue,
-//                          delegate: self)
-//        controller.inputKind = type.inputKind
-//        controller.modalPresentationStyle = .overFullScreen
-//        self.present(controller, animated: true, completion: nil)
-//    }
+    
+    private func loadFullnameEditMode(type: EditKey, value: String) {
+        let controller = OnKbdEditorViewController
+            .createModule(text: value,
+                          viewTitle: titleLabel.text ?? "",
+                          inputTitle: type.rawValue,
+                          placeholder: type.rawValue,
+                          customKey: type.rawValue,
+                          delegate: self)
+        controller.inputKind = type.inputKind
+        controller.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+    }
     
     private func layout() {
         
@@ -167,6 +169,10 @@ class NameInputController: PageBaseController {
         })
     }
     
+    @objc private func showEditor() {
+        self.loadFullnameEditMode(type: .name, value: self.input.text ?? "")
+    }
+    
     @objc private func update() {
         self.updateButton.startAnimatingLoader()
         self.presenter.update(name: self.input.text ?? "")
@@ -177,6 +183,13 @@ class NameInputController: PageBaseController {
         self.updateButton.stopAnimatingLoader()
     }
     
+}
+
+extension NameInputController: OnKbdEditorViewControllerDelegate {
+    func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
+        self.input.text = text
+        self.updateButton.isEnabled = !self.input.text.isEmpty
+    }
 }
 
 extension NameInputController: NameInputView {
