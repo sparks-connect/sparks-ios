@@ -13,6 +13,7 @@ import Firebase
 
 protocol ProfilePhotoAddView: BasePresenterView {
     func showAuthorizationWindow(url: URL)
+    func navigate(assets: [PhotoAsset])
 }
 
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
@@ -30,14 +31,38 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     
     func getInstaAccessToken(code: String){
         Service.insta.getAccessToken(code: code) {  [weak self] response in
-            self?.handleResponse(response: response)
+            self?.getMedia()
         }
     }
     
     func getMedia() {
         Service.insta.getMedia(completion: { [weak self] response in
-            self?.handleResponse(response: response)
+            var photos = [PhotoAsset]()
+            switch response {
+            case .success(let instaAsset):
+                instaAsset?.data?.forEach({ media in
+                    if let url = URL(string: media.mediaUrl ?? "") {
+                        let photo = PhotoAsset(withURL: url, id: media.id ?? "")
+                        photos.append(photo)
+                    }
+                })
+            default:
+                break
+            }
+            
+            self?.handleResponse(response: response, preReloadHandler: {
+                self?.view?.navigate(assets: photos)
+            })
         })
+    }
+    
+    func sendPhotos(photos: [PhotoAsset]){
+        background {
+            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url })) { [weak self] response in
+                self?.handleResponse(response: response)
+            }
+        }
+        
     }
     
 }

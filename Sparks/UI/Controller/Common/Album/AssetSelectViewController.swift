@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import RxSwift
 
 protocol AssetSelectViewControllerDelegate: AnyObject {
     
@@ -15,10 +16,17 @@ protocol AssetSelectViewControllerDelegate: AnyObject {
     
 }
 
-class AssetSelectViewController: BaseController {
+class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     
-    var collectionView: UICollectionView?
-    var maxSelectionCount = 0
+    lazy var collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.dataSource = self
+        collection.delegate = self
+        collection.backgroundColor = .clear
+        collection.register(AssetCollectionViewCell.self, forCellWithReuseIdentifier: "R.reuseIdentifier.assetCollectionViewCell")
+        return collection
+    }()
+    var maxSelectionCount = 10
     var assets: PHFetchResult<PHAsset>? {
         didSet {
             self.photoAssets.removeAll()
@@ -29,7 +37,15 @@ class AssetSelectViewController: BaseController {
         }
     }
     
-    private var photoAssets = [PhotoAsset]()
+    private lazy var exploringButton: PrimaryButton = {
+        let view = PrimaryButton()
+        view.setTitle("Start exploring", for: .normal)
+        view.addTarget(self, action: #selector(startExploring), for: .touchUpInside)
+        view.layer.cornerRadius = 32
+        return view
+    }()
+    
+    var photoAssets = [PhotoAsset]()
     private var selectedAssets = [PhotoAsset]()
     
     weak var delegate: AssetSelectViewControllerDelegate?
@@ -41,9 +57,23 @@ class AssetSelectViewController: BaseController {
     override final func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView?.allowsMultipleSelection = self.maxSelectionCount > 1
+        self.view.addSubview(collectionView)
+        self.view.addSubview(exploringButton)
         
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+        collectionView.snp.makeConstraints({ make in
+            make.edges.equalToSuperview()
+        })
+        
+        exploringButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            $0.left.equalToSuperview().inset(24)
+            $0.right.equalToSuperview().inset(24)
+            $0.height.equalTo(64)
+        }
+        
+        self.collectionView.allowsMultipleSelection = self.maxSelectionCount > 1
+        
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             // Only three columns on smaller screens, please.
             var columns: CGFloat = 4
             if UIScreen.main.bounds.width < 320 {
@@ -61,7 +91,18 @@ class AssetSelectViewController: BaseController {
         super.viewDidDisappear(animated)
         
         if self.didSubmit {
-            self.delegate?.assetsSelected(assets: self.selectedAssets)
+            let isSatisfy = self.selectedAssets.allSatisfy({ $0.url != nil })
+            if !isSatisfy{
+                self.selectedAssets.forEach { asset in
+                    asset.downloadFile {
+                        if self.selectedAssets.last == asset {
+                            self.delegate?.assetsSelected(assets: self.selectedAssets)
+                        }
+                    }
+                }
+            }else {
+                self.delegate?.assetsSelected(assets: self.selectedAssets)
+            }
         }
     }
     
@@ -71,6 +112,11 @@ class AssetSelectViewController: BaseController {
         if self.maxSelectionCount > 1 {
             self.title = count == 1 ? "\(count) item selected" : "\(count) items selected"
         }
+    }
+    
+    @objc private final func startExploring(){
+        self.didSubmit = true
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
@@ -86,13 +132,14 @@ extension AssetSelectViewController: UICollectionViewDataSource {
     }
     
     final func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "R.reuseIdentifier.assetCollectionViewCell", for: indexPath) as?  AssetCollectionViewCell else { return  UICollectionViewCell() }
+        cell.setup()
         if let asset = assets?.object(at: indexPath.item) {
-            //cell.update(withAsset: asset)
-            //cell.delegate = self
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "R.reuseIdentifier.assetCollectionViewCell", for: indexPath)
-            return cell
+            cell.update(withAsset: asset)
+        }else {
+            cell.update(withPhoto: self.photoAssets[indexPath.item])
         }
-        return UICollectionViewCell()
+        return cell
     }
     
 }

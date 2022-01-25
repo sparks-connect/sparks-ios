@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum InstaStep {
     case authorize
@@ -55,18 +56,28 @@ class InstaData: Codable{
     //var paging: [String: Any]?
 }
 
+enum MediaType: String, Codable {
+    case image = "IMAGE"
+    case video = "VIDEO"
+    case album = "CAROUSEL_ALBUM"
+}
+
 class InstaMedia: Codable {
     private enum CodingKeys: String, CodingKey {
         case id
         case mediaUrl = "media_url"
+        case mediaType = "media_type"
     }
     var id: String?
     var mediaUrl: String?
+    var mediaType: MediaType?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.mediaUrl = try container.decode(String.self, forKey: .mediaUrl)
+        self.mediaType = try container.decode(MediaType.self, forKey: .mediaType)
+
     }
 }
 
@@ -126,7 +137,7 @@ class InstaServiceImpl: InstaService {
             return
         }
         let params: [String: Any] = ["access_token": user.instaToken ?? "",
-                                     "fields": "id,caption,media_url"]
+                                     "fields": "id,caption,media_url,media_type,children"]
         self.api.send(for: InstaStep.media.url(),
                          method: .get,
                          params: params,

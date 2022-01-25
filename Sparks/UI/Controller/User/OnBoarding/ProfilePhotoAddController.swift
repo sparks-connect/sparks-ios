@@ -9,9 +9,9 @@
 import UIKit
 import SafariServices
 import WebKit
+import Photos
 
-
-class ProfilePhotoAddController: PageBaseController {
+class ProfilePhotoAddController: BaseController {
     
     private let presenter = ProfilePhotoAddPresenter()
     override func getPresenter() -> Presenter {
@@ -109,11 +109,16 @@ class ProfilePhotoAddController: PageBaseController {
     }
     
     @objc private func instaClicked() {
-        self.presenter.showInstaAuthorization()
+        guard let user = User.current else { return }
+        if user.isMissingInstaToken {
+            self.presenter.showInstaAuthorization()
+        }else {
+            self.presenter.getMedia()
+        }
     }
     
-    @objc private func galleryClicked() {
-//        self.presenter.showInstaAuthorization()
+    @objc private func galleryClicked(){
+        self.fetchGallaryData()
     }
     
     @objc private func skipClicked() {
@@ -134,12 +139,42 @@ class ProfilePhotoAddController: PageBaseController {
     
 }
 
-extension ProfilePhotoAddController: ProfilePhotoAddView {    
+extension ProfilePhotoAddController: ProfilePhotoAddView {
     func showAuthorizationWindow(url: URL) {
         let safariVC = SFSafariViewController(url: url)
         safariVC.delegate = self
         self.present(safariVC, animated: true, completion: nil)
     }
+    
+    func navigate(assets: [PhotoAsset]) {
+        let controller = AssetSelectViewController()
+        controller.photoAssets = assets
+        controller.delegate = self
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func fetchGallaryData(){
+        let status = PHPhotoLibrary.authorizationStatus()
+        if (status == .denied || status == .restricted) {
+            return
+        }else{
+            PHPhotoLibrary.requestAuthorization { (authStatus) in
+                if authStatus == .authorized{
+                    let imageAsset = PHAsset.fetchAssets(with: .image, options: nil)
+                    if imageAsset.count>0{
+                        main {
+                            let controller = AssetSelectViewController()
+                            controller.assets = imageAsset
+                            controller.delegate = self
+                            self.present(controller, animated: true, completion: nil)
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
 }
 
 extension ProfilePhotoAddController: SFSafariViewControllerDelegate {
@@ -159,3 +194,9 @@ extension ProfilePhotoAddController: SFSafariViewControllerDelegate {
     }
 }
 
+extension ProfilePhotoAddController: AssetSelectViewControllerDelegate {
+    func assetsSelected(assets: [PhotoAsset]) {
+        self.presenter.sendPhotos(photos: assets)
+        self.dismiss(animated: true, completion: nil)
+    }
+}

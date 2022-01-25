@@ -100,11 +100,18 @@ class PhotoAsset: NSObject {
         super.init()
     }
     
-    var asset: PHAsset
-    var url: URL?
+    init(withURL url: URL, id: String) {
+        self.url = url
+        self.id = id
+        super.init()
+    }
     
+    var asset: PHAsset?
+    var url: URL?
+    var id: String?
+
     final func downloadFile(withCompletion completion: PhotoAssetCompletion? = nil) {
-        self.asset.downloadFile { [weak self] (url) in
+        self.asset?.downloadFile { [weak self] (url) in
             self?.url = url
             completion?()
         }

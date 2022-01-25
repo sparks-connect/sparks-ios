@@ -13,7 +13,7 @@ import MobileCoreServices
 
 class AssetCollectionViewCell: CollectionViewCell {
     
-    @IBOutlet internal weak var imageView: UIImageView?
+//    @IBOutlet internal weak var imageView: UIImageView?
     @IBOutlet weak var checkBoxView: UIImageView?
     @IBOutlet internal var detailView: UIView?
     @IBOutlet internal weak var detailLabel: UILabel?
@@ -33,12 +33,12 @@ class AssetCollectionViewCell: CollectionViewCell {
                 self.checkBoxView?.alpha = 1
                 UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveLinear, animations: {
                     self.checkBoxView?.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2)
-                    self.imageView?.alpha = 0.5
+                    self.imageView.alpha = 0.5
                 })
             } else {
                 UIView.animate(withDuration: 0.25, animations: {
                     self.checkBoxView?.alpha = 0
-                    self.imageView?.alpha = 1
+                    self.imageView.alpha = 1
                 }) { (completed) in
                     self.checkBoxView?.transform = CGAffineTransform.identity
                 }
@@ -50,8 +50,8 @@ class AssetCollectionViewCell: CollectionViewCell {
     override final func setup() {
         super.setup()
         
-        self.imageView?.contentMode = .scaleAspectFill
-        self.imageView?.backgroundColor = UIColor.purple
+        self.imageView.contentMode = .scaleAspectFill
+        self.imageView.backgroundColor = UIColor.purple
         
         self.checkBoxView?.alpha = 0
         
@@ -67,7 +67,7 @@ class AssetCollectionViewCell: CollectionViewCell {
             PHImageManager.default().cancelImageRequest(previousRequest)
             self.request = nil
         }
-        self.imageView?.image = nil
+        self.imageView.image = nil
     }
     
     final func update(withAsset asset: PHAsset) {
@@ -76,7 +76,7 @@ class AssetCollectionViewCell: CollectionViewCell {
         PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: nil) { [weak self] image, _ in
             // The cell may have been recycled by the time this handler gets called, set the image only if we're still showing the same asset
             if self?.representedAssetIdentifier == asset.localIdentifier {
-                self?.imageView?.image = image
+                self?.imageView.image = image
             }
         }
         
@@ -88,6 +88,14 @@ class AssetCollectionViewCell: CollectionViewCell {
             self.detailLabel?.text = "GIF"
         }
 
+    }
+    
+    final func update(withPhoto photo: PhotoAsset) {
+        self.imageView.sd_setImage(with: photo.url) { img, err, cache, url in
+            if err != nil {
+                print(err?.localizedDescription ?? "")
+            }
+        }
     }
     
 }
