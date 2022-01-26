@@ -44,6 +44,8 @@ def  shared_pods
     # Linter
     pod 'SwiftLint'
     
+    pod 'GooglePlaces', '6.0.0'
+    
     # RX
     pod 'RxCocoa', :git => 'https://github.com/ReactiveX/RxSwift', :branch => 'main'
     pod 'RxSwift'

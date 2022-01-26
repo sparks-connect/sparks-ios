@@ -489,6 +489,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GooglePlaces (6.0.0)
   - GoogleSignIn (6.1.0):
     - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
@@ -589,6 +590,7 @@ DEPENDENCIES:
   - Firebase/RemoteConfig
   - Firebase/Storage
   - FLEX
+  - GooglePlaces (= 6.0.0)
   - GoogleSignIn
   - KeychainAccess
   - MessageKit
@@ -629,6 +631,7 @@ SPEC REPOS:
     - FLEX
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GooglePlaces
     - GoogleSignIn
     - GoogleUtilities
     - "gRPC-C++"
@@ -688,6 +691,7 @@ SPEC CHECKSUMS:
   FLEX: bbc55d197f87d7cde2454c3981aa47069b694144
   GoogleAppMeasurement: 2c0c6e2a7ab3fe730ade6379f732bdefb46f50b0
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
+  GooglePlaces: c97d96ae68594acb64035c9ca9f26fbfc1d23af1
   GoogleSignIn: c90b5bec45e780f54c6a8e1e3c182a86e3dda69d
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
@@ -712,6 +716,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 4329a7288454a5d38837b51f89be4231ce3f7cac
+PODFILE CHECKSUM: e5c365dcc4751da07591f737c33b2b7471c45419
 
 COCOAPODS: 1.11.2
