@@ -20,7 +20,7 @@ class LocationEnableController: BaseController {
         view.textColor = .white
         view.adjustsFontSizeToFitWidth = true
         view.minimumScaleFactor = 0.5
-        view.text = "Enable Location Services"
+        view.text = "Tell us where you are"
         return view
     }()
     
@@ -33,23 +33,31 @@ class LocationEnableController: BaseController {
         view.minimumScaleFactor = 0.5
         view.numberOfLines = 0
         view.textAlignment = .center
-        view.text = "\(Consts.App.name) only works when you have location services enabled. To receive spark messages more accurately, we suggest you to set location permission to 'Always' in your phone settings."
+        view.text = "We need your approximate location to help you to discover the people who travels in your region."
+        //view.text = "\(Consts.App.name) only works when you have location services enabled. To receive spark messages more accurately, we suggest you to set location permission to 'Always' in your phone settings."
         return view
     }()
     
-    private let imageView : UIImageView = {
-        let view = UIImageView(image: UIImage(named: "image-location"))
-        view.contentMode = .scaleAspectFit
-        return view
+    private lazy var welcomeImg: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "walkthrough")
+        return imgView
     }()
     
-    private let allowButton : CircleLoadingButton = {
-        let view = CircleLoadingButton()
-        view.setBackgroundColor(Color.green.uiColor, forState: .normal)
-        view.setBorderWidth(0, forState: .normal)
-        view.setBorderWidth(1, forState: .disabled)
+    private lazy var allowButton: PrimaryButton = {
+        let view = PrimaryButton()
         view.setTitle("Allow", for: .normal)
         view.addTarget(self, action: #selector(allowClicked), for: .touchUpInside)
+        view.layer.cornerRadius = 32
+        return view
+    }()
+    
+    private lazy var manualButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Enter manually", for: .normal)
+        view.setTitleColor(UIColor.white, for: .normal)
+        view.titleLabel?.font = UIFont.font(for: 14, style: .regular)
+        view.addTarget(self, action: #selector(manualClicked), for: .touchUpInside)
         return view
     }()
     
@@ -64,14 +72,14 @@ class LocationEnableController: BaseController {
     
     private func layout() {
         
-        view.addSubview(imageView)
+        view.addSubview(welcomeImg)
         view.addSubview(titeLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(allowButton)
-        
+        view.addSubview(manualButton)
+
         titeLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview().multipliedBy(0.3)
-            $0.height.equalTo(100)
+            $0.center.equalToSuperview()
             $0.left.equalTo(32)
             $0.right.equalTo(-32)
         }
@@ -83,19 +91,23 @@ class LocationEnableController: BaseController {
             $0.height.equalTo(64)
         }
         
-        imageView.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.8)
-            make.height.equalTo(imageView.snp.height)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+        welcomeImg.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().multipliedBy(0.5)
         }
         
+        manualButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            $0.left.equalToSuperview().inset(24)
+            $0.right.equalToSuperview().inset(24)
+            $0.height.equalTo(32)
+        }
         
         allowButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.6)
+            $0.bottom.equalTo(manualButton.snp.top).offset(-16)
+            $0.left.equalToSuperview().inset(24)
+            $0.right.equalToSuperview().inset(24)
             $0.height.equalTo(64)
-            $0.bottom.equalTo(hasNotchAvailable() ? -42 : 16)
         }
     }
     
@@ -110,4 +122,10 @@ class LocationEnableController: BaseController {
     @objc private func allowClicked() {
         LocationManager.sharedInstance.requestAuthorization()
     }
+    
+    @objc private func manualClicked() {
+        let controller = PlacesController()
+        self.present(controller, animated: true, completion: nil)
+    }
+
 }

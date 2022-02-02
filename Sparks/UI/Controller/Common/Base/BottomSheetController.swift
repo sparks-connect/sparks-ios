@@ -70,6 +70,7 @@ class BottomSheetController: BaseController {
         view.layer.shadowOpacity = 0.1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.shadowRadius = 10
+        view.clipsToBounds = true
         return view
     }()
     
@@ -95,7 +96,7 @@ class BottomSheetController: BaseController {
     override func configure() {
         super.configure()
         layout()
-        draggerView.addGestureRecognizer(panRecognizer)
+        popupView.addGestureRecognizer(panRecognizer)
     }
     
     override func didAppear() {

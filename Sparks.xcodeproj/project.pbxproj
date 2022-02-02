@@ -160,6 +160,11 @@
 		38F057EA26D95ADC000E9781 /* ChannelRequestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */; };
 		38F057EC26DA9497000E9781 /* ChannelRequestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */; };
 		38F0D0DD244DE36B00530B01 /* ChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */; };
+		6A0DA76527A1279500A66A22 /* PlacesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76427A1279500A66A22 /* PlacesController.swift */; };
+		6A0DA76727A1787B00A66A22 /* CreateTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76627A1787B00A66A22 /* CreateTripController.swift */; };
+		6A0DA76927A1CB2100A66A22 /* TripNameInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */; };
+		6A0DA76B27A1D43800A66A22 /* TripDateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76A27A1D43800A66A22 /* TripDateController.swift */; };
+		6A0DA76D27A1D50B00A66A22 /* TripBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76C27A1D50A00A66A22 /* TripBaseController.swift */; };
 		6A0E6F4A2778327E003085C6 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0E6F492778327E003085C6 /* KeychainItem.swift */; };
 		6A32867327739D3D000819AD /* SocialSigninController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867227739D3D000819AD /* SocialSigninController.swift */; };
 		6A32867527739D76000819AD /* SocialInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867427739D76000819AD /* SocialInputPresenter.swift */; };
@@ -441,6 +446,11 @@
 		38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRequestsPresenter.swift; sourceTree = "<group>"; };
 		38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomService.swift; sourceTree = "<group>"; };
 		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6A0DA76427A1279500A66A22 /* PlacesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesController.swift; sourceTree = "<group>"; };
+		6A0DA76627A1787B00A66A22 /* CreateTripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTripController.swift; sourceTree = "<group>"; };
+		6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripNameInputController.swift; sourceTree = "<group>"; };
+		6A0DA76A27A1D43800A66A22 /* TripDateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDateController.swift; sourceTree = "<group>"; };
+		6A0DA76C27A1D50A00A66A22 /* TripBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripBaseController.swift; sourceTree = "<group>"; };
 		6A0E6F492778327E003085C6 /* KeychainItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		6A32867227739D3D000819AD /* SocialSigninController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSigninController.swift; sourceTree = "<group>"; };
 		6A32867427739D76000819AD /* SocialInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialInputPresenter.swift; sourceTree = "<group>"; };
@@ -940,6 +950,7 @@
 				385D580827693DC400D845F6 /* OnKbdEditorViewController */,
 				A1446511254458540077425D /* CountryChooser */,
 				3881F20F24FBED6900231463 /* LocationEnableController.swift */,
+				6A0DA76427A1279500A66A22 /* PlacesController.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1064,8 +1075,12 @@
 				3881F1DF24EBBCBB00231463 /* Cell */,
 				A14D6E46243213A100C0D39E /* ChatController.swift */,
 				A161264B241567A9004AD665 /* ChannelListController.swift */,
+				6A0DA76C27A1D50A00A66A22 /* TripBaseController.swift */,
+				6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */,
+				6A0DA76A27A1D43800A66A22 /* TripDateController.swift */,
 				A161C53324507DFD0016EC0A /* UnlockRequestController.swift */,
 				38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */,
+				6A0DA76627A1787B00A66A22 /* CreateTripController.swift */,
 			);
 			path = Channels;
 			sourceTree = "<group>";
@@ -1632,6 +1647,7 @@
 				387EDE6A24C21B6A00FCCE68 /* PhoneInputPresenter.swift in Sources */,
 				DDB6437323F555C40092FA0B /* JSONDecoder+Ext.swift in Sources */,
 				A1446520254458540077425D /* CountryCell.swift in Sources */,
+				6A0DA76D27A1D50B00A66A22 /* TripBaseController.swift in Sources */,
 				DDB6434C23F18AFB0092FA0B /* APIProvider.swift in Sources */,
 				38F057EC26DA9497000E9781 /* ChannelRequestsPresenter.swift in Sources */,
 				A14465392544E6750077425D /* ReferralController.swift in Sources */,
@@ -1664,6 +1680,7 @@
 				3881F1EF24F57F7F00231463 /* AppDelegate+Notifications.swift in Sources */,
 				0C8E566D2427DF220099C1CE /* UserPreferencesController.swift in Sources */,
 				38C6C4EB2795E24C0038BB6B /* AssetCollectionViewCell.swift in Sources */,
+				6A0DA76527A1279500A66A22 /* PlacesController.swift in Sources */,
 				385947752529038500B2A6B2 /* MemoryStore.swift in Sources */,
 				3887D5F024D59E6300AF4F62 /* ProfilePhotoAddPresenter.swift in Sources */,
 				38291E192451AECB003D467B /* UITableView.swift in Sources */,
@@ -1734,6 +1751,7 @@
 				DD3252CE24085AC7001FEC5F /* BasePresenter.swift in Sources */,
 				DDB6436923F18E8B0092FA0B /* Consts.swift in Sources */,
 				6A5859D6278F591B00A64959 /* InstaService.swift in Sources */,
+				6A0DA76927A1CB2100A66A22 /* TripNameInputController.swift in Sources */,
 				A1446524254458540077425D /* ProfilePhotoAddController.swift in Sources */,
 				DD3252FD24085B3E001FEC5F /* GalleryView.swift in Sources */,
 				38C6C4F12795E4EA0038BB6B /* DateFormatter+Extensions.swift in Sources */,
@@ -1758,10 +1776,12 @@
 				0C6E32ED2445F1E1008528FE /* CardContentBuilder.swift in Sources */,
 				3804FAAC26C1537B0067A2BF /* MyProfileAddPhotoCollectionViewCell.swift in Sources */,
 				387EDE8024C5BE8200FCCE68 /* SmsVerifyPresenter.swift in Sources */,
+				6A0DA76727A1787B00A66A22 /* CreateTripController.swift in Sources */,
 				0CCDCEEA248B7CDB0052FB4E /* SettingsCell.swift in Sources */,
 				DD3252B1240852E9001FEC5F /* Bundle+Version.swift in Sources */,
 				3891C5C026B04AE900278903 /* TagsService.swift in Sources */,
 				387EDE7424C4D69400FCCE68 /* SimpleProgressView.swift in Sources */,
+				6A0DA76B27A1D43800A66A22 /* TripDateController.swift in Sources */,
 				387E89C72480069200BF54CE /* UserPreferencesPresenter.swift in Sources */,
 				A1B2A3D4243F82B100DC3F71 /* Date+Ext.swift in Sources */,
 				38C6C4ED2795E4920038BB6B /* Array+Extensions.swift in Sources */,
@@ -1875,6 +1895,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 7F3S9H3KXA;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = SparksNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1989,11 +2010,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks;
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.appwork.sparks";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Adhoc;
@@ -2133,11 +2156,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks;
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2162,11 +2187,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appwork.sparks;
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.appwork.sparks";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

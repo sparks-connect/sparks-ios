@@ -122,11 +122,7 @@ class ProfilePhotoAddController: BaseController {
     }
     
     @objc private func skipClicked() {
-//        self.presenter.showInstaAuthorization()
-    }
-    
-    @objc private func nextClicked() {
-//        self.presenter.showInstaAuthorization()
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func reloadView() {

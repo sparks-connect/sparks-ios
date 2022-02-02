@@ -79,3 +79,4 @@ slather_output/
 .DS_Store
 **/.DS_Store
 firebase_cli
+*.lock
