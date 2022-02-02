@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import GooglePlaces
 
 class API {
 
@@ -22,6 +23,7 @@ class API {
 
     class func setup() {
         Realm.Configuration.defaultConfiguration.deleteRealmIfMigrationNeeded = true
+        GMSPlacesClient.provideAPIKey("AIzaSyDgFqRIsnj22oMHuOCenbqhJ7LaTDAC9vg")
         FirebaseAPIImpl.setup()
         instance.firebase = FirebaseAPIImpl()
         instance.http = HttpAPIImpl()

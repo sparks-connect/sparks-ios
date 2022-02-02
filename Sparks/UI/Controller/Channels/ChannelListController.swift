@@ -147,11 +147,11 @@ class ChannelListController: BaseController, TableViewCellDelegate {
     }
     
     private func addProfilePic() {
-//        if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
+        if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
             let controller = ProfilePhotoAddController()
             controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true, completion: nil)
-//        }
+        }
     }
     
     @objc private func authorizationChanged(notification: Notification) {
