@@ -15,6 +15,14 @@ class TripBaseController: PageBaseController {
         return "Where you are going ?"
     }
     
+    var buttonText: String{
+        return "Next"
+    }
+    
+    var buttonColor: UIColor{
+        return Color.purple.uiColor
+    }
+    
     private lazy var titeLabel: Label = {
         let lbl = Label()
         lbl.textAlignment = .center
@@ -30,9 +38,10 @@ class TripBaseController: PageBaseController {
     
     private lazy var nextButton: PrimaryButton = {
         let btn = PrimaryButton()
-        btn.setTitle("Next", for: .normal)
+        btn.setTitle(buttonText, for: .normal)
         btn.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 32
+        btn.backgroundColor = buttonColor
         return btn
     }()
     

@@ -8,17 +8,45 @@
 
 import Foundation
 
-enum PurposeEnum: Int {
-    case leisure = 1
-    case business = 2
+protocol Tag: CaseIterable, RawRepresentable {
+    func getLabel() -> String
 }
 
-enum TripCommunityEnum: Int {
+enum PurposeEnum: Int, Tag {
+    case leisure = 1
+    case business = 2
+    
+    func getLabel() -> String {
+        switch self {
+        case .leisure:
+           return "Leisure"
+        case .business:
+           return "Business"
+        }
+    }
+}
+
+enum TripCommunityEnum: Int, Tag {
     case alone = 1
     case friends = 2
     case partner = 3
     case family = 4
     case tourists = 5
+    
+    func getLabel() -> String {
+        switch self {
+        case .alone:
+            return "alone"
+        case .friends:
+            return "with friends"
+        case .partner:
+            return "with partner"
+        case .family:
+            return "with family"
+        case .tourists:
+            return "with group of tourists"
+        }
+    }
 }
 
 class Trip: BaseModelObject {

@@ -66,13 +66,39 @@ class TripDateController: TripBaseController {
     }
     
     @objc func dateChanged(_ tapRecognizer: UITapGestureRecognizer){
-        
+        if let vw = tapRecognizer.view as? DateView {
+            self.loadFullnameEditMode(source: vw)
+        }
+    }
+    
+    private func loadFullnameEditMode(source: DateView) {
+        let controller = OnKbdEditorViewController
+            .createModule(text: source.title.text,
+                          viewTitle: source.title.text ?? "",
+                          inputTitle: source.getKey.rawValue,
+                          placeholder: source.getKey.rawValue,
+                          customKey: source.getKey.rawValue,
+                          delegate: self)
+        controller.inputKind = source.getKey.inputKind
+        controller.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    override func nextClicked() {
+        self.pageViewController?.switchTabToNext(parameters: nil)
+    }
+}
+
+extension TripDateController: OnKbdEditorViewControllerDelegate {
+    func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
+        let vw = [departureView,arrivalView].filter({$0.getKey.rawValue == customKey}).first
+        vw?.setDate(date: dateValue.toDate)
     }
 }
 
 class DateView: UIView {
     
-    private lazy var title: UILabel = {
+    lazy var title: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = .white
@@ -95,6 +121,10 @@ class DateView: UIView {
         lbl.font = Font.regular.uiFont(ofSize: 14)
         return lbl
     }()
+        
+    var getKey: EditKey {
+        EditKey(rawValue: self.title.text ?? "") ?? .departure
+    }
     
     init(tite: String, img: UIImage, selected: Bool){
         super.init(frame:.zero)
@@ -110,6 +140,10 @@ class DateView: UIView {
         self.date.text = Date().toString("dd MMM, yyyy", localeIdentifier: Locale.current.identifier)
     }
     
+    func setDate(date: Date){
+        self.date.text = date.toString("dd MMM, yyyy", localeIdentifier:  Locale.current.identifier)
+    }
+        
     func layout(){
         self.addSubview(title)
         title.snp.makeConstraints { make in

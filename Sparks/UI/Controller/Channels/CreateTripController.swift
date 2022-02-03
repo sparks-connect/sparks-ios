@@ -15,7 +15,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 
-    var viewControllers : [PageBaseController] = [TripNameInputController(), TripDateController() , TripBaseController(), TripBaseController()]
+    var viewControllers : [PageBaseController] = [TripNameInputController(), TripDateController() , TripPurposeController(), TripTravelController(), TripPlanController(), TripPreviewController()]
     
     private lazy var titeLabel: Label = {
         let lbl = Label()

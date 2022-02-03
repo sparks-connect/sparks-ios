@@ -14,12 +14,14 @@ enum EditKey: String {
     case name = "Name"
     case gender = "Gender"
     case birthDate = "Birth Date"
+    case departure = "Departure"
+    case arrival = "Arrival"
     case tags = "Interests"
     
     var inputKind: OnKbdEditorInputKind {
         switch self {
         case .gender: return .multi
-        case .birthDate: return .date
+        case .birthDate, .departure, .arrival: return .date
         default: return .text
         }
     }

@@ -160,6 +160,9 @@
 		38F057EA26D95ADC000E9781 /* ChannelRequestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */; };
 		38F057EC26DA9497000E9781 /* ChannelRequestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */; };
 		38F0D0DD244DE36B00530B01 /* ChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */; };
+		6A090C4827AC253C00FD0740 /* TripPurposeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4727AC253C00FD0740 /* TripPurposeController.swift */; };
+		6A090C4A27AC52CE00FD0740 /* TripPlansController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4927AC52CE00FD0740 /* TripPlansController.swift */; };
+		6A090C4C27AC5B6000FD0740 /* TripPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */; };
 		6A0DA76527A1279500A66A22 /* PlacesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76427A1279500A66A22 /* PlacesController.swift */; };
 		6A0DA76727A1787B00A66A22 /* CreateTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76627A1787B00A66A22 /* CreateTripController.swift */; };
 		6A0DA76927A1CB2100A66A22 /* TripNameInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */; };
@@ -446,6 +449,9 @@
 		38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRequestsPresenter.swift; sourceTree = "<group>"; };
 		38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomService.swift; sourceTree = "<group>"; };
 		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6A090C4727AC253C00FD0740 /* TripPurposeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPurposeController.swift; sourceTree = "<group>"; };
+		6A090C4927AC52CE00FD0740 /* TripPlansController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPlansController.swift; sourceTree = "<group>"; };
+		6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPreviewController.swift; sourceTree = "<group>"; };
 		6A0DA76427A1279500A66A22 /* PlacesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesController.swift; sourceTree = "<group>"; };
 		6A0DA76627A1787B00A66A22 /* CreateTripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTripController.swift; sourceTree = "<group>"; };
 		6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripNameInputController.swift; sourceTree = "<group>"; };
@@ -1078,6 +1084,9 @@
 				6A0DA76C27A1D50A00A66A22 /* TripBaseController.swift */,
 				6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */,
 				6A0DA76A27A1D43800A66A22 /* TripDateController.swift */,
+				6A090C4727AC253C00FD0740 /* TripPurposeController.swift */,
+				6A090C4927AC52CE00FD0740 /* TripPlansController.swift */,
+				6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */,
 				A161C53324507DFD0016EC0A /* UnlockRequestController.swift */,
 				38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */,
 				6A0DA76627A1787B00A66A22 /* CreateTripController.swift */,
@@ -1687,6 +1696,7 @@
 				0CEA93C2242B9B800084D08E /* StandartUserDefaults.swift in Sources */,
 				3891C5B626A9F4D100278903 /* ProfileTag.swift in Sources */,
 				0CCDCEF1248B93C10052FB4E /* UserProfilePresenter.swift in Sources */,
+				6A090C4827AC253C00FD0740 /* TripPurposeController.swift in Sources */,
 				A1446522254458540077425D /* PageBaseController.swift in Sources */,
 				0C1D493D24461530007C906A /* Old+DiscoverViewController.swift in Sources */,
 				DD43F57723F00244005EC025 /* AppDelegate.swift in Sources */,
@@ -1760,6 +1770,7 @@
 				3804FAA826BBE65D0067A2BF /* ProfilePresenter.swift in Sources */,
 				3831EFED2445D78E00B41F99 /* Spinner.swift in Sources */,
 				A144653625448A3D0077425D /* BasePopupController.swift in Sources */,
+				6A090C4A27AC52CE00FD0740 /* TripPlansController.swift in Sources */,
 				DD3252CA24085A71001FEC5F /* ChannelsPresenter.swift in Sources */,
 				389764C1269F73C50037E8E4 /* OnboardingPageDataSource.swift in Sources */,
 				380C73082497A07100B77506 /* Int64+Ext.swift in Sources */,
@@ -1787,6 +1798,7 @@
 				38CD33A624890E340073AFFC /* BaseModelObject.swift in Sources */,
 				DDC7C71123F57E78002ABCD8 /* ServiceProvider.swift in Sources */,
 				38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */,
+				6A090C4C27AC5B6000FD0740 /* TripPreviewController.swift in Sources */,
 				DDD9F0E923FF1175002E59E9 /* ContentRegex.swift in Sources */,
 				0C8E566F2427DF940099C1CE /* RangeSlider.swift in Sources */,
 				385D57F027627E4300D845F6 /* Trip.swift in Sources */,
