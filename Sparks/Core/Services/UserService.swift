@@ -158,6 +158,9 @@ class UserServiceImpl: UserService {
         var newUrls = [String]()
         let userId = user.uid
         
+        let userPhotos = user.photos
+        let hasMain = userPhotos.filter({ $0.main }).first !== nil
+        
         user.photos.forEach { photo in
             
             if let u = photo.url {
@@ -201,11 +204,11 @@ class UserServiceImpl: UserService {
         
         dispatchGroup.notify(queue: dispatchQueue) { [weak self] in
             
-            newUrls.forEach { url in
+            for (i, u) in newUrls.enumerated() {
                 photos.append([
-                    UserPhoto.CodingKeys.url.rawValue: url,
+                    UserPhoto.CodingKeys.url.rawValue: u,
                     UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                    UserPhoto.CodingKeys.main.rawValue: false,
+                    UserPhoto.CodingKeys.main.rawValue: !hasMain && i == 0,
                     BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
                 ])
             }
