@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 class TripBaseController: PageBaseController {
     
     var titleText: String {
@@ -23,7 +24,7 @@ class TripBaseController: PageBaseController {
         return Color.purple.uiColor
     }
     
-    private lazy var titeLabel: Label = {
+    lazy var titeLabel: Label = {
         let lbl = Label()
         lbl.textAlignment = .center
         lbl.font =  UIFont.systemFont(ofSize: 30, weight:.bold)
@@ -36,12 +37,12 @@ class TripBaseController: PageBaseController {
         return lbl
     }()
     
-    private lazy var nextButton: PrimaryButton = {
+    lazy var nextButton: PrimaryButton = {
         let btn = PrimaryButton()
         btn.setTitle(buttonText, for: .normal)
         btn.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 32
-        btn.backgroundColor = buttonColor
+        btn.setBackgroundColor(buttonColor, forState: .normal)
         return btn
     }()
     

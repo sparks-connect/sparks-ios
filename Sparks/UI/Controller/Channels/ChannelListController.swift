@@ -93,10 +93,6 @@ class ChannelListController: BaseController, TableViewCellDelegate {
             self.present(controller, animated: true, completion: nil)
         }
         
-        let controller = CreateTripController()
-        controller.modalPresentationStyle = .overFullScreen
-        self.present(controller, animated: true, completion: nil)
-        
         addProfilePic()
     }
     

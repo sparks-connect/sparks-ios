@@ -21,6 +21,7 @@ class MainTabBarController: UITabBarController {
         static let kWidth: CGFloat = 220
     }
     
+    private let tripListController = UINavigationController(rootViewController: TripsListController())
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
     private let settingsController = UINavigationController(rootViewController: ProfileController())
     let tabbarView = MainTabbarView()
@@ -67,7 +68,7 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupViewControllers() {
-        self.viewControllers = [channelListController, settingsController]
+        self.viewControllers = [tripListController, settingsController]
     }
     
     func move2(index: Int) {
@@ -91,6 +92,13 @@ class MainTabBarController: UITabBarController {
         self.present(controller, animated: hasBalance, completion: nil)
     }
     
+    func createTrip(){
+        let controller = CreateTripController()
+        controller.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
     func presentChannel(withID: String){
         let chatController = ChatController(channelUid: withID)
         channelListController.popToRootViewController(animated: false)
@@ -100,7 +108,8 @@ class MainTabBarController: UITabBarController {
 
 extension MainTabBarController: MainTabbarViewDelegate {
     func didTapOnAction() {
-        newAction()
+        //newAction()
+        createTrip()
     }
     
     func didTap(at item: MainTabbarViewState) {

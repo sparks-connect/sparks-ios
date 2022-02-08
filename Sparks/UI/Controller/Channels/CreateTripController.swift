@@ -67,6 +67,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
         
         viewControllers.forEach { (viewController) in
             viewController.pageViewController = self
+            viewController.delegate = self
         }
     }
     
@@ -101,6 +102,23 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     
     func didTapAtCloseButton() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateTripController: PageSize {
+    
+    func setTitle(title: String) {
+        self.titeLabel.text = title
+    }
+    
+    func updateHeight(height: CGFloat) {
+        if height != self.popupViewHeight, self.popupViewHeight > height {
+            self.updateLayout(height: self.popupViewHeight + height)
+        }
+    }
+    
+    func create() {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
