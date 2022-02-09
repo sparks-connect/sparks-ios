@@ -146,6 +146,75 @@ class UserServiceImpl: UserService {
     func updatePhotos(urls: [URL],
                       completion: @escaping (Result<Any?, Error>) -> Void) {
         
+        let dispatchGroup = DispatchGroup()
+        let dispatchQueue = DispatchQueue.global()
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        var photos = [Any]()
+        let path = user.path
+        var newUrls = [String]()
+        let userId = user.uid
+        
+        let userPhotos = user.photos
+        let hasMain = userPhotos.filter({ $0.main }).first !== nil
+        
+        user.photos.forEach { photo in
+            
+            if let u = photo.url {
+                photos.append([
+                    UserPhoto.CodingKeys.url.rawValue: u,
+                    UserPhoto.CodingKeys.createdAt.rawValue: photo.createdAt,
+                    UserPhoto.CodingKeys.main.rawValue: photo.main,
+                    BaseModelObject.BaseCodingKeys.uid.rawValue: photo.uid,
+                ])
+            }
+        }
+        
+        urls.forEach { url in
+                
+            dispatchGroup.enter()
+            dispatchQueue.async {
+                if let data = try? Data(contentsOf: url) {
+                    
+                    API.storage.uploadFile(to: "users/\(userId)/profileimage\(UUID().uuidString).jpg",
+                                           file: data,
+                                           contentType: "image/jpeg",
+                                           completion: { (response) in
+
+                        switch response {
+                        case .success(let _url):
+                            newUrls.append(_url)
+                            break
+                        default: break
+                        }
+
+                        dispatchQueue.async {
+                            dispatchGroup.leave()
+                        }
+                    }, progressBlock: nil)
+                } else {
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        
+        dispatchGroup.notify(queue: dispatchQueue) { [weak self] in
+            
+            for (i, u) in newUrls.enumerated() {
+                photos.append([
+                    UserPhoto.CodingKeys.url.rawValue: u,
+                    UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
+                    UserPhoto.CodingKeys.main.rawValue: !hasMain && i == 0,
+                    BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
+                ])
+            }
+            
+            self?.api.updateNode(path: "\(path)", values: ["photos": photos], completion: completion)
+        }
     }
     
     func updatePhoto(data: Data,
