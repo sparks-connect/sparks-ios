@@ -94,6 +94,7 @@ class Preview: UIView{
         table.backgroundColor = .clear
         table.separatorStyle = .none
         table.estimatedRowHeight = 32
+        table.isScrollEnabled = false
         table.register(PreviewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
@@ -171,7 +172,7 @@ class PreviewCell: UITableViewCell {
         self.addSubview(title)
         title.snp.makeConstraints { make in
             make.leading.equalTo(icon.snp.trailing).offset(16)
-            make.top.equalTo(icon)
+            make.top.equalTo(icon).offset(-3)
             make.trailing.equalToSuperview()
         }
     }

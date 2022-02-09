@@ -17,6 +17,7 @@ class TripsListController: BaseController {
     
     private lazy var tripView: TripView = {
         let vw = TripView(trips: [])
+        vw.delegate = self
         return vw
     }()
     
@@ -39,7 +40,9 @@ class TripsListController: BaseController {
 
 extension TripsListController: TripViewAction {
     func didSelectCell(index: Int) {
-        
+        let controller = TripInfoController()
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
