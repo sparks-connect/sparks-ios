@@ -10,6 +10,12 @@ import Foundation
 import UIKit
 
 class TripNameInputController: TripBaseController {
+    
+    let presenter = TripNamePresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
 
     private lazy var cityLabel: Label = {
         let lbl = Label()
@@ -47,10 +53,17 @@ class TripNameInputController: TripBaseController {
     
     @objc func navigateToPlaces(){
         let places = PlacesController()
+        places.delegate = self.presenter
         self.present(places, animated: true, completion: nil)
     }
     
     @objc override func nextClicked(){
         self.pageViewController?.switchTabToNext(parameters: nil)
+    }
+}
+
+extension TripNameInputController: TripNameView {
+    func updateLocation(text: String?) {
+        self.cityLabel.text = text
     }
 }

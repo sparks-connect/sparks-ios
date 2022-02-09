@@ -9,9 +9,27 @@
 import Foundation
 //import GooglePlaces
 import UIKit
+import CoreLocation
+
+struct PlaceInfo {
+    var place: String?
+    var coordinates: CLLocationCoordinate2D?
+}
+
+protocol Place: AnyObject {
+    func getLocation(info: PlaceInfo)
+}
 
 
 class PlacesController: BaseController {
+    
+    let presenter = PlacesPresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
+    weak var delegate: Place?
     
     private lazy var searchContainer: UIView = {
         let vw = UIView()
@@ -41,6 +59,8 @@ class PlacesController: BaseController {
             clearButton.setImage(templateImage, for: .normal)
             clearButton.tintColor = .white
         }
+        searchField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
+                             for: .editingChanged)
         return searchField
     }()
     
@@ -48,6 +68,7 @@ class PlacesController: BaseController {
         let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setBackgroundImage(UIImage(named: "close"), for: .normal)
+        btn.addTarget(self, action: #selector(close), for: .touchUpInside)
         return btn
     }()
     
@@ -109,7 +130,7 @@ class PlacesController: BaseController {
             make.leading.equalTo(searchField.snp.leading)
             make.top.equalTo(searchContainer.snp.bottom)
             make.trailing.equalTo(closeIcon.snp.leading)
-            make.height.equalTo(200)
+            make.height.equalTo(220)
         }
 
 
@@ -117,10 +138,16 @@ class PlacesController: BaseController {
     
     override func reloadView() {
         super.reloadView()
+        self.tableView.reloadData()
     }
     
-    func close(){
+    @objc func close(){
         self.dismiss(animated: true, completion: nil)
+    }
+}
+extension PlacesController {
+    @objc func textFieldDidChange(textField: UITextField) {
+        self.presenter.textChanged(text: textField.text)
     }
 }
 
@@ -130,24 +157,31 @@ extension PlacesController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.presenter.predictions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell",for: indexPath)
-        cell.textLabel?.text = "Test ..."
         cell.textLabel?.textColor = .white
         cell.textLabel?.numberOfLines = 0
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
+        self.presenter.configureCell(cell: cell, indexPath: indexPath)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        self.presenter.getLocation(indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+extension PlacesController: PlaceView {
+    func dismiss(info: PlaceInfo){
+        self.delegate?.getLocation(info: info)
+        self.close()
     }
 }
