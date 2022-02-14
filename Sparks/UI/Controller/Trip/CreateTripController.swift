@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 class CreateTripController: BottomSheetController, BasePageViewController {
+    private let presenter = TripCreatePresenter()
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
     
     private var currentViewControllerIndex = 0
     
@@ -30,6 +34,23 @@ class CreateTripController: BottomSheetController, BasePageViewController {
         return lbl
     }()
     
+    private lazy var backBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "back"), for: .normal)
+        btn.isHidden = true
+        btn.addTarget(self, action: #selector(switchTabToPrevious), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var closeBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "close"), for: .normal)
+        btn.addTarget(self, action: #selector(close), for: .touchUpInside)
+        return btn
+    }()
+    
     override var popupViewHeight: CGFloat {
         return 380//UIScreen.main.bounds.height - UIScreen.main.bounds.height / 5.8
     }
@@ -43,6 +64,18 @@ class CreateTripController: BottomSheetController, BasePageViewController {
         titeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
+        }
+        
+        self.popupView.addSubview(backBtn)
+        backBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalTo(titeLabel)
+        }
+        
+        self.popupView.addSubview(closeBtn)
+        closeBtn.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(titeLabel)
         }
         
         self.addChild(pageViewController)
@@ -67,7 +100,8 @@ class CreateTripController: BottomSheetController, BasePageViewController {
         
         viewControllers.forEach { (viewController) in
             viewController.pageViewController = self
-            viewController.delegate = self
+            (viewController as? TripBaseController)?.delegate = self
+            (viewController as? TripBaseController)?.info = self.presenter
         }
     }
     
@@ -82,6 +116,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     func switchTabToNext(parameters: [String: Any]? = nil) {
         guard self.currentViewControllerIndex < self.viewControllers.count - 1 else { return }
         self.currentViewControllerIndex += 1
+        if self.currentViewControllerIndex > 0 {self.showBackButton(isShow: true)}
         let controller = viewControllers[self.currentViewControllerIndex]
         controller.parameters = parameters
         pageViewController.setViewControllers([controller],
@@ -93,6 +128,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     @objc func switchTabToPrevious() {
         guard self.currentViewControllerIndex > 0 else { return }
         self.currentViewControllerIndex -= 1
+        if self.currentViewControllerIndex == 0 {self.showBackButton(isShow: false)}
         let controller = viewControllers[self.currentViewControllerIndex]
         pageViewController.setViewControllers([controller],
                                               direction: .reverse,
@@ -101,12 +137,19 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     }
     
     func didTapAtCloseButton() {
+        self.close()
+    }
+    
+    @objc func close(){
         dismiss(animated: true, completion: nil)
+    }
+    
+    func showBackButton(isShow: Bool) {
+        self.backBtn.isHidden = !isShow
     }
 }
 
-extension CreateTripController: PageSize {
-    
+extension CreateTripController: PageUI {
     func setTitle(title: String) {
         self.titeLabel.text = title
     }
@@ -117,8 +160,8 @@ extension CreateTripController: PageSize {
         }
     }
     
-    func create() {
-        self.dismiss(animated: true, completion: nil)
+    func create(completion:@escaping (Bool)->Void) {
+        self.presenter.create(completion: completion)
     }
 }
 
@@ -154,3 +197,8 @@ extension CreateTripController: UIPageViewControllerDataSource {
     
 }
 
+extension CreateTripController: TripCreateView{
+    func navigate() {
+        self.dismiss(animated: true, completion: nil)
+    }
+}

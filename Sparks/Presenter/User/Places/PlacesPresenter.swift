@@ -10,14 +10,23 @@ import Foundation
 import GooglePlaces
 
 protocol PlaceView: BasePresenterView {
-    func dismiss(info: PlaceInfo)
+    func dismiss()
+}
+
+struct PlaceInfo {
+    var place: String?
+    var coordinates: CLLocationCoordinate2D?
+}
+
+protocol Place: AnyObject {
+    func getLocation(info: PlaceInfo)
 }
 
 class PlacesPresenter: BasePresenter<PlaceView>, GMSAutocompleteFetcherDelegate {
 
     private var fetcher: GMSAutocompleteFetcher?
     lazy var predictions = [GMSAutocompletePrediction]()
-    
+    var placeInfo: PlaceInfo?
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         configurePlaces()
@@ -62,9 +71,15 @@ class PlacesPresenter: BasePresenter<PlaceView>, GMSAutocompleteFetcherDelegate 
                 return
             }
             main {
-                let placeInfo = PlaceInfo(place: city, coordinates: place.coordinate)
-                self.view?.dismiss(info: placeInfo)
+                self.placeInfo = PlaceInfo(place: city, coordinates: place.coordinate)
+                self.view?.dismiss()
             }
+        }
+    }
+    
+    func sendLocation(place: Place?){
+        if let info = placeInfo {
+            place?.getLocation(info: info)
         }
     }
     

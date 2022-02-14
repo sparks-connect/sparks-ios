@@ -12,6 +12,12 @@ import MapKit
 
 class TripDateController: TripBaseController {
     
+    let presenter = TripDatePresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     override var titleText: String {
         return "When ?"
     }
@@ -85,7 +91,7 @@ class TripDateController: TripBaseController {
     }
     
     override func nextClicked() {
-        self.pageViewController?.switchTabToNext(parameters: nil)
+        self.presenter.save(info: self.info, startDate: departureView.getDate, endDate: arrivalView.getDate)
     }
 }
 
@@ -93,6 +99,12 @@ extension TripDateController: OnKbdEditorViewControllerDelegate {
     func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
         let vw = [departureView,arrivalView].filter({$0.getKey.rawValue == customKey}).first
         vw?.setDate(date: dateValue.toDate)
+    }
+}
+
+extension TripDateController: TripDateView {
+    func navigate() {
+        self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }
 
@@ -126,6 +138,8 @@ class DateView: UIView {
         EditKey(rawValue: self.title.text ?? "") ?? .departure
     }
     
+    var getDate: Int64 = 0
+    
     init(tite: String, img: UIImage, selected: Bool){
         super.init(frame:.zero)
         layout()
@@ -138,9 +152,11 @@ class DateView: UIView {
         self.title.text = tite
         self.imgView.image = img
         self.date.text = Date().toString("dd MMM, yyyy", localeIdentifier: Locale.current.identifier)
+        self.getDate = Date().milliseconds
     }
     
     func setDate(date: Date){
+        self.getDate = date.milliseconds
         self.date.text = date.toString("dd MMM, yyyy", localeIdentifier:  Locale.current.identifier)
     }
         

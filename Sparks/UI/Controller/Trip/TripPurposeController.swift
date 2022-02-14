@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 
 class TripPurposeController: TripBaseController {
+    
+    let presenter = TripPurposePresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     override var titleText: String{
         return "Purpose"
     }
@@ -34,12 +41,27 @@ class TripPurposeController: TripBaseController {
     }
     
     override func nextClicked() {
-        self.pageViewController?.switchTabToNext(parameters: nil)
+        guard let rawValue = self.tagsView.currentSelections.last else { return}
+        let purpose = PurposeEnum(rawValue: rawValue as! Int)
+        self.presenter.save(info: self.info, purpose: purpose ?? .leisure)
     }
     
 }
 
+extension TripPurposeController: PurposeView {
+    func navigate() {
+        self.pageViewController?.switchTabToNext(parameters: nil)
+    }
+}
+
 class TripTravelController: TripBaseController {
+    
+    let presenter = TripTravelPresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     override var titleText: String{
         return "I'm travelling"
     }
@@ -64,6 +86,14 @@ class TripTravelController: TripBaseController {
     }
    
     override func nextClicked() {
+        guard let rawValue = self.tagsView.currentSelections.last else { return }
+        let community = TripCommunityEnum(rawValue: rawValue as! Int)
+        self.presenter.save(info: self.info, community: community ?? .alone)
+    }
+}
+
+extension TripTravelController: TravelView {
+    func navigate() {
         self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }
@@ -76,15 +106,15 @@ class TagsView<T: Tag>: BaseView, UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-    internal var currentSelections = [Int]() {
+    internal var currentSelections = [Any]() {
         didSet {
             collectionView.reloadData()
         }
     }
     
     var didSelectItem: ((IndexPath) -> Void)?
-    let cellSize: CGSize = CGSize(width: 150, height: 32)
-    let equalSizeCount: Int = 2
+    var cellSize: CGSize = CGSize(width: 150, height: 32)
+    var equalSizeCount: Int = 2
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = CenterAlignedCollectionViewFlowLayout()
@@ -122,13 +152,16 @@ class TagsView<T: Tag>: BaseView, UICollectionViewDelegate, UICollectionViewData
     }
     
     private final func tagIsSelected(_ tag: T) -> Bool {
-        return self.currentSelections.contains(tag.rawValue as? Int ?? 0)
+        if tag.rawValue is Int {
+            return self.currentSelections.filter({ $0 as? Int == tag.rawValue as? Int}).count > 0
+        }
+        return self.currentSelections.filter({ $0 as? String == tag.rawValue as? String}).count > 0
     }
     
     internal final func updateCell(atIndexPath indexPath: IndexPath) {
         if !self.tagIsSelected(self.contentTags[indexPath.row]){
             self.currentSelections.removeLast()
-            self.currentSelections.append(self.contentTags[indexPath.row].rawValue as? Int ?? 0)
+            self.currentSelections.append(self.contentTags[indexPath.row].rawValue)
         }
     }
     

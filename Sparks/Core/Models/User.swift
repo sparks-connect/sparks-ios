@@ -11,13 +11,27 @@ import MessageKit
 import RealmSwift
 import SDWebImage
 
-enum Gender: String, Codable {
+enum Age: String, Codable, Tag {
+    case small = "18-32"
+    case mid = "32-50"
+    case elder = "From 50"
+    
+    func getLabel() -> String {
+        return self.rawValue
+    }
+}
+
+enum Gender: String, Codable, Tag {
     case male = "Male"
     case female = "Female"
     case both = "Both"
     
     static var list: [Gender] {
         [Gender.female, Gender.male, Gender.both]
+    }
+    
+    func getLabel() -> String {
+        return self.rawValue
     }
 }
 

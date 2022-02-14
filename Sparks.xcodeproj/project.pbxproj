@@ -162,6 +162,7 @@
 		38F0D0DD244DE36B00530B01 /* ChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */; };
 		6A02836927B4104500CBBCB5 /* PlacesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836827B4104500CBBCB5 /* PlacesPresenter.swift */; };
 		6A02836B27B4224300CBBCB5 /* TripNamePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836A27B4224300CBBCB5 /* TripNamePresenter.swift */; };
+		6A02836D27B428EA00CBBCB5 /* TripCreatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836C27B428EA00CBBCB5 /* TripCreatePresenter.swift */; };
 		6A090C4827AC253C00FD0740 /* TripPurposeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4727AC253C00FD0740 /* TripPurposeController.swift */; };
 		6A090C4A27AC52CE00FD0740 /* TripPlansController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4927AC52CE00FD0740 /* TripPlansController.swift */; };
 		6A090C4C27AC5B6000FD0740 /* TripPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */; };
@@ -176,6 +177,13 @@
 		6A18160C27AFAACE00EADE2A /* IconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A18160B27AFAACE00EADE2A /* IconLabel.swift */; };
 		6A32867327739D3D000819AD /* SocialSigninController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867227739D3D000819AD /* SocialSigninController.swift */; };
 		6A32867527739D76000819AD /* SocialInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32867427739D76000819AD /* SocialInputPresenter.swift */; };
+		6A3E021F27B8FF2E00529B33 /* TripDatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E021E27B8FF2E00529B33 /* TripDatePresenter.swift */; };
+		6A3E022127B9021900529B33 /* TripPurposePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022027B9021900529B33 /* TripPurposePresenter.swift */; };
+		6A3E022327B904C300529B33 /* TripTravelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022227B904C300529B33 /* TripTravelPresenter.swift */; };
+		6A3E022527B9058900529B33 /* TripPlanPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022427B9058900529B33 /* TripPlanPresenter.swift */; };
+		6A3E022727B9528E00529B33 /* TripListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022627B9528E00529B33 /* TripListPresenter.swift */; };
+		6A3E022927B95CF000529B33 /* TripInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */; };
+		6A3E022B27B979E600529B33 /* TripSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */; };
 		6A5859D6278F591B00A64959 /* InstaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5859D5278F591B00A64959 /* InstaService.swift */; };
 		6A7CA97227B2FA8E0059976F /* TripInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97127B2FA8E0059976F /* TripInfoController.swift */; };
 		6A7CA97427B305BD0059976F /* TripSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97327B305BD0059976F /* TripSearchController.swift */; };
@@ -458,6 +466,7 @@
 		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6A02836827B4104500CBBCB5 /* PlacesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesPresenter.swift; sourceTree = "<group>"; };
 		6A02836A27B4224300CBBCB5 /* TripNamePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripNamePresenter.swift; sourceTree = "<group>"; };
+		6A02836C27B428EA00CBBCB5 /* TripCreatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCreatePresenter.swift; sourceTree = "<group>"; };
 		6A090C4727AC253C00FD0740 /* TripPurposeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPurposeController.swift; sourceTree = "<group>"; };
 		6A090C4927AC52CE00FD0740 /* TripPlansController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPlansController.swift; sourceTree = "<group>"; };
 		6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPreviewController.swift; sourceTree = "<group>"; };
@@ -472,6 +481,13 @@
 		6A18160B27AFAACE00EADE2A /* IconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconLabel.swift; sourceTree = "<group>"; };
 		6A32867227739D3D000819AD /* SocialSigninController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSigninController.swift; sourceTree = "<group>"; };
 		6A32867427739D76000819AD /* SocialInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialInputPresenter.swift; sourceTree = "<group>"; };
+		6A3E021E27B8FF2E00529B33 /* TripDatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDatePresenter.swift; sourceTree = "<group>"; };
+		6A3E022027B9021900529B33 /* TripPurposePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPurposePresenter.swift; sourceTree = "<group>"; };
+		6A3E022227B904C300529B33 /* TripTravelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripTravelPresenter.swift; sourceTree = "<group>"; };
+		6A3E022427B9058900529B33 /* TripPlanPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripPlanPresenter.swift; sourceTree = "<group>"; };
+		6A3E022627B9528E00529B33 /* TripListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripListPresenter.swift; sourceTree = "<group>"; };
+		6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoPresenter.swift; sourceTree = "<group>"; };
+		6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchPresenter.swift; sourceTree = "<group>"; };
 		6A5859D5278F591B00A64959 /* InstaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstaService.swift; sourceTree = "<group>"; };
 		6A7CA97127B2FA8E0059976F /* TripInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoController.swift; sourceTree = "<group>"; };
 		6A7CA97327B305BD0059976F /* TripSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchController.swift; sourceTree = "<group>"; };
@@ -1033,8 +1049,16 @@
 		6A11053D27AE9FB3000F9DE9 /* Trips */ = {
 			isa = PBXGroup;
 			children = (
+				6A02836C27B428EA00CBBCB5 /* TripCreatePresenter.swift */,
+				6A3E022627B9528E00529B33 /* TripListPresenter.swift */,
+				6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */,
+				6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */,
 				6A02836A27B4224300CBBCB5 /* TripNamePresenter.swift */,
 				6A11053E27AE9FE4000F9DE9 /* TripPreviewPresenter.swift */,
+				6A3E021E27B8FF2E00529B33 /* TripDatePresenter.swift */,
+				6A3E022027B9021900529B33 /* TripPurposePresenter.swift */,
+				6A3E022227B904C300529B33 /* TripTravelPresenter.swift */,
+				6A3E022427B9058900529B33 /* TripPlanPresenter.swift */,
 			);
 			path = Trips;
 			sourceTree = "<group>";
@@ -1042,6 +1066,7 @@
 		6A7CA97027B2FA600059976F /* Trip */ = {
 			isa = PBXGroup;
 			children = (
+				6A0DA76627A1787B00A66A22 /* CreateTripController.swift */,
 				6A11054027AEA461000F9DE9 /* TripsListController.swift */,
 				6A7CA97127B2FA8E0059976F /* TripInfoController.swift */,
 				6A7CA97327B305BD0059976F /* TripSearchController.swift */,
@@ -1133,7 +1158,6 @@
 				A161264B241567A9004AD665 /* ChannelListController.swift */,
 				A161C53324507DFD0016EC0A /* UnlockRequestController.swift */,
 				38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */,
-				6A0DA76627A1787B00A66A22 /* CreateTripController.swift */,
 			);
 			path = Channels;
 			sourceTree = "<group>";
@@ -1798,9 +1822,12 @@
 				3887D5F224D59F7300AF4F62 /* ProfilePhotoAddButton.swift in Sources */,
 				A1FAF94324F5CA2C00193963 /* PhotoCell.swift in Sources */,
 				0CEA93C0242B9A380084D08E /* FirebaseConfigManager.swift in Sources */,
+				6A3E022527B9058900529B33 /* TripPlanPresenter.swift in Sources */,
 				0C91FE2324C3243900D5E0C9 /* CountryChooserPresenter.swift in Sources */,
 				380C730224951ADA00B77506 /* Data+Ext.swift in Sources */,
 				A1873F15248D412E002EFD13 /* NavigationBar.swift in Sources */,
+				6A3E021F27B8FF2E00529B33 /* TripDatePresenter.swift in Sources */,
+				6A3E022727B9528E00529B33 /* TripListPresenter.swift in Sources */,
 				A161C53424507DFD0016EC0A /* UnlockRequestController.swift in Sources */,
 				A144651E254458540077425D /* CountryChooserViewController.swift in Sources */,
 				0C1EC4782519D1E700FFEA60 /* IAPManager.swift in Sources */,
@@ -1841,6 +1868,7 @@
 				A1873F18248DA3F5002EFD13 /* GenderPresenter.swift in Sources */,
 				A18E980224635D37006878A6 /* CustomMessagesFlowLayout.swift in Sources */,
 				A15359FF240D129D00CF99DE /* ImageLabel.swift in Sources */,
+				6A3E022927B95CF000529B33 /* TripInfoPresenter.swift in Sources */,
 				3891C5BC26AF376D00278903 /* TextField.swift in Sources */,
 				DD3252CB24085A71001FEC5F /* ChatPresenter.swift in Sources */,
 				381AE74626C5A5330078E9B1 /* CircleUserImageView.swift in Sources */,
@@ -1849,6 +1877,7 @@
 				A1446523254458540077425D /* NameInputController.swift in Sources */,
 				38CD33A624890E340073AFFC /* BaseModelObject.swift in Sources */,
 				DDC7C71123F57E78002ABCD8 /* ServiceProvider.swift in Sources */,
+				6A3E022B27B979E600529B33 /* TripSearchPresenter.swift in Sources */,
 				38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */,
 				6A090C4C27AC5B6000FD0740 /* TripPreviewController.swift in Sources */,
 				DDD9F0E923FF1175002E59E9 /* ContentRegex.swift in Sources */,
@@ -1856,6 +1885,7 @@
 				385D57F027627E4300D845F6 /* Trip.swift in Sources */,
 				3881F21024FBED6900231463 /* LocationEnableController.swift in Sources */,
 				0C6E32ED2445F1E1008528FE /* CardContentBuilder.swift in Sources */,
+				6A3E022327B904C300529B33 /* TripTravelPresenter.swift in Sources */,
 				3804FAAC26C1537B0067A2BF /* MyProfileAddPhotoCollectionViewCell.swift in Sources */,
 				387EDE8024C5BE8200FCCE68 /* SmsVerifyPresenter.swift in Sources */,
 				6A0DA76727A1787B00A66A22 /* CreateTripController.swift in Sources */,
@@ -1875,6 +1905,7 @@
 				DD3252FA24085B3E001FEC5F /* GalleryImagelCollectionViewCell.swift in Sources */,
 				A14D6E48243213A100C0D39E /* ChatController.swift in Sources */,
 				A18E980A2464536F006878A6 /* AbstractCustomCell.swift in Sources */,
+				6A3E022127B9021900529B33 /* TripPurposePresenter.swift in Sources */,
 				DDB6436423F18CDF0092FA0B /* DateFormatter+Message.swift in Sources */,
 				3804FAA626BB40B90067A2BF /* ProfileController.swift in Sources */,
 				385947392528F2B700B2A6B2 /* Security.swift in Sources */,
@@ -1893,6 +1924,7 @@
 				A161264C241567A9004AD665 /* ChannelListController.swift in Sources */,
 				3804FAA426BB34F00067A2BF /* ProfileCell.swift in Sources */,
 				DDC7C70F23F57E59002ABCD8 /* UserService.swift in Sources */,
+				6A02836D27B428EA00CBBCB5 /* TripCreatePresenter.swift in Sources */,
 				A1873F1A248DA65F002EFD13 /* BirthDatePresenter.swift in Sources */,
 				0C6E32F02445F2CA008528FE /* CardTopTitleViewWithTags.swift in Sources */,
 				0C706B9A24CDD11A00162206 /* OnKbdEditorViewController.swift in Sources */,

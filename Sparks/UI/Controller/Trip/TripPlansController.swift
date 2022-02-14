@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 
 class TripPlanController: TripBaseController{
+    
+    let presenter = TripPlanPresenter()
+    
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     override var titleText: String {
         return "Plans ?"
     }
@@ -65,12 +72,18 @@ class TripPlanController: TripBaseController{
     }
     
     override func nextClicked() {
-        self.pageViewController?.switchTabToNext(parameters: nil)
+        self.presenter.save(info: self.info, plan: self.planLabel.text)
     }
 }
 
 extension TripPlanController: OnKbdEditorViewControllerDelegate{
     func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
         self.planLabel.text = text
+    }
+}
+
+extension TripPlanController: PlanView {
+    func navigate(records: [String : Any]?) {
+        self.pageViewController?.switchTabToNext(parameters: records)
     }
 }

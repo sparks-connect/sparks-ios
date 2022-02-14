@@ -8,14 +8,7 @@
 
 import UIKit
 
-protocol PageSize: AnyObject{
-    func updateHeight(height: CGFloat)
-    func create()
-    func setTitle(title: String)
-}
-
 class PageBaseController: BaseController {
-    weak var delegate: PageSize?
     var pageViewController : BasePageViewController?
     var parameters: [String: Any]? {
         didSet {

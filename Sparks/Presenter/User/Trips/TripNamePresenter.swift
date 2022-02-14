@@ -18,4 +18,8 @@ class TripNamePresenter: BasePresenter<TripNameView>, Place {
         self.placeInfo = info
         self.view?.updateLocation(text: info.place)
     }
+    
+    func save(info: TripInfo?){
+        info?.saveLocation(info: self.placeInfo)
+    }
 }

@@ -8,25 +8,24 @@
 
 import Foundation
 
+protocol PreviewConfiguration: AnyObject{
+    var data: [PreviewModel]? {get}
+    func configure(cell: PreviewCell, indexPath: IndexPath)
+}
+
 protocol PreviewView: BasePresenterView {
    func navigate()
 }
 
-class TripPreviewPresenter: BasePresenter<PreviewView> {
-    private let service = Service.trips
+class TripPreviewPresenter: BasePresenter<PreviewView>, PreviewConfiguration {
 
-    func create() {
-        self.service.create(city: "Viana, Austrailia",
-                            lat: 24.2322,
-                            lng: 46.2322,
-                            purpose: .leisure,
-                            startDate: 12331,
-                            endDate: 123231,
-                            community: .alone,
-                            plan: "I have many plans ..") { [weak self] (response) in
-            self?.handleResponse(response: response, preReloadHandler: {
-                self?.view?.navigate()
-            }, reload: false)
-        }
+    var datasource: [PreviewModel]?
+    var data: [PreviewModel]?{
+        return self.datasource
+    }
+    
+    func configure(cell: PreviewCell, indexPath: IndexPath){
+        guard let model = self.datasource?[indexPath.row] else {return}
+        cell.configure(icn: model.icon, text: model.text)
     }
 }

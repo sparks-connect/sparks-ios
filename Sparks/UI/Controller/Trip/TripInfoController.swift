@@ -12,23 +12,19 @@ import SwiftUI
 
 class TripInfoController: BaseController {
     
+    private var presenter: TripInfoPresenter!
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     private lazy var imgView: CircleImageView = {
         let img = CircleImageView()
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.backgroundColor = .red
         return img
     }()
     
-    let datasource = [
-        PreviewModel(icon: "icn-loc", text: "Vienna, Austria"),
-        PreviewModel(icon: "icn-cal", text: "10 Dec, 2021 - 14 Dec, 2021"),
-        PreviewModel(icon: "icn-purpose", text: "Leisure"),
-        PreviewModel(icon: "icn-grp", text: "With friends"),
-        PreviewModel(icon: "icn-info", text: "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum")
-    ]
-    
-    private lazy var preview: Preview = {
-        let view = Preview(data: datasource)
+    private lazy var preview: Preview<TripInfoPresenter> = {
+        let view = Preview(presenter: self.presenter)
         return view
     }()
     
@@ -67,6 +63,11 @@ class TripInfoController: BaseController {
         btn.titleLabel?.font = Font.regular.uiFont(ofSize: 14)
         return btn
     }()
+    
+    convenience init(presenter: TripInfoPresenter) {
+        self.init()
+        self.presenter = presenter
+    }
         
     override func configure() {
         super.configure()
@@ -128,7 +129,20 @@ class TripInfoController: BaseController {
             self.preview.snp.updateConstraints { make in
                 make.height.equalTo(self.preview.height+10)
             }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+
         }
     }
 }
 
+extension TripInfoController: TripInfoView {
+    func loadImage(url: URL?) {
+        self.imgView.sd_setImage(with: url, completed: nil)
+    }
+    
+    func navigate() {
+        
+    }
+}

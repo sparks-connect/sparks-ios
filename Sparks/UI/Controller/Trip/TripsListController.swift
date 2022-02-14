@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-protocol TripViewAction: AnyObject {
-    func didSelectCell(index: Int)
-}
-
 class TripsListController: BaseController {
     
+    private let presenter = TripListPresenter()
+    override func getPresenter() -> Presenter {
+        return self.presenter
+    }
+    
     private lazy var tripView: TripView = {
-        let vw = TripView(trips: [])
-        vw.delegate = self
+        let vw = TripView(presenter: self.presenter)
         return vw
     }()
     
@@ -25,6 +25,15 @@ class TripsListController: BaseController {
         super.configure()
         self.navigationItem.title = "Sparks"
         layout()
+    }
+    
+    override func rightBarButtons() -> [UIBarButtonItem] {
+        return [UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: #selector(searchClicked))]
+    }
+    
+    override func reloadView() {
+        super.reloadView()
+        self.tripView.reload()
     }
     
     private func layout(){
@@ -36,11 +45,15 @@ class TripsListController: BaseController {
             make.bottom.equalTo(-16)
         }
     }
+    
+    @objc private func searchClicked(){
+        self.present(TripSearchController(), animated: true, completion: nil)
+    }
 }
 
-extension TripsListController: TripViewAction {
-    func didSelectCell(index: Int) {
-        let controller = TripInfoController()
+extension TripsListController: TripListView {
+    func navigate(presenter: TripInfoPresenter) {
+        let controller = TripInfoController(presenter: presenter)
         controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -48,11 +61,8 @@ extension TripsListController: TripViewAction {
 
 class TripView: UIView {
 
-    private var trips = [Trip](){
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    var presenter: TripListPresenter!
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width * 0.44, height: 195)
@@ -67,16 +77,19 @@ class TripView: UIView {
         return colView
     }()
     
-    weak var delegate: TripViewAction?
     
-    init(trips: [Trip]){
+    init(presenter: TripListPresenter){
         super.init(frame: .zero)
-        self.trips = trips
+        self.presenter = presenter
         
         self.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    func reload(){
+        self.collectionView.reloadData()
     }
     
     required init?(coder: NSCoder) {
@@ -87,14 +100,15 @@ class TripView: UIView {
 
 extension TripView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return self.presenter.datasource?.count ?? 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TripCell else { return UICollectionViewCell() }
+        self.presenter.configureCell(cell: cell, indexPath: indexPath)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelectCell(index: indexPath.item)
+        self.presenter.didSelectCell(index: indexPath.item)
     }
 }
 
@@ -114,7 +128,6 @@ class TripCell: UICollectionViewCell{
         btn.backgroundColor = Color.fb.uiColor
         btn.isUserInteractionEnabled = false
         btn.setImage(UIImage(named: "calender"), for: .normal)
-        btn.setTitle("10 Dec - 14 Dec", for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.titleLabel?.font = Font.light.uiFont(ofSize: 12)
         btn.layer.cornerRadius = 12
@@ -151,7 +164,9 @@ class TripCell: UICollectionViewCell{
         btn.setTitleColor(.white, for: .normal)
         btn.isUserInteractionEnabled = false
         btn.titleLabel?.font = Font.bold.uiFont(ofSize: 12)
-        btn.setTitle("Sophia, 26", for: .normal)
+        btn.titleLabel?.lineBreakMode = .byTruncatingTail
+        btn.titleLabel?.minimumScaleFactor = 0.8
+        btn.titleLabel?.adjustsFontSizeToFitWidth = true
         btn.setImage(UIImage(named: "name-ring"), for: .normal)
         btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 0)
         btn.contentHorizontalAlignment = .left
@@ -163,7 +178,9 @@ class TripCell: UICollectionViewCell{
         btn.setTitleColor(.white, for: .normal)
         btn.isUserInteractionEnabled = false
         btn.titleLabel?.font = Font.bold.uiFont(ofSize: 12)
-        btn.setTitle("London", for: .normal)
+        btn.titleLabel?.minimumScaleFactor = 0.8
+        btn.titleLabel?.adjustsFontSizeToFitWidth = true
+        btn.titleLabel?.lineBreakMode = .byTruncatingTail
         btn.setImage(UIImage(named: "takeoff"), for: .normal)
         btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 0)
         btn.contentHorizontalAlignment = .left
@@ -175,7 +192,6 @@ class TripCell: UICollectionViewCell{
         lbl.numberOfLines = 3
         lbl.textColor = Color.description.uiColor
         lbl.font = Font.light.uiFont(ofSize: 8)
-        lbl.text = "// Lorem Ipsum is simply dummy text of the printing and typesetting industry..."
         return lbl
     }()
     
@@ -222,6 +238,14 @@ class TripCell: UICollectionViewCell{
         stackView.addArrangedSubview(location)
         stackView.addArrangedSubview(desc)
 
+    }
+    
+    func configure(url: String, date: String, name: String, location: String, desc: String){
+        imgView.sd_setImage(with: URL(string: url), completed: nil)
+        self.dateBtn.setTitle(date, for: .normal)
+        self.name.setTitle(name, for: .normal)
+        self.location.setTitle(location, for: .normal)
+        self.desc.text = desc
     }
     
     required init?(coder: NSCoder) {

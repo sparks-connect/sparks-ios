@@ -35,6 +35,7 @@ class TripNameInputController: TripBaseController {
     
     override func configure(){
         super.configure()
+        self.nextButton.isEnabled = false
         self.view.addSubview(cityLabel)
         cityLabel.snp.makeConstraints{
             $0.centerY.equalToSuperview().offset(-32)
@@ -58,6 +59,7 @@ class TripNameInputController: TripBaseController {
     }
     
     @objc override func nextClicked(){
+        self.presenter.save(info: self.info)
         self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }
@@ -65,5 +67,6 @@ class TripNameInputController: TripBaseController {
 extension TripNameInputController: TripNameView {
     func updateLocation(text: String?) {
         self.cityLabel.text = text
+        self.nextButton.isEnabled = true
     }
 }

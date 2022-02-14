@@ -37,6 +37,10 @@ class TripCriteria: BaseModelObject {
         return object
     }
     
+    func update(criteria: TripCriteria){
+        RealmUtils.save(object: criteria)
+    }
+    
     private class func randomPredicates(randomQueryInt: Int) -> [Predicate] {
         return [(Trip.CodingKeys.randomQueryInt.rawValue, .greaterThanOrEqual, randomQueryInt)]
     }

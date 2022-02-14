@@ -9,9 +9,23 @@
 import Foundation
 import UIKit
 
+protocol PageUI: AnyObject{
+    func updateHeight(height: CGFloat)
+    func create(completion:@escaping (Bool)->Void)
+    func setTitle(title: String)
+}
+
+protocol TripInfo: AnyObject{
+    func saveLocation(info: PlaceInfo?)
+    func saveDate(startDate: Int64, endDate: Int64)
+    func savePurpose(type: PurposeEnum)
+    func saveCommunity(type: TripCommunityEnum)
+    func savePlans(plan: String?) -> [PreviewModel]
+}
 
 class TripBaseController: PageBaseController {
-    
+    weak var info: TripInfo?
+    weak var delegate: PageUI?
     var titleText: String {
         return "Where you are going ?"
     }
@@ -69,6 +83,6 @@ class TripBaseController: PageBaseController {
     }
     
     @objc func nextClicked(){
-        
+        // overrides in sub class
     }
 }

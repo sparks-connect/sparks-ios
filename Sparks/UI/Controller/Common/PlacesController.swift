@@ -11,16 +11,6 @@ import Foundation
 import UIKit
 import CoreLocation
 
-struct PlaceInfo {
-    var place: String?
-    var coordinates: CLLocationCoordinate2D?
-}
-
-protocol Place: AnyObject {
-    func getLocation(info: PlaceInfo)
-}
-
-
 class PlacesController: BaseController {
     
     let presenter = PlacesPresenter()
@@ -49,6 +39,7 @@ class PlacesController: BaseController {
         searchField.clearButtonMode = .whileEditing
         searchField.textColor = .white
         searchField.font = Font.light.uiFont(ofSize: 16)
+        searchField.becomeFirstResponder()
         searchField.attributedPlaceholder = NSAttributedString(
             string: "Search your city ....",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -127,7 +118,7 @@ class PlacesController: BaseController {
         
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.leading.equalTo(searchField.snp.leading)
+            make.leading.equalTo(searchField.snp.leading).offset(-16)
             make.top.equalTo(searchContainer.snp.bottom)
             make.trailing.equalTo(closeIcon.snp.leading)
             make.height.equalTo(220)
@@ -180,8 +171,8 @@ extension PlacesController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension PlacesController: PlaceView {
-    func dismiss(info: PlaceInfo){
-        self.delegate?.getLocation(info: info)
+    func dismiss(){
+        self.presenter.sendLocation(place: self.delegate)
         self.close()
     }
 }
