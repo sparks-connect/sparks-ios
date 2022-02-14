@@ -41,25 +41,22 @@ class TripCriteria: BaseModelObject {
         RealmUtils.save(object: criteria)
     }
     
-    private class func randomPredicates(randomQueryInt: Int) -> [Predicate] {
-        return [(Trip.CodingKeys.randomQueryInt.rawValue, .greaterThanOrEqual, randomQueryInt)]
-    }
-    
-    class func predicates(startDate: Double?, randomQueryInt: Int?) -> [Predicate] {
+    class func predicates(startDate: Int64?) -> (predicates: [Predicate], sortKeys: [String]) {
         
+        let orderBy = startDate != nil ? [Trip.CodingKeys.startDate.rawValue] : [Trip.CodingKeys.randomQueryInt.rawValue]
         var predicate: [Predicate] = []
         
         if let startDate = startDate {
             predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, startDate))
         } else {
             guard let criteria = RealmUtils.fetch(TripCriteria.self).first else {
-                return randomPredicates(randomQueryInt: randomQueryInt ?? 0)
+                return ([(Trip.CodingKeys.randomQueryInt.rawValue, .greaterThanOrEqual, startDate ?? Int64.random(in: 1...1000000))], orderBy)
             }
-        
+            
             predicate.append((Trip.CodingKeys.city.rawValue, .equals, criteria.city))
             predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, criteria.startDate))
         }
         
-        return predicate
+        return (predicate, orderBy)
     }
 }
