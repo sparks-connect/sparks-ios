@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TripsService {
-    func fetch(startDate: Double?, randomQueryInt: Int?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
+    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
     func create(city: String,
                 lat: Double,
                 lng: Double,
@@ -31,14 +31,14 @@ class TripsServiceImpl: TripsService {
     }
     
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
-    func fetch(startDate: Double?, randomQueryInt: Int?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
+    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
     
-        let criteria = TripCriteria.predicates(startDate: startDate, randomQueryInt: randomQueryInt)
-        let orderBy = startDate != nil ? [Trip.CodingKeys.startDate.rawValue] : [Trip.CodingKeys.randomQueryInt.rawValue]
+        let criteria = TripCriteria.predicates(startDate: startDate)
+        
         firebase.fetchItems(type: Trip.self,
                             at: Trip.kPath,
-                            predicates: criteria,
-                            orderBy: orderBy,
+                            predicates: criteria.predicates,
+                            orderBy: criteria.sortKeys,
                             desc: true,
                             limit: limit) { response in
             
@@ -49,12 +49,7 @@ class TripsServiceImpl: TripsService {
                     return t1.startDate > t2.startDate
                 }
                 
-                var next = max?.startDate ?? 0
-                if let rand = randomQueryInt {
-                    next = Int64(rand)
-                }
-                
-                completion(.success(TripPaginatedResponse(nextStartDate: next, trips: trips)))
+                completion(.success(TripPaginatedResponse(nextStartDate: max?.startDate ?? 0, trips: trips)))
                 break
                 
             case .failure(let e):

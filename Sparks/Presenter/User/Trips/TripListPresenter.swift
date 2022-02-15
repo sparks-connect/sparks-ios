@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 protocol TripListView: BasePresenterView {
     func navigate(presenter: TripInfoPresenter)
@@ -15,22 +16,41 @@ protocol TripListView: BasePresenterView {
 class TripListPresenter: BasePresenter<TripListView> {
     private let service = Service.trips
     var datasource: [Trip]?
+    private var token: NotificationToken?
+    private var startDate: Int64?;
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
-        self.fetchTrips()
+        self.observePredicate()
     }
     
     func fetchTrips(){
-        service.fetch(startDate: nil, randomQueryInt: nil, limit: 10) {[weak self] response in
+        service.fetch(startDate: self.startDate, limit: 10) {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
                     self?.datasource = model.trips
+                    self?.startDate = model.nextStartDate
                 case .failure(_):
                     break
                 }
             }, reload: true)
+        }
+    }
+    
+    private func observePredicate() {
+        token?.invalidate()
+        token = RealmUtils.observe {[weak self] (change: RealmCollectionChange<Results<TripCriteria>>) in
+            switch change {
+            case .initial(let results):
+                self?.startDate = results.first?.startDate
+                self?.fetchTrips()
+            case .update(let results,_,_,_):
+                self?.startDate = results.first?.startDate
+                self?.fetchTrips()
+                break
+            default: break
+            }
         }
     }
     
