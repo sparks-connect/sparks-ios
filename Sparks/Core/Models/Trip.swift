@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol Tag: CaseIterable, RawRepresentable {
-    func getLabel() -> String
-}
-
 enum PurposeEnum: Int, Tag {
     case leisure = 1
     case business = 2
