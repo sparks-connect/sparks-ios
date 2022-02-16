@@ -123,5 +123,17 @@ class Trip: BaseModelObject {
         self.lng = try container.decodeIfPresent(Double.self, forKey: .lng) ?? 0
         self.randomQueryInt = try container.decodeIfPresent(Int.self, forKey: .randomQueryInt) ?? 0
     }
-    
+ 
+    var values: [String: Any] {
+       return [
+            BaseModelObject.BaseCodingKeys.uid.rawValue: self.uid,
+            Trip.CodingKeys.city.rawValue: self.city ?? "",
+            Trip.CodingKeys.startDate.rawValue: self.startDate,
+            Trip.CodingKeys.endDate.rawValue: self.endDate,
+            Trip.CodingKeys.purpose.rawValue: self.purpose,
+            Trip.CodingKeys.community.rawValue: self.community,
+            Trip.CodingKeys.plan.rawValue: self.plan ?? "",
+            Trip.CodingKeys.user.rawValue: self.user?.values ?? [:]
+        ]
+    }
 }

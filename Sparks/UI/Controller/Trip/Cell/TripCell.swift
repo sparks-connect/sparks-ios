@@ -11,6 +11,9 @@ import UIKit
 
 class TripCell: UICollectionViewCell{
     
+    private var indexPath: IndexPath!
+    var makeFavourite: ((IndexPath) -> Void)?
+    
     private lazy var imgView: UIImageView = {
         let imageVw = UIImageView()
         imageVw.translatesAutoresizingMaskIntoConstraints = false
@@ -33,12 +36,13 @@ class TripCell: UICollectionViewCell{
         return btn
     }()
     
-    private lazy var likeBtn: UIButton = {
-        let btn = UIButton(type: .custom)
+    private lazy var likeBtn: CircleButton = {
+        let btn = CircleButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.tintColor = .white
+        btn.addTarget(self, action: #selector(fav(sender:)), for: .touchUpInside)
         btn.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         btn.setImage(UIImage(named: "like"), for: .normal)
-        btn.layer.cornerRadius = 15
         return btn
     }()
     
@@ -134,15 +138,20 @@ class TripCell: UICollectionViewCell{
         stackView.addArrangedSubview(name)
         stackView.addArrangedSubview(location)
         stackView.addArrangedSubview(desc)
-        
     }
     
-    func configure(url: String, date: String, name: String, location: String, desc: String){
+    func configure(indexPath: IndexPath, url: String, date: String, name: String, location: String, desc: String, isFav: Bool = false){
         imgView.sd_setImage(with: URL(string: url), completed: nil)
+        self.indexPath = indexPath
         self.dateBtn.setTitle(date, for: .normal)
         self.name.setTitle(name, for: .normal)
         self.location.setTitle(location, for: .normal)
         self.desc.text = desc
+        self.likeBtn.setImage(isFav ? UIImage(named: "ic_heart_filled") : UIImage(named: "like"), for: .normal)
+    }
+    
+    @objc func fav(sender: Any) {
+        self.makeFavourite?(self.indexPath)
     }
     
     required init?(coder: NSCoder) {

@@ -19,6 +19,8 @@ protocol TripsService {
                 community: TripCommunityEnum,
                 plan: String?,
                 completion:@escaping(Result<String, Error>)->Void)
+    func addToFavourites(trip: Trip,
+                        completion:@escaping(Result<Any, Error>)->Void)
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
 }
 
@@ -154,13 +156,56 @@ class TripsServiceImpl: TripsService {
         }
     }
     
-    func addToFavourites(uid: String,
+    func addToFavourites(trip: Trip,
                         completion:@escaping(Result<Any, Error>)->Void) {
         
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        var favs = [[String: Any]]()
+        user.favourites.forEach { item in
+            favs.append(item.values)
+        }
+        
+        favs.append(trip.values)
+        
+        self.firebase.updateNode(path: user.path, values: [User.CodingKeys._favourites.rawValue: favs], completion: { result in
+            switch result {
+            case .success(_):
+                completion(.success(trip.uid))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        })
     }
     
     func removeFromFavourites(uid: String,
                              completion:@escaping(Result<Any, Error>)->Void) {
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
         
+        var favs = [[String: Any]]()
+        user.favourites.forEach { item in
+            if item.uid != uid {
+                favs.append(item.values)
+            }
+        }
+        
+        self.firebase.updateNode(path: user.path, values: [User.CodingKeys._favourites.rawValue: favs], completion: { result in
+            switch result {
+            case .success(_):
+                completion(.success(uid))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        })
     }
 }
