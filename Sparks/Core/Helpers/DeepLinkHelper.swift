@@ -19,7 +19,7 @@ extension URL {
 class DeepLinkHelper {
     
     struct Constants {
-        static let domain = "https://sparkschat.page.link"
+        static let domain = "https://sparks.ooo/links"
     }
     
     static func generateLink(params: [String : String], completion:@escaping (Result<String, Error>)->Void) {

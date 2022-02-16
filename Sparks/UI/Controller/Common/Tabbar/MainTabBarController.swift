@@ -23,12 +23,11 @@ class MainTabBarController: UITabBarController {
     
     private let tripListController = UINavigationController(rootViewController: TripsListController())
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
+    private let favourites = UINavigationController(rootViewController: UIViewController())
     private let settingsController = UINavigationController(rootViewController: ProfileController())
-    let tabbarView = MainTabbarView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupViewControllers()
         self.configureTabbar()
         observeChannels()
     }
@@ -42,37 +41,56 @@ class MainTabBarController: UITabBarController {
     }
     
     private func configureTabbar() {
+     
+        self.tabBar.barTintColor = Color.purple.uiColor
+        self.tabBar.tintColor = .white
+        self.tabBar.isTranslucent = false
+        
+        let trips = UITabBarItem(title: "Trips", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
+        tripListController.tabBarItem = trips
+        
+        let connections = UITabBarItem(title: "Connections", image: UIImage(named: "ic_tab_connections"), selectedImage: UIImage(named: "ic_tab_connections"))
+        channelListController.tabBarItem = connections
+        
+        let favs = UITabBarItem(title: "Favourites", image: UIImage(named: "ic_tab_favourite"), selectedImage: UIImage(named: "ic_tab_favourite"))
+        favourites.tabBarItem = favs
+        
+        let prof = UITabBarItem(title: "Profile", image: UIImage(named: "ic_profile"), selectedImage: UIImage(named: "ic_profile"))
+        settingsController.tabBarItem = prof
+        
+        self.viewControllers = [tripListController, channelListController, favourites, settingsController]
         
         self.tabBar.items?.forEach({
             $0.title = nil
         })
         
-        let backgroundImage = UIView()
-        self.view.addSubview(backgroundImage)
-        backgroundImage.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-16)
-            make.width.equalTo(320)
-            make.height.equalTo(Sizes.kHeight)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(authorizationChanged),
+                                               name: Consts.Notifications.didChangeLocationPermissions,
+                                               object: nil)
+        
+        if !LocationManager.sharedInstance.isLocationServiceEnabled() {
+            let controller = LocationEnableController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
         }
         
-        self.view.addSubview(tabbarView)
-        tabbarView.snp.makeConstraints { make in
-            make.edges.equalTo(backgroundImage.snp.edges)
+        addProfilePic()
+    }
+    
+    
+    private func addProfilePic() {
+        if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
+            let controller = ProfilePhotoAddController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
         }
-        self.view.bringSubviewToFront(tabbarView)
-        
-        backgroundImage.bringSubviewToFront(tabbarView)
-        
-        tabbarView.delegate = self
     }
     
-    private func setupViewControllers() {
-        self.viewControllers = [tripListController, settingsController]
-    }
-    
-    func move2(index: Int) {
-        tabbarView.move2(index: index)
+    @objc private func authorizationChanged(notification: Notification) {
+        main {
+            self.addProfilePic()
+        }
     }
     
     private func getPurchaseController() -> UIViewController {
@@ -103,16 +121,5 @@ class MainTabBarController: UITabBarController {
         let chatController = ChatController(channelUid: withID)
         channelListController.popToRootViewController(animated: false)
         channelListController.pushViewController(chatController, animated: false)
-    }
-}
-
-extension MainTabBarController: MainTabbarViewDelegate {
-    func didTapOnAction() {
-        //newAction()
-        createTrip()
-    }
-    
-    func didTap(at item: MainTabbarViewState) {
-        self.selectedIndex = item.rawValue
     }
 }

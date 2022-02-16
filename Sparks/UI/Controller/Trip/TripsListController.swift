@@ -54,7 +54,6 @@ class TripsListController: BaseController {
 extension TripsListController: TripListView {
     func navigate(presenter: TripInfoPresenter) {
         let controller = TripInfoController(presenter: presenter)
-        controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }
@@ -114,11 +113,9 @@ extension TripView: UICollectionViewDataSource, UICollectionViewDelegate {
 
 class TripCell: UICollectionViewCell{
     
-    private lazy var imgView: UIImageView = {
-        let imageVw = UIImageView()
+    private lazy var imgView: ImageView = {
+        let imageVw = ImageView()
         imageVw.translatesAutoresizingMaskIntoConstraints = false
-        imageVw.contentMode = .scaleAspectFill
-        imageVw.clipsToBounds = true
         return imageVw
     }()
     
@@ -241,7 +238,7 @@ class TripCell: UICollectionViewCell{
     }
     
     func configure(url: String, date: String, name: String, location: String, desc: String){
-        imgView.sd_setImage(with: URL(string: url), completed: nil)
+        imgView.setImageFromUrl(url)
         self.dateBtn.setTitle(date, for: .normal)
         self.name.setTitle(name, for: .normal)
         self.location.setTitle(location, for: .normal)

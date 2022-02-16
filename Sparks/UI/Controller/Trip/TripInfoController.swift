@@ -49,7 +49,7 @@ class TripInfoController: BaseController {
     private lazy var connectButton: PrimaryButton = {
         let btn = PrimaryButton()
         btn.setTitle("Ask to connect", for: .normal)
-        //        btn.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(askToConnectClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 22
         btn.setBackgroundColor(Color.green.uiColor, forState: .normal)
         return btn
@@ -134,6 +134,16 @@ class TripInfoController: BaseController {
             }
 
         }
+    }
+    
+    @objc func askToConnectClicked() {
+        self.connectButton.startAnimatingLoader()
+        self.presenter.askToConnect()
+    }
+    
+    override func reloadView() {
+        super.reloadView()
+        self.connectButton.stopAnimatingLoader()
     }
 }
 

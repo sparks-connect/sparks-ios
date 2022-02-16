@@ -14,13 +14,16 @@ protocol TripInfoView: BasePresenterView {
 }
 
 class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
-    var trip: Trip!
+    
+    private(set) var channelService: ChatService!
+    private(set) var trip: Trip!
     var data: [PreviewModel]?{
         return self.preparePreview()
     }
 
     convenience init(trip: Trip){
         self.init()
+        channelService = Service.chat
         self.trip = trip
     }
     
@@ -52,4 +55,17 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
         cell.configure(icn: model.icon, text: model.text)
     }
     
+    func askToConnect() {
+        guard let uid = trip.userId else {
+            self.view?.reloadView()
+            return
+        }
+        
+        channelService.connectToUser(uid) {[weak self] response in
+            self?.handleResponse(response: response, errorHandler: { error in
+                self?.view?.reloadView()
+            }, reload: true)
+        }
+    }
+
 }

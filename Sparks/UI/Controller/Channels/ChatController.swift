@@ -85,12 +85,6 @@ class ChatController: MessagesViewController, MessagesDataSource {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.chatNavBarView.removeFromSuperview()
-        AppDelegate.instance?.mainTabbar?.tabbarView.isHidden = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        AppDelegate.instance?.mainTabbar?.tabbarView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

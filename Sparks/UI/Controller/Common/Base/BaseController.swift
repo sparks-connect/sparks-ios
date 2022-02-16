@@ -49,13 +49,13 @@ class BaseController : UIViewController, BasePresenterView {
     // MARK: ====== Navigation bar ===============================
     
     func configureNavigationBar() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationController?.navigationBar.barTintColor = Color.background.uiColor
+        self.navigationController?.navigationBar.barTintColor = Color.purple.uiColor
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        self.navigationController?.navigationBar.isTranslucent = false
+        //self.navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.rightBarButtonItems = self.rightBarButtons()
         self.navigationItem.leftItemsSupplementBackButton = true
