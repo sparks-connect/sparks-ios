@@ -25,7 +25,7 @@ final class CardSwiperCell: CardCell {
             .setTopView(with: .titleViewWithTags)
             .setTopViewObject(with:
                 CardTopTitleViewWithTagsCfg(
-                    id: channel.uid, createDate: channel.createdAt.toDate, title: channel.initialMessage, tags: []
+                    id: channel.uid, createDate: channel.createdAt.toDate, title: "", tags: []
             ))
             .setBottomView(with: .userView)
             .setBottomViewObject(with: CardBottomUserViewCfg(channel: channel))

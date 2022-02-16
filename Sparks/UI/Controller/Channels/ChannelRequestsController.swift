@@ -53,7 +53,6 @@ class ChannelRequestCell: TableViewCell {
     override func configure(parameter: TableViewCellParameter?, delegate: TableViewCellDelegate?) {
         super.configure(parameter: parameter, delegate: delegate)
         self.channel = parameter as? Channel
-        self.LastMessageLabel.text = self.channel?.initialMessage
     }
 }
 
