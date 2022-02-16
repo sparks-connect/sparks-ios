@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import MapKit
 
 class TripDateController: TripBaseController {
     
@@ -107,83 +106,3 @@ extension TripDateController: TripDateView {
         self.pageViewController?.switchTabToNext(parameters: nil)
     }
 }
-
-class DateView: UIView {
-    
-    lazy var title: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.textColor = .white
-        lbl.textAlignment = .center
-        lbl.font = Font.light.uiFont(ofSize: 12)
-        return lbl
-    }()
-    
-    private lazy var imgView: UIImageView = {
-        let img = UIImageView()
-        img.translatesAutoresizingMaskIntoConstraints = false
-        return img
-    }()
-    
-    private lazy var date: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.textColor = .white
-        lbl.textAlignment = .center
-        lbl.font = Font.regular.uiFont(ofSize: 14)
-        return lbl
-    }()
-        
-    var getKey: EditKey {
-        EditKey(rawValue: self.title.text ?? "") ?? .departure
-    }
-    
-    var getDate: Int64 = 0
-    
-    init(tite: String, img: UIImage, selected: Bool){
-        super.init(frame:.zero)
-        layout()
-        
-        if selected {
-            self.title.textColor = Consts.Colors.dateSelected
-            self.date.textColor = Consts.Colors.dateSelected
-        }
-        
-        self.title.text = tite
-        self.imgView.image = img
-        self.date.text = Date().toString("dd MMM, yyyy", localeIdentifier: Locale.current.identifier)
-        self.getDate = Date().milliseconds
-    }
-    
-    func setDate(date: Date){
-        self.getDate = date.milliseconds
-        self.date.text = date.toString("dd MMM, yyyy", localeIdentifier:  Locale.current.identifier)
-    }
-        
-    func layout(){
-        self.addSubview(title)
-        title.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.centerX.equalToSuperview()
-        }
-        
-        self.addSubview(imgView)
-        imgView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(imgView.snp.width).multipliedBy(1)
-        }
-        
-        self.addSubview(date)
-        date.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-12)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-

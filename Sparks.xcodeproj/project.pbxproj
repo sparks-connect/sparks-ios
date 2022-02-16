@@ -184,6 +184,14 @@
 		6A3E022927B95CF000529B33 /* TripInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */; };
 		6A3E022B27B979E600529B33 /* TripSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */; };
 		6A5859D6278F591B00A64959 /* InstaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5859D5278F591B00A64959 /* InstaService.swift */; };
+		6A5F773827BABC610094B4ED /* TripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773727BABC610094B4ED /* TripCell.swift */; };
+		6A5F773B27BABCB90094B4ED /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773A27BABCB90094B4ED /* TripView.swift */; };
+		6A5F773D27BABD090094B4ED /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773C27BABD090094B4ED /* DateView.swift */; };
+		6A5F773F27BABD670094B4ED /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773E27BABD670094B4ED /* TagsView.swift */; };
+		6A5F774127BABDB30094B4ED /* TripTravelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F774027BABDB30094B4ED /* TripTravelController.swift */; };
+		6A5F774327BABDF60094B4ED /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F774227BABDF60094B4ED /* Preview.swift */; };
+		6A5F774527BABE1A0094B4ED /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F774427BABE1A0094B4ED /* PreviewCell.swift */; };
+		6A5F774727BABE5F0094B4ED /* SelfSizeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F774627BABE5F0094B4ED /* SelfSizeTableView.swift */; };
 		6A7CA97227B2FA8E0059976F /* TripInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97127B2FA8E0059976F /* TripInfoController.swift */; };
 		6A7CA97427B305BD0059976F /* TripSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97327B305BD0059976F /* TripSearchController.swift */; };
 		A11D4222256BF60100FF20FC /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D4221256BF60100FF20FC /* BasePageViewController.swift */; };
@@ -487,6 +495,14 @@
 		6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoPresenter.swift; sourceTree = "<group>"; };
 		6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchPresenter.swift; sourceTree = "<group>"; };
 		6A5859D5278F591B00A64959 /* InstaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstaService.swift; sourceTree = "<group>"; };
+		6A5F773727BABC610094B4ED /* TripCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCell.swift; sourceTree = "<group>"; };
+		6A5F773A27BABCB90094B4ED /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
+		6A5F773C27BABD090094B4ED /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		6A5F773E27BABD670094B4ED /* TagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsView.swift; sourceTree = "<group>"; };
+		6A5F774027BABDB30094B4ED /* TripTravelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripTravelController.swift; sourceTree = "<group>"; };
+		6A5F774227BABDF60094B4ED /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
+		6A5F774427BABE1A0094B4ED /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
+		6A5F774627BABE5F0094B4ED /* SelfSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizeTableView.swift; sourceTree = "<group>"; };
 		6A7CA97127B2FA8E0059976F /* TripInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoController.swift; sourceTree = "<group>"; };
 		6A7CA97327B305BD0059976F /* TripSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchController.swift; sourceTree = "<group>"; };
 		6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SparksNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1060,9 +1076,30 @@
 			path = Trips;
 			sourceTree = "<group>";
 		};
+		6A5F773627BABC4E0094B4ED /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				6A5F773727BABC610094B4ED /* TripCell.swift */,
+				6A5F774427BABE1A0094B4ED /* PreviewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		6A5F773927BABCA90094B4ED /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6A5F773A27BABCB90094B4ED /* TripView.swift */,
+				6A5F773C27BABD090094B4ED /* DateView.swift */,
+				6A5F774227BABDF60094B4ED /* Preview.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6A7CA97027B2FA600059976F /* Trip */ = {
 			isa = PBXGroup;
 			children = (
+				6A5F773927BABCA90094B4ED /* View */,
+				6A5F773627BABC4E0094B4ED /* Cell */,
 				6A0DA76627A1787B00A66A22 /* CreateTripController.swift */,
 				6A11054027AEA461000F9DE9 /* TripsListController.swift */,
 				6A7CA97127B2FA8E0059976F /* TripInfoController.swift */,
@@ -1071,6 +1108,7 @@
 				6A0DA76827A1CB2100A66A22 /* TripNameInputController.swift */,
 				6A0DA76A27A1D43800A66A22 /* TripDateController.swift */,
 				6A090C4727AC253C00FD0740 /* TripPurposeController.swift */,
+				6A5F774027BABDB30094B4ED /* TripTravelController.swift */,
 				6A090C4927AC52CE00FD0740 /* TripPlansController.swift */,
 				6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */,
 			);
@@ -1260,6 +1298,8 @@
 				0C8E56702427E0A80099C1CE /* RangeSlider */,
 				3881F1E424EBBE9E00231463 /* ChatNavBarView.swift */,
 				DD3252D924085B3E001FEC5F /* Label.swift */,
+				6A5F773E27BABD670094B4ED /* TagsView.swift */,
+				6A5F774627BABE5F0094B4ED /* SelfSizeTableView.swift */,
 				6A18160B27AFAACE00EADE2A /* IconLabel.swift */,
 				A15359FE240D129D00CF99DE /* ImageLabel.swift */,
 				0C1D493E24461632007C906A /* MainHeaderView.swift */,
@@ -1735,6 +1775,7 @@
 				38C6C4E92795DD3B0038BB6B /* Data+Extensions.swift in Sources */,
 				6A11053F27AE9FE4000F9DE9 /* TripPreviewPresenter.swift in Sources */,
 				0CCDCEEF248B93920052FB4E /* EditProfileViewController.swift in Sources */,
+				6A5F773827BABC610094B4ED /* TripCell.swift in Sources */,
 				A1FAF94124F5BB3500193963 /* OldProfilePresenter.swift in Sources */,
 				0C8E56692427DDC80099C1CE /* Image.swift in Sources */,
 				0C327D6D24472F0300EFE8B4 /* CardAd.swift in Sources */,
@@ -1803,6 +1844,7 @@
 				0C1D493F24461632007C906A /* MainHeaderView.swift in Sources */,
 				38C6C4E72795DD120038BB6B /* Image+Extensions.swift in Sources */,
 				0C706B9624CD79E900162206 /* UserFilterPreferenceBlockView.swift in Sources */,
+				6A5F774327BABDF60094B4ED /* Preview.swift in Sources */,
 				DD32530424085B3E001FEC5F /* BaseController.swift in Sources */,
 				384C2F942450A3F700D38C1F /* Realm.swift in Sources */,
 				382403A12473172900A696D7 /* FlexibleTextView.swift in Sources */,
@@ -1847,6 +1889,7 @@
 				A144653625448A3D0077425D /* BasePopupController.swift in Sources */,
 				6A090C4A27AC52CE00FD0740 /* TripPlansController.swift in Sources */,
 				DD3252CA24085A71001FEC5F /* ChannelsPresenter.swift in Sources */,
+				6A5F773D27BABD090094B4ED /* DateView.swift in Sources */,
 				389764C1269F73C50037E8E4 /* OnboardingPageDataSource.swift in Sources */,
 				380C73082497A07100B77506 /* Int64+Ext.swift in Sources */,
 				0CA357D024C48BB20074CBA7 /* String.swift in Sources */,
@@ -1875,6 +1918,7 @@
 				DDC7C71123F57E78002ABCD8 /* ServiceProvider.swift in Sources */,
 				6A3E022B27B979E600529B33 /* TripSearchPresenter.swift in Sources */,
 				38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */,
+				6A5F774727BABE5F0094B4ED /* SelfSizeTableView.swift in Sources */,
 				6A090C4C27AC5B6000FD0740 /* TripPreviewController.swift in Sources */,
 				DDD9F0E923FF1175002E59E9 /* ContentRegex.swift in Sources */,
 				0C8E566F2427DF940099C1CE /* RangeSlider.swift in Sources */,
@@ -1887,6 +1931,7 @@
 				6A0DA76727A1787B00A66A22 /* CreateTripController.swift in Sources */,
 				0CCDCEEA248B7CDB0052FB4E /* SettingsCell.swift in Sources */,
 				DD3252B1240852E9001FEC5F /* Bundle+Version.swift in Sources */,
+				6A5F774127BABDB30094B4ED /* TripTravelController.swift in Sources */,
 				3891C5C026B04AE900278903 /* TagsService.swift in Sources */,
 				387EDE7424C4D69400FCCE68 /* SimpleProgressView.swift in Sources */,
 				6A0DA76B27A1D43800A66A22 /* TripDateController.swift in Sources */,
@@ -1907,11 +1952,13 @@
 				385947392528F2B700B2A6B2 /* Security.swift in Sources */,
 				A14013732558A51200D9E590 /* RadarView.swift in Sources */,
 				DDB6435B23F18C250092FA0B /* Message.swift in Sources */,
+				6A5F773F27BABD670094B4ED /* TagsView.swift in Sources */,
 				A18E98002461BB62006878A6 /* AcceptCell.swift in Sources */,
 				A18D7F53246BDC66006C0CB6 /* CurrentUserDeclineCell.swift in Sources */,
 				A19357F925589336002276FB /* SearchingRadarController.swift in Sources */,
 				3891C5BE26B0483A00278903 /* ProfileTagsPresenter.swift in Sources */,
 				A144651D254458540077425D /* PhoneInputController.swift in Sources */,
+				6A5F773B27BABCB90094B4ED /* TripView.swift in Sources */,
 				0C72127B247D56F100B461D6 /* SettingsViewController.swift in Sources */,
 				DDD9F0E423F6E8BC002E59E9 /* ChatService.swift in Sources */,
 				0CCDCEED248B7E520052FB4E /* SettingsPresenter.swift in Sources */,
@@ -1940,6 +1987,7 @@
 				38D2A732276F775600A34EEC /* TripsPaginatedResponse.swift in Sources */,
 				0C1D493124460CB3007C906A /* MainTabbarView.swift in Sources */,
 				3891C5B426A9F12200278903 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
+				6A5F774527BABE1A0094B4ED /* PreviewCell.swift in Sources */,
 				DDB6434F23F18BDA0092FA0B /* ChatAPI.swift in Sources */,
 				DD43F59023F00983005EC025 /* FirebaseAPI.swift in Sources */,
 				3891C5BA26AA00F200278903 /* ProfileTagsController.swift in Sources */,
