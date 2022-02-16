@@ -27,9 +27,14 @@ protocol TripsService {
 class TripsServiceImpl: TripsService {
     
     private let firebase: FirebaseAPI
+    private var myTrips = [Trip]()
     
     init(firebase: FirebaseAPI = API.firebase) {
         self.firebase = firebase
+    }
+    
+    private func invalidateMyTrips() {
+        self.myTrips.removeAll()
     }
     
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
@@ -54,6 +59,32 @@ class TripsServiceImpl: TripsService {
                 completion(.success(TripPaginatedResponse(nextStartDate: max?.startDate ?? 0, trips: trips)))
                 break
                 
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
+    }
+    
+    // https://cloud.google.com/firestore/docs/query-data/query-cursors
+    func fetchMyTrips(completion:@escaping(Result<[Trip], Error>)->Void) {
+    
+        guard let u = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+    
+        if (!myTrips.isEmpty) {
+            completion(.success(self.myTrips))
+            return
+        }
+        
+        firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: [(Trip.CodingKeys.userId.rawValue, CompareType.equals, u.uid)]) {[weak self] response in
+            switch response {
+            case .success(let trips):
+                self?.myTrips = trips
+                completion(.success(trips))
+                break
             case .failure(let e):
                 completion(.failure(e))
                 break
@@ -93,10 +124,11 @@ class TripsServiceImpl: TripsService {
             object[Trip.CodingKeys.plan.rawValue] = plan
         }
         
-        firebase.addNode(path: Trip.kPath, values: object) { result in
+        firebase.addNode(path: Trip.kPath, values: object) {[weak self] result in
             switch result {
             case .success(let id):
                 completion(.success(id ?? ""))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
@@ -130,10 +162,11 @@ class TripsServiceImpl: TripsService {
             object[Trip.CodingKeys.plan.rawValue] = plan
         }
         
-        firebase.setNode(path: "\(Trip.kPath)/\(uid)", values: object, mergeFields: nil) { result in
+        firebase.setNode(path: "\(Trip.kPath)/\(uid)", values: object, mergeFields: nil) {[weak self] result in
             switch result {
             case .success(_):
                 completion(.success(uid))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
@@ -144,10 +177,11 @@ class TripsServiceImpl: TripsService {
     
     func delete(uid: String,
                 completion:@escaping(Result<String, Error>)->Void) {
-        firebase.deleteNode(path: "\(Trip.kPath)/\(uid)") { result in
+        firebase.deleteNode(path: "\(Trip.kPath)/\(uid)") {[weak self] result in
             switch result {
             case .success(_):
                 completion(.success(uid))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
