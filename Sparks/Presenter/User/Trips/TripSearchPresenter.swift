@@ -16,21 +16,27 @@ class TripSearchPresenter: BasePresenter<TripSearchView>, Place {
     var placeInfo: PlaceInfo?
     var startDate: Int64?
     
-    override func onFirstViewAttach() {
-        super.onFirstViewAttach()
-        self.saveCriteria()
-    }
-
     func getLocation(info: PlaceInfo) {
         self.placeInfo = info
         self.view?.updateLocation(text: info.place)
     }
     
     func saveCriteria(){
-        let criteria = TripCriteria(city: self.placeInfo?.place ?? "",
-                                    startDate: Date().milliseconds,
-                                    endDate: Date().milliseconds,
-                                    gender: Gender.female)
-        criteria.update(criteria: criteria)
+        
+        var criteria = TripCriteria.get
+        if (criteria == nil) {
+            criteria = TripCriteria(city: self.placeInfo?.place ?? "",
+                         startDate: 0,
+                         endDate: 2524593600000000,
+                         gender: Gender.both)
+            TripCriteria.create(criteria: criteria!)
+        } else {
+            criteria?.save(city: self.placeInfo?.place ?? "", startDate: 0, endDate: 2524593600000000, gender: Gender.both)
+        }
+    }
+    
+    override func willDisappear() {
+        super.willDisappear()
+        self.saveCriteria()
     }
 }
