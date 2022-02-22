@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TripsService {
-    func fetch(startDate: Double?, randomQueryInt: Int?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
+    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
     func create(city: String,
                 lat: Double,
                 lng: Double,
@@ -19,26 +19,33 @@ protocol TripsService {
                 community: TripCommunityEnum,
                 plan: String?,
                 completion:@escaping(Result<String, Error>)->Void)
+    func addToFavourites(trip: Trip,
+                        completion:@escaping(Result<Any, Error>)->Void)
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
 }
 
 class TripsServiceImpl: TripsService {
     
     private let firebase: FirebaseAPI
+    private var myTrips = [Trip]()
     
     init(firebase: FirebaseAPI = API.firebase) {
         self.firebase = firebase
     }
     
-    // https://cloud.google.com/firestore/docs/query-data/query-cursors
-    func fetch(startDate: Double?, randomQueryInt: Int?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
+    private func invalidateMyTrips() {
+        self.myTrips.removeAll()
+    }
     
-        let criteria = TripCriteria.predicates(startDate: startDate, randomQueryInt: randomQueryInt)
-        let orderBy = startDate != nil ? [Trip.CodingKeys.startDate.rawValue] : [Trip.CodingKeys.randomQueryInt.rawValue]
+    // https://cloud.google.com/firestore/docs/query-data/query-cursors
+    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
+    
+        let criteria = TripCriteria.predicates(startDate: startDate)
+        
         firebase.fetchItems(type: Trip.self,
                             at: Trip.kPath,
-                            predicates: criteria,
-                            orderBy: orderBy,
+                            predicates: criteria.predicates,
+                            orderBy: criteria.sortKeys,
                             desc: true,
                             limit: limit) { response in
             
@@ -49,14 +56,35 @@ class TripsServiceImpl: TripsService {
                     return t1.startDate > t2.startDate
                 }
                 
-                var next = max?.startDate ?? 0
-                if let rand = randomQueryInt {
-                    next = Int64(rand)
-                }
-                
-                completion(.success(TripPaginatedResponse(nextStartDate: next, trips: trips)))
+                completion(.success(TripPaginatedResponse(nextStartDate: max?.startDate ?? 0, trips: trips)))
                 break
                 
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
+    }
+    
+    // https://cloud.google.com/firestore/docs/query-data/query-cursors
+    func fetchMyTrips(completion:@escaping(Result<[Trip], Error>)->Void) {
+    
+        guard let u = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+    
+        if (!myTrips.isEmpty) {
+            completion(.success(self.myTrips))
+            return
+        }
+        
+        firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: [(Trip.CodingKeys.userId.rawValue, CompareType.equals, u.uid)]) {[weak self] response in
+            switch response {
+            case .success(let trips):
+                self?.myTrips = trips
+                completion(.success(trips))
+                break
             case .failure(let e):
                 completion(.failure(e))
                 break
@@ -96,10 +124,11 @@ class TripsServiceImpl: TripsService {
             object[Trip.CodingKeys.plan.rawValue] = plan
         }
         
-        firebase.addNode(path: Trip.kPath, values: object) { result in
+        firebase.addNode(path: Trip.kPath, values: object) {[weak self] result in
             switch result {
             case .success(let id):
                 completion(.success(id ?? ""))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
@@ -133,10 +162,11 @@ class TripsServiceImpl: TripsService {
             object[Trip.CodingKeys.plan.rawValue] = plan
         }
         
-        firebase.setNode(path: "\(Trip.kPath)/\(uid)", values: object, mergeFields: nil) { result in
+        firebase.setNode(path: "\(Trip.kPath)/\(uid)", values: object, mergeFields: nil) {[weak self] result in
             switch result {
             case .success(_):
                 completion(.success(uid))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
@@ -147,10 +177,11 @@ class TripsServiceImpl: TripsService {
     
     func delete(uid: String,
                 completion:@escaping(Result<String, Error>)->Void) {
-        firebase.deleteNode(path: "\(Trip.kPath)/\(uid)") { result in
+        firebase.deleteNode(path: "\(Trip.kPath)/\(uid)") {[weak self] result in
             switch result {
             case .success(_):
                 completion(.success(uid))
+                self?.invalidateMyTrips()
                 break
             case .failure(let e):
                 completion(.failure(e))
@@ -159,13 +190,56 @@ class TripsServiceImpl: TripsService {
         }
     }
     
-    func addToFavourites(uid: String,
+    func addToFavourites(trip: Trip,
                         completion:@escaping(Result<Any, Error>)->Void) {
         
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        var favs = [[String: Any]]()
+        user.favourites.forEach { item in
+            favs.append(item.values)
+        }
+        
+        favs.append(trip.values)
+        
+        self.firebase.updateNode(path: user.path, values: [User.CodingKeys._favourites.rawValue: favs], completion: { result in
+            switch result {
+            case .success(_):
+                completion(.success(trip.uid))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        })
     }
     
     func removeFromFavourites(uid: String,
                              completion:@escaping(Result<Any, Error>)->Void) {
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
         
+        var favs = [[String: Any]]()
+        user.favourites.forEach { item in
+            if item.uid != uid {
+                favs.append(item.values)
+            }
+        }
+        
+        self.firebase.updateNode(path: user.path, values: [User.CodingKeys._favourites.rawValue: favs], completion: { result in
+            switch result {
+            case .success(_):
+                completion(.success(uid))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        })
     }
 }

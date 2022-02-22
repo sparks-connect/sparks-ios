@@ -8,17 +8,41 @@
 
 import Foundation
 
-enum PurposeEnum: Int {
+enum PurposeEnum: Int, Tag {
     case leisure = 1
     case business = 2
+    
+    func getLabel() -> String {
+        switch self {
+        case .leisure:
+           return "Leisure"
+        case .business:
+           return "Business"
+        }
+    }
 }
 
-enum TripCommunityEnum: Int {
+enum TripCommunityEnum: Int, Tag {
     case alone = 1
     case friends = 2
     case partner = 3
     case family = 4
     case tourists = 5
+    
+    func getLabel() -> String {
+        switch self {
+        case .alone:
+            return "alone"
+        case .friends:
+            return "with friends"
+        case .partner:
+            return "with partner"
+        case .family:
+            return "with family"
+        case .tourists:
+            return "with group of tourists"
+        }
+    }
 }
 
 class Trip: BaseModelObject {
@@ -99,5 +123,17 @@ class Trip: BaseModelObject {
         self.lng = try container.decodeIfPresent(Double.self, forKey: .lng) ?? 0
         self.randomQueryInt = try container.decodeIfPresent(Int.self, forKey: .randomQueryInt) ?? 0
     }
-    
+ 
+    var values: [String: Any] {
+       return [
+            BaseModelObject.BaseCodingKeys.uid.rawValue: self.uid,
+            Trip.CodingKeys.city.rawValue: self.city ?? "",
+            Trip.CodingKeys.startDate.rawValue: self.startDate,
+            Trip.CodingKeys.endDate.rawValue: self.endDate,
+            Trip.CodingKeys.purpose.rawValue: self.purpose,
+            Trip.CodingKeys.community.rawValue: self.community,
+            Trip.CodingKeys.plan.rawValue: self.plan ?? "",
+            Trip.CodingKeys.user.rawValue: self.user?.values ?? [:]
+        ]
+    }
 }

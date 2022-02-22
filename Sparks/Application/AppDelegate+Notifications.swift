@@ -57,11 +57,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate
         if UIApplication.shared.applicationState != .active {
             switch type {
             case .spark:
-                MainNavigationController.mainTabBarController.move2(index: 0)
+                // TODO:
+                break
             case .message, .unlock:
                 if let channelID = userInfo["channelId"] as? String {
-                    MainNavigationController.mainTabBarController.move2(index: 1)
-                    MainNavigationController.mainTabBarController.presentChannel(withID: channelID)
+                    
                 }
             }
         }

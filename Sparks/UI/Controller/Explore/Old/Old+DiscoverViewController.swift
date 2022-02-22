@@ -398,9 +398,7 @@ class DiscoverViewController: BaseController, DiscoverView, UITextFieldDelegate 
 
 extension DiscoverViewController: MainHeaderViewDelegate {
     func didTapOnActionButton() {
-        let controller = MainNavigationController(rootViewController: SettingsViewController(nibName: nil, bundle: nil))
-        controller.modalPresentationStyle = .overFullScreen
-        present(controller, animated: true, completion: nil)
+        
     }
 }
 

@@ -21,7 +21,7 @@ class GalleryImageCollectionViewCell: CollectionViewCell {
         return self.delegate as? GalleryImagelCollectionViewCellDelegate
     }
     
-    @IBOutlet private(set) weak var imageView: ImageView!
+//    @IBOutlet private(set) weak var imageView: ImageView!
     @IBOutlet private(set) weak var blurContainerView: UIView!
     @IBOutlet private(set) weak var buttonSend: CircleLoadingButton!
     

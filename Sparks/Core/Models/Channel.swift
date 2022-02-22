@@ -30,7 +30,6 @@ class Channel: BaseModelObject {
     @objc dynamic private(set) var read: Bool = true
     @objc dynamic private(set) var status: Int = ChannelState.requested.rawValue
     @objc dynamic private(set) var createdBy = ""
-    @objc dynamic private(set) var initialMessage = ""
     @objc dynamic private(set) var createdAt: Int64 = 0
     @objc dynamic private(set) var senderLon: Double = 0
     @objc dynamic private(set) var senderLat: Double = 0
@@ -63,7 +62,6 @@ class Channel: BaseModelObject {
         self._sharedBy = try? container.decode([String]?.self, forKey: ._sharedBy) ?? []
         self._user_keys = try container.decode([String].self, forKey: ._user_keys)
         self._users = try container.decode([User]?.self, forKey: ._users) ?? []
-        self.initialMessage = try container.decode(String.self, forKey: .initialMessage)
         self.createdBy = try container.decode(String.self, forKey: .createdBy)
         self.createdAt = try container.decode(Int64.self, forKey: .createdAt)
         self.senderLat = (try? container.decode(Double.self, forKey: .senderLat)) ?? 0.0
@@ -101,7 +99,6 @@ class Channel: BaseModelObject {
             self.status = channel.status
             self.senderLat = channel.senderLat
             self.senderLon = channel.senderLon
-            self.initialMessage = channel.initialMessage
             self.createdAt = channel.createdAt
             self.realm?.refresh()
         }
@@ -181,7 +178,7 @@ class Channel: BaseModelObject {
     }
     
     enum CodingKeys: String, CodingKey {
-        case _sharedBy = "sharedBy", status, _users = "users", _user_keys = "user_keys", initialMessage, createdBy, createdAt, senderLat, senderLon
+        case _sharedBy = "sharedBy", status, _users = "users", _user_keys = "user_keys", createdBy, createdAt, senderLat, senderLon
     }
     
     var lastMessage: Message? {

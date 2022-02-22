@@ -47,7 +47,8 @@ class BottomSheetController: BaseController {
     private var runningAnimators = [UIViewPropertyAnimator]()
     private var animationProgress = [CGFloat]()
     private var bottomConstraint = NSLayoutConstraint()
-    
+    private var heightConstraint = NSLayoutConstraint()
+
     private lazy var panRecognizer: InstantPanGestureRecognizer = {
         let recognizer = InstantPanGestureRecognizer()
         recognizer.addTarget(self, action: #selector(popupViewPanned(recognizer:)))
@@ -70,6 +71,7 @@ class BottomSheetController: BaseController {
         view.layer.shadowOpacity = 0.1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.shadowRadius = 10
+        view.clipsToBounds = true
         return view
     }()
     
@@ -130,7 +132,8 @@ class BottomSheetController: BaseController {
         popupView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         bottomConstraint = popupView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: popupViewHeight)
         bottomConstraint.isActive = true
-        popupView.heightAnchor.constraint(equalToConstant: popupViewHeight).isActive = true
+        heightConstraint = popupView.heightAnchor.constraint(equalToConstant: popupViewHeight)
+        heightConstraint.isActive = true
         
         view.addSubview(draggerView)
         draggerView.addSubview(draggerPanView)
@@ -149,6 +152,13 @@ class BottomSheetController: BaseController {
             $0.height.equalTo(32)
         })
                 
+    }
+    
+    func updateLayout(height: CGFloat){
+        heightConstraint.constant = height
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     private func animateTransitionIfNeeded(to state: State, duration: TimeInterval) {

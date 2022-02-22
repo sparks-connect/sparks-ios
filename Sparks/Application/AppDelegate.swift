@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         LocalStore.markFirstLaunch()
+        
         API.setup()
         print("==== DOCUMENTS DIRECTORY =================================")
         print(FileUtils.getDocumentsDirectory())
@@ -75,7 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Service.chat.startObserveChannels()
         Service.auth.startGPSTracking()
-        self.setupTabbarAppearance()
         
         if mainTabbar == nil {
             mainTabbar = MainTabBarController()
@@ -101,13 +101,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private func setupTabbarAppearance() {
-        let tabBar = UITabBar.appearance()
-        tabBar.barTintColor = UIColor.clear
-        tabBar.backgroundImage = UIImage()
-        tabBar.shadowImage = UIImage()
-    }
-
     private func monitorLocationUpdatesIfNeeded(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         /** Enable this code if we decide to use `allowsBackgroundLocationUpdates`
          

@@ -11,13 +11,27 @@ import MessageKit
 import RealmSwift
 import SDWebImage
 
-enum Gender: String, Codable {
+enum Age: String, Codable, Tag {
+    case small = "18-32"
+    case mid = "32-50"
+    case elder = "From 50"
+    
+    func getLabel() -> String {
+        return self.rawValue
+    }
+}
+
+enum Gender: String, Codable, Tag {
     case male = "Male"
     case female = "Female"
     case both = "Both"
     
     static var list: [Gender] {
         [Gender.female, Gender.male, Gender.both]
+    }
+    
+    func getLabel() -> String {
+        return self.rawValue
     }
 }
 
@@ -47,7 +61,8 @@ class User: BaseModelObject, SenderType {
         instaID,
         instaToken,
         referrer = "referredBy",
-        _photos = "photos"
+        _photos = "photos",
+        _favourites = "favourites"
     }
     
     /// First name
@@ -90,7 +105,10 @@ class User: BaseModelObject, SenderType {
     private var _deviceTokens: [String]?
     
     private var _photos: [UserPhoto]?
+    private var _favourites: [Trip]?
+    
     let photos = List<UserPhoto>()
+    let favourites = List<Trip>()
     
     var dynamicLink: String? {
         set {
@@ -142,9 +160,11 @@ class User: BaseModelObject, SenderType {
         self._deviceTokens = user._deviceTokens
         self._profileTags = user._profileTags
         self._photos = user._photos
+        self._favourites = user._favourites
         self.convertPhotos()
         self.convertToken()
         self.convertTags()
+        self.convertFavourites()
     }
     
     private func convertPhotos() {
@@ -168,6 +188,13 @@ class User: BaseModelObject, SenderType {
         self.profileTags.removeAll()
         self._profileTags?.forEach({ (token) in
             self.profileTags.append(token)
+        })
+    }
+    
+    private func convertFavourites() {
+        self.favourites.removeAll()
+        self._favourites?.forEach({ (token) in
+            self.favourites.append(token)
         })
     }
     
@@ -198,9 +225,12 @@ class User: BaseModelObject, SenderType {
         self._profileTags = try container.decodeIfPresent([String]?.self, forKey: .profileTags) ?? nil
         self._deviceTokens = try container.decodeIfPresent([String]?.self, forKey: .deviceTokens) ?? nil
         self._photos = try container.decodeIfPresent([UserPhoto]?.self, forKey: ._photos) ?? []
+        self._favourites = try container.decodeIfPresent([Trip]?.self, forKey: ._favourites) ?? []
+        
         self.convertTags()
         self.convertToken()
         self.convertPhotos()
+        self.convertFavourites()
     }
     
     static func == (lhs: User, rhs: User) -> Bool {
@@ -341,6 +371,10 @@ extension User {
             tags = "No interests selected 😞"
         }
         return tags
+    }
+    
+    func isTripFavourite(uid: String) -> Bool {
+        return self.favourites.contains(where: { $0.uid == uid })
     }
 }
 

@@ -20,6 +20,7 @@ def  shared_pods
     
     # Google
     pod 'GoogleSignIn'
+   # pod 'GooglePlaces', '6.0.0'
     
     # Chat
     pod 'PubNub'
