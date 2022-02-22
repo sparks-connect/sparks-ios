@@ -235,6 +235,12 @@ class ProfileController: BaseController {
     }
     
     @objc private func profileImageTapped(sender: UITapGestureRecognizer) {
+        
+        let controller = CreateTripController()
+        controller.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+        
+        return
         mainPhotoUpload = true
         self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
     }

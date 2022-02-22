@@ -137,13 +137,7 @@ class TripInfoController: BaseController {
     }
     
     @objc func askToConnectClicked() {
-        self.connectButton.startAnimatingLoader()
         self.presenter.askToConnect()
-    }
-    
-    override func reloadView() {
-        super.reloadView()
-        self.connectButton.stopAnimatingLoader()
     }
 }
 
@@ -154,5 +148,15 @@ extension TripInfoController: TripInfoView {
     
     func navigate() {
         
+    }
+    
+    func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String) {
+        connectButton.isEnabled = enabled
+        
+        connectButton.setBackgroundColor(isConnected ? .clear : Color.green.uiColor, forState: .normal)
+        connectButton.setBorderColor(isConnected ? .clear : (enabled ? .white : .clear), forState: .normal)
+        connectButton.setTitleColor(isConnected ? Color.red.uiColor : .white, for: .normal)
+        connectButton.setTitle(text, for: .normal)
+        connectButton.setTitle(text, for: .disabled)
     }
 }

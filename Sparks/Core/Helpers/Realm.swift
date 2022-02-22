@@ -101,10 +101,24 @@ class RealmUtils {
         }
     }
     
-    @discardableResult class func observeChannelUpdates(completion:@escaping()->Void) -> NotificationToken? {
-        return observe { (change: RealmCollectionChange<Results<Channel>>) in
-                  completion()
+    @discardableResult class func observeChannels(forUser uid: String, completion:@escaping(Array<Channel>, [Int]?, [Int]?, [Int]?)->Void) -> NotificationToken? {
+        return observe() { (change: RealmCollectionChange<Results<Channel>>) in
+            switch change {
+            case .initial(let result):
+                completion(Array(result.filter({ $0.users.contains(where: { $0.uid == uid }) })),
+                           nil,
+                           nil,
+                           nil)
+                break
+            case .update(let result, let deletions, let insertions, let modifications):
+                completion(Array(result.filter({ $0.users.contains(where: { $0.uid == uid }) })),
+                           deletions,
+                           insertions,
+                           modifications)
+                break
+            default: break
             }
+        }
     }
     
     class func observeChannelRequests(completion:@escaping(Array<Channel>, [Int]?, [Int]?, [Int]?)->Void) -> NotificationToken? {
