@@ -15,10 +15,10 @@ struct OnboardingPageDataItem {
 
 struct OnboardingPageDataSource {
     static let items = [
+        OnboardingPageDataItem(title: "Find Travelmates",
+                               desc: "Explore travellers in your desired region or anywhere in the world. Connect, chat, share photos and more ..."),
         OnboardingPageDataItem(title: "Ready for new trip adventure ?",
                                desc:"Sparks allows you to connect with new people while travelling."),
-        OnboardingPageDataItem(title: "Explore travellers around the world",
-                               desc: "Checkout travellers in your desired region or anywhere in the world. Connect, share photos and more ..."),
         OnboardingPageDataItem(title: "Share your upcoming trip with others",
                                desc: "Let the people know about your next trip. You will get notified when someone wants to connect. ")
     ]
