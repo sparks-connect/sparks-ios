@@ -22,6 +22,17 @@ class CollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    lazy var checkBoxView: CircleImageView = {
+        let imageView = CircleImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "select")
+        imageView.backgroundColor = .white
+        return imageView
+    }()
+
+    
     func configure(indexPath: IndexPath, delegate: CollectionViewCellDelegate?, section: Int) {
         self.indexPath = indexPath
         self.delegate = delegate
@@ -48,6 +59,15 @@ class CollectionViewCell: UICollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        self.addSubview(checkBoxView)
+        checkBoxView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(-8)
+            make.width.equalTo(20)
+            make.height.equalTo(checkBoxView.snp.width).multipliedBy(1)
+        }
+
     }
     
     func willDisplayCell() {

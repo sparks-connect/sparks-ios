@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 protocol TripListView: BasePresenterView {
+    func showLoader(isLoading: Bool)
     func navigate(presenter: TripInfoPresenter)
 }
 
@@ -18,16 +19,24 @@ class TripListPresenter: BasePresenter<TripListView> {
     var datasource: [Trip]?
     private var token: NotificationToken?
     private var userToken: NotificationToken?
-    private var startDate: Int64?;
+    private var startDate: Int64?
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
-        self.observePredicate()
-        self.observeUserUpdate()
+       // self.observePredicate()
+       // self.observeUserUpdate()
+    }
+    
+    override func willAppear() {
+        super.willAppear()
+        self.fetchTrips()
     }
     
     func fetchTrips(){
-        service.fetch(startDate: self.startDate, limit: 10) {[weak self] response in
+        main {
+            self.view?.showLoader(isLoading: true)
+        }
+        service.fetch(startDate: self.startDate , limit: 10) {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):

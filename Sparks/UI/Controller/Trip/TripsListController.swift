@@ -23,8 +23,25 @@ class TripsListController: BaseController {
     
     override func configure() {
         super.configure()
-        self.navigationItem.title = "Sparks"
+        self.navigationController?.title = "Sparks"
         layout()
+    }
+    
+    override func didAppear() {
+        super.didAppear()
+        (self.tabBarController as? CardTabBarController)?.setTabBarHidden(false, animated: true)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(authorizationChanged),
+                                               name: Consts.Notifications.didChangeLocationPermissions,
+                                               object: nil)
+        
+//        if !LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingLocation == true {
+//             let controller = LocationEnableController()
+//             controller.modalPresentationStyle = .overFullScreen
+//             self.present(controller, animated: true, completion: nil)
+//         }
+        
+        addProfilePic()
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
@@ -33,6 +50,7 @@ class TripsListController: BaseController {
     
     override func reloadView() {
         super.reloadView()
+        self.hideAnimatedActivityIndicatorView()
         self.tripView.reload()
     }
     
@@ -49,9 +67,29 @@ class TripsListController: BaseController {
     @objc private func searchClicked(){
         self.present(TripSearchController(), animated: true, completion: nil)
     }
+    
+    private func addProfilePic() {
+//        if  User.current?.isMissingLocation == false && User.current?.isMissingPhoto == true {
+        if User.current?.isMissingPhoto == true {
+            let controller = ProfilePhotoAddController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
+//        }
+    }
+    
+    @objc private func authorizationChanged(notification: Notification) {
+        main {
+            self.addProfilePic()
+        }
+    }
 }
 
 extension TripsListController: TripListView {
+    func showLoader(isLoading: Bool) {
+        self.displayAnimatedActivityIndicatorView()
+    }
+    
     func navigate(presenter: TripInfoPresenter) {
         let controller = TripInfoController(presenter: presenter)
         self.navigationController?.pushViewController(controller, animated: true)

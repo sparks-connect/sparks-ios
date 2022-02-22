@@ -51,6 +51,24 @@ class InstaInfo: Codable {
     }
 }
 
+class InstaLongLivedToken: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case tokenType = "token_type"
+        case accessToken = "access_token"
+        case timestamp = "expires_in"
+    }
+    var tokenType: String?
+    var accessToken: String?
+    var timestamp: Int64?
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.tokenType = try container.decode(String.self, forKey: .tokenType)
+        self.accessToken = try container.decode(String.self, forKey: .accessToken)
+        self.timestamp = try container.decode(Int64.self, forKey: .timestamp)
+    }
+}
+
 class InstaData: Codable{
     var data: [InstaMedia]?
     //var paging: [String: Any]?
@@ -86,6 +104,7 @@ protocol InstaService {
     func getAuthorizationURL() -> URL
     func getAccessToken(code: String, completion: @escaping (Result<Any?, Error>) -> Void)
     func getMedia(completion: @escaping (Result<InstaData?, Error>) -> Void)
+    func saveLongLivedToken()
 }
 
 class InstaServiceImpl: InstaService {
@@ -122,6 +141,7 @@ class InstaServiceImpl: InstaService {
                     }
                     self.fireBaseApi.updateNode(path: user.path, values: [User.CodingKeys.instaID.rawValue: info.userId ?? 0,
                                                                           User.CodingKeys.instaToken.rawValue: info.accessToken ?? ""], completion: completion)
+                    self.saveLongLivedToken()
                 }else {
                     completion(.failure(CIError.unknown))
                 }
@@ -155,6 +175,28 @@ class InstaServiceImpl: InstaService {
             }
         }
         
+    }
+    
+    func saveLongLivedToken() {
+        let params: [String: Any] = ["client_id": Consts.Insta.clientID,
+                                     "client_secret": Consts.Insta.clientSecret,
+                                     "grant_type": "ig_exchange_token"]
+        
+        self.api.send(for: InstaStep.token.url(), method: .get, params: params, headers: ["Content-Type": "application/x-www-form-urlencoded"]) { result in
+            switch result {
+            case .success(let data):
+                if let rawData = data {
+                    let instaInfo = try? JSONDecoder().decode(InstaLongLivedToken.self, from: rawData)
+                    guard let user = User.current,let info = instaInfo else {
+                        return
+                    }
+                    self.fireBaseApi.updateNode(path: user.path, values: [
+                         User.CodingKeys.instaToken.rawValue: info.accessToken ?? ""], completion: nil)
+                }
+            case .failure(_): break
+            }
+        }
+
     }
     
 }

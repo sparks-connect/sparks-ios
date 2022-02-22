@@ -310,7 +310,9 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             mainPhotoUpload = false
-            self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
+            let controller = ProfilePhotoAddController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
             return
         }
         

@@ -333,6 +333,10 @@ extension User {
         self.firstName == nil || self.firstName?.isEmpty == true
     }
     
+    var isMissingLocation: Bool {
+        self.lat == 0.0 && self.lng == 0.0
+    }
+    
     var isMissingGender: Bool {
         self.gender == nil
     }

@@ -45,6 +45,27 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         return view
     }()
     
+    private lazy var backBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "back"), for: .normal)
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var titeLabel: Label = {
+        let lbl = Label()
+        lbl.textAlignment = .center
+        lbl.font =  UIFont.systemFont(ofSize: 18, weight:.bold)
+        lbl.numberOfLines = 0
+        lbl.textAlignment = .center
+        lbl.textColor = .white
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.minimumScaleFactor = 0.5
+        lbl.text = User.current?.fullName
+        return lbl
+    }()
+    
     var photoAssets = [PhotoAsset]()
     private var selectedAssets = [PhotoAsset]()
     
@@ -56,12 +77,26 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     
     override final func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.addSubview(backBtn)
+        self.view.addSubview(titeLabel)
         self.view.addSubview(collectionView)
         self.view.addSubview(exploringButton)
         
+        backBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(64)
+        }
+        
+        titeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(backBtn)
+            make.centerX.equalToSuperview()
+        }
+        
         collectionView.snp.makeConstraints({ make in
-            make.edges.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.top.equalTo(titeLabel.snp.bottom).offset(24)
         })
         
         exploringButton.snp.makeConstraints {
@@ -119,6 +154,10 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @objc private final func back(){
+        self.didSubmit = false
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension AssetSelectViewController: UICollectionViewDataSource {

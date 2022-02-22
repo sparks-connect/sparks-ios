@@ -58,7 +58,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     
     override func configure() {
         super.configure()
-        
+        self.tabBarController?.tabBar.isHidden = true
         self.popupView.backgroundColor = Color.background.uiColor
         self.popupView.addSubview(titeLabel)
         titeLabel.snp.makeConstraints { make in

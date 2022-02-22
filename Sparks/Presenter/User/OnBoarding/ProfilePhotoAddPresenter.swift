@@ -46,8 +46,8 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
                         photos.append(photo)
                     }
                 })
-            default:
-                break
+            case .failure(let error):
+                print(error.localizedDescription)
             }
             
             self?.handleResponse(response: response, preReloadHandler: {

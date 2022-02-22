@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppDelegate.updateRootViewController()
         self.setupNotification(application, completion: {(token, error) in })
         #if DEBUG
-        FLEXManager.shared.showExplorer()
+        FLEXManager.shared.hideExplorer()
         #endif
         debugPrint(Date().currentUTCDateStr)
         ApplicationDelegate.shared.application(
@@ -138,7 +138,7 @@ extension AppDelegate {
     static func updateRootViewController() {
         guard let instance = UIApplication.shared.delegate as? AppDelegate else { return }
         instance.window = UIWindow(frame: UIScreen.main.bounds)
-        instance.window?.rootViewController = instance.rootViewController
+        instance.window?.rootViewController = instance.rootViewController //UINavigationController(rootViewController: instance.rootViewController ?? MainTabBarController())
         instance.window?.makeKeyAndVisible()
 
         if User.isLoggedIn {

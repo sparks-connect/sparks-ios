@@ -39,7 +39,7 @@ class DateView: UIView {
         EditKey(rawValue: self.title.text ?? "") ?? .departure
     }
     
-    var getDate: Int64 = 0
+    var getDate: Int64 = Date().milliseconds
     
     init(tite: String, img: UIImage, selected: Bool){
         super.init(frame:.zero)

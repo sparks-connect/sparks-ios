@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import RealmSwift
+import SwiftUI
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: CardTabBarController {
     
     private var channelsToken: NotificationToken?
     private var count: Int = 0
@@ -23,12 +24,14 @@ class MainTabBarController: UITabBarController {
     
     private let tripListController = UINavigationController(rootViewController: TripsListController())
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
+    private let addTripController = UINavigationController(rootViewController: CreateTripContainer())
     private let favourites = UINavigationController(rootViewController: UIViewController())
     private let settingsController = UINavigationController(rootViewController: ProfileController())
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         self.configureTabbar()
+        // call super after configuration, otherwise App get crashed
+        super.viewDidLoad()
         observeChannels()
     }
     
@@ -41,16 +44,19 @@ class MainTabBarController: UITabBarController {
     }
     
     private func configureTabbar() {
-     
-        self.tabBar.barTintColor = Color.purple.uiColor
-        self.tabBar.tintColor = .white
-        self.tabBar.isTranslucent = false
-        
+//        self.tabBar.barTintColor = Color.purple.uiColor
+//        self.tabBar.tintColor = .white
+//        self.tabBar.isTranslucent = false
+        self.tabBarBackgroundColor = Color.buttonColor.uiColor
+        self.tintColor = .white
         let trips = UITabBarItem(title: "Trips", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
         tripListController.tabBarItem = trips
         
         let connections = UITabBarItem(title: "Connections", image: UIImage(named: "ic_tab_connections"), selectedImage: UIImage(named: "ic_tab_connections"))
         channelListController.tabBarItem = connections
+        
+        let createTrip = UITabBarItem(title: "", image: UIImage(named: "ic_plus"), selectedImage: UIImage(named: "ic_plus"))
+        addTripController.tabBarItem = createTrip
         
         let favs = UITabBarItem(title: "Favourites", image: UIImage(named: "ic_tab_favourite"), selectedImage: UIImage(named: "ic_tab_favourite"))
         favourites.tabBarItem = favs
@@ -58,24 +64,13 @@ class MainTabBarController: UITabBarController {
         let prof = UITabBarItem(title: "Profile", image: UIImage(named: "ic_profile"), selectedImage: UIImage(named: "ic_profile"))
         settingsController.tabBarItem = prof
         
-        self.viewControllers = [tripListController, channelListController, favourites, settingsController]
+        self.viewControllers = [tripListController, channelListController, addTripController, favourites, settingsController]
         
         self.tabBar.items?.forEach({
             $0.title = nil
         })
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(authorizationChanged),
-                                               name: Consts.Notifications.didChangeLocationPermissions,
-                                               object: nil)
         
-        if !LocationManager.sharedInstance.isLocationServiceEnabled() {
-            let controller = LocationEnableController()
-            controller.modalPresentationStyle = .overFullScreen
-            self.present(controller, animated: true, completion: nil)
-        }
-        
-        addProfilePic()
     }
     
     
@@ -116,10 +111,30 @@ class MainTabBarController: UITabBarController {
         self.present(controller, animated: true, completion: nil)
     }
     
-    
     func presentChannel(withID: String){
         let chatController = ChatController(channelUid: withID)
         channelListController.popToRootViewController(animated: false)
         channelListController.pushViewController(chatController, animated: false)
+    }
+}
+
+
+class CreateTripContainer: BaseController {
+    private var willAppearCalled: Bool = false
+    override func configure() {
+        super.configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !willAppearCalled  {
+            let controller = CreateTripController()
+            controller.modalPresentationStyle = .fullScreen
+            self.present(controller, animated: true, completion: nil)
+            willAppearCalled = true
+        }else{
+            self.tabBarController?.selectedIndex = 0
+            willAppearCalled = false
+        }
     }
 }

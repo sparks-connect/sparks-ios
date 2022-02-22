@@ -183,6 +183,7 @@
 		6A3E022727B9528E00529B33 /* TripListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022627B9528E00529B33 /* TripListPresenter.swift */; };
 		6A3E022927B95CF000529B33 /* TripInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */; };
 		6A3E022B27B979E600529B33 /* TripSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */; };
+		6A48A8E627BD66F200211F82 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A48A8E527BD66F200211F82 /* Activity.swift */; };
 		6A5859D6278F591B00A64959 /* InstaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5859D5278F591B00A64959 /* InstaService.swift */; };
 		6A5F773827BABC610094B4ED /* TripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773727BABC610094B4ED /* TripCell.swift */; };
 		6A5F773B27BABCB90094B4ED /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F773A27BABCB90094B4ED /* TripView.swift */; };
@@ -194,6 +195,13 @@
 		6A5F774727BABE5F0094B4ED /* SelfSizeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F774627BABE5F0094B4ED /* SelfSizeTableView.swift */; };
 		6A7CA97227B2FA8E0059976F /* TripInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97127B2FA8E0059976F /* TripInfoController.swift */; };
 		6A7CA97427B305BD0059976F /* TripSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CA97327B305BD0059976F /* TripSearchController.swift */; };
+		6AB994C527C5401C0082D544 /* CardTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994C127C5401B0082D544 /* CardTabBarController.swift */; };
+		6AB994C627C5401C0082D544 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994C227C5401B0082D544 /* IndicatorView.swift */; };
+		6AB994C727C5401C0082D544 /* CardTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994C327C5401B0082D544 /* CardTabBar.swift */; };
+		6AB994C827C5401C0082D544 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994C427C5401B0082D544 /* BarButton.swift */; };
+		6AB994CE27C5404D0082D544 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CB27C5404C0082D544 /* UIColor+Additions.swift */; };
+		6AB994CF27C5404D0082D544 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CC27C5404D0082D544 /* UIView+AutoLayout.swift */; };
+		6AB994D027C5404D0082D544 /* CGPoint+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CD27C5404D0082D544 /* CGPoint+Distance.swift */; };
 		A11D4222256BF60100FF20FC /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D4221256BF60100FF20FC /* BasePageViewController.swift */; };
 		A12A8ED624FF12CD00DB8912 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12A8ED524FF12CD00DB8912 /* AsyncOperation.swift */; };
 		A14013732558A51200D9E590 /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14013722558A51200D9E590 /* RadarView.swift */; };
@@ -494,6 +502,7 @@
 		6A3E022627B9528E00529B33 /* TripListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripListPresenter.swift; sourceTree = "<group>"; };
 		6A3E022827B95CEF00529B33 /* TripInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoPresenter.swift; sourceTree = "<group>"; };
 		6A3E022A27B979E600529B33 /* TripSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchPresenter.swift; sourceTree = "<group>"; };
+		6A48A8E527BD66F200211F82 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		6A5859D5278F591B00A64959 /* InstaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstaService.swift; sourceTree = "<group>"; };
 		6A5F773727BABC610094B4ED /* TripCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCell.swift; sourceTree = "<group>"; };
 		6A5F773A27BABCB90094B4ED /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
@@ -505,6 +514,13 @@
 		6A5F774627BABE5F0094B4ED /* SelfSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizeTableView.swift; sourceTree = "<group>"; };
 		6A7CA97127B2FA8E0059976F /* TripInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripInfoController.swift; sourceTree = "<group>"; };
 		6A7CA97327B305BD0059976F /* TripSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripSearchController.swift; sourceTree = "<group>"; };
+		6AB994C127C5401B0082D544 /* CardTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTabBarController.swift; sourceTree = "<group>"; };
+		6AB994C227C5401B0082D544 /* IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
+		6AB994C327C5401B0082D544 /* CardTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTabBar.swift; sourceTree = "<group>"; };
+		6AB994C427C5401B0082D544 /* BarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
+		6AB994CB27C5404C0082D544 /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
+		6AB994CC27C5404D0082D544 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
+		6AB994CD27C5404D0082D544 /* CGPoint+Distance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Distance.swift"; sourceTree = "<group>"; };
 		6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SparksNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86834E812D7C8D422FFBD688 /* Pods-appwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appwork.release.xcconfig"; path = "Target Support Files/Pods-appwork/Pods-appwork.release.xcconfig"; sourceTree = "<group>"; };
 		91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sparks.adhoc.xcconfig"; path = "Target Support Files/Pods-Sparks/Pods-Sparks.adhoc.xcconfig"; sourceTree = "<group>"; };
@@ -822,6 +838,7 @@
 			isa = PBXGroup;
 			children = (
 				38291E182451AECB003D467B /* UITableView.swift */,
+				6A48A8E527BD66F200211F82 /* Activity.swift */,
 				A18D7F54246C1EC3006C0CB6 /* MessagesCollectionView.swift */,
 				382403C22473183600A696D7 /* UIFont+Extensions.swift */,
 				0CED1827248D342000432E58 /* UIViewController.swift */,
@@ -832,6 +849,9 @@
 				38C6C4EC2795E4920038BB6B /* Array+Extensions.swift */,
 				38C6C4EE2795E4BF0038BB6B /* String+Extensions.swift */,
 				38C6C4F02795E4EA0038BB6B /* DateFormatter+Extensions.swift */,
+				6AB994CD27C5404D0082D544 /* CGPoint+Distance.swift */,
+				6AB994CB27C5404C0082D544 /* UIColor+Additions.swift */,
+				6AB994CC27C5404D0082D544 /* UIView+AutoLayout.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1115,6 +1135,17 @@
 			path = Trip;
 			sourceTree = "<group>";
 		};
+		6AB994C027C540070082D544 /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				6AB994C427C5401B0082D544 /* BarButton.swift */,
+				6AB994C327C5401B0082D544 /* CardTabBar.swift */,
+				6AB994C127C5401B0082D544 /* CardTabBarController.swift */,
+				6AB994C227C5401B0082D544 /* IndicatorView.swift */,
+			);
+			path = Tabbar;
+			sourceTree = "<group>";
+		};
 		A11D425A256C003B00FF20FC /* pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -1292,6 +1323,7 @@
 		DD3252D824085B3E001FEC5F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6AB994C027C540070082D544 /* Tabbar */,
 				3891C5B226A9F10200278903 /* TagCollectionView */,
 				DD3252E024085B3E001FEC5F /* Cell */,
 				0C6E32E52445EDA0008528FE /* Card */,
@@ -1773,6 +1805,7 @@
 			files = (
 				6A32867527739D76000819AD /* SocialInputPresenter.swift in Sources */,
 				38C6C4E92795DD3B0038BB6B /* Data+Extensions.swift in Sources */,
+				6AB994C527C5401C0082D544 /* CardTabBarController.swift in Sources */,
 				6A11053F27AE9FE4000F9DE9 /* TripPreviewPresenter.swift in Sources */,
 				0CCDCEEF248B93920052FB4E /* EditProfileViewController.swift in Sources */,
 				6A5F773827BABC610094B4ED /* TripCell.swift in Sources */,
@@ -1785,6 +1818,7 @@
 				6A0DA76D27A1D50B00A66A22 /* TripBaseController.swift in Sources */,
 				DDB6434C23F18AFB0092FA0B /* APIProvider.swift in Sources */,
 				38F057EC26DA9497000E9781 /* ChannelRequestsPresenter.swift in Sources */,
+				6AB994D027C5404D0082D544 /* CGPoint+Distance.swift in Sources */,
 				A14465392544E6750077425D /* ReferralController.swift in Sources */,
 				A1F92FC72449F80000B32F7B /* RecipientRequestCell.swift in Sources */,
 				6A18160C27AFAACE00EADE2A /* IconLabel.swift in Sources */,
@@ -1793,6 +1827,7 @@
 				A1E25EED256BE43200D30CBA /* NewMessagePageViewController.swift in Sources */,
 				38C6C4E32795DBFB0038BB6B /* PHAsset+Extentions.swift in Sources */,
 				0CED1826248D303800432E58 /* ImageCropperUtil.swift in Sources */,
+				6A48A8E627BD66F200211F82 /* Activity.swift in Sources */,
 				0C327D7324472F2700EFE8B4 /* CardTimer.swift in Sources */,
 				A144651A254458540077425D /* BirthDateController.swift in Sources */,
 				DD3255B8240EBE58001FEC5F /* LocationManager.swift in Sources */,
@@ -1829,6 +1864,7 @@
 				6A11054127AEA461000F9DE9 /* TripsListController.swift in Sources */,
 				380C730024951ABA00B77506 /* UIImage+Ext.swift in Sources */,
 				0C6E32F62445F3C3008528FE /* CardBottomTitleView.swift in Sources */,
+				6AB994C727C5401C0082D544 /* CardTabBar.swift in Sources */,
 				0CED1828248D342000432E58 /* UIViewController.swift in Sources */,
 				3881F1E524EBBE9E00231463 /* ChatNavBarView.swift in Sources */,
 				A1C8F8A224C694DC00EB067B /* ActionButton.swift in Sources */,
@@ -1857,6 +1893,7 @@
 				DD32530224085B3E001FEC5F /* Button.swift in Sources */,
 				385947012528EFC700B2A6B2 /* DeepLinkHelper.swift in Sources */,
 				387EDE7E24C5B4C000FCCE68 /* OtpInput.swift in Sources */,
+				6AB994C827C5401C0082D544 /* BarButton.swift in Sources */,
 				3887D5F224D59F7300AF4F62 /* ProfilePhotoAddButton.swift in Sources */,
 				A1FAF94324F5CA2C00193963 /* PhotoCell.swift in Sources */,
 				0CEA93C0242B9A380084D08E /* FirebaseConfigManager.swift in Sources */,
@@ -1871,6 +1908,7 @@
 				0C1EC4782519D1E700FFEA60 /* IAPManager.swift in Sources */,
 				3848B95424238D91009EB035 /* ConnectUserResponse.swift in Sources */,
 				A12A8ED624FF12CD00DB8912 /* AsyncOperation.swift in Sources */,
+				6AB994CE27C5404D0082D544 /* UIColor+Additions.swift in Sources */,
 				0C1EC47D2519D49200FFEA60 /* SparkProductsManager.swift in Sources */,
 				DD7CD7EB24129D4F00F7F666 /* JSONSerialization+Ext.swift in Sources */,
 				A1FCD48525608F0A0074223E /* RadialGradientLayer.swift in Sources */,
@@ -1907,12 +1945,14 @@
 				A1873F18248DA3F5002EFD13 /* GenderPresenter.swift in Sources */,
 				A18E980224635D37006878A6 /* CustomMessagesFlowLayout.swift in Sources */,
 				A15359FF240D129D00CF99DE /* ImageLabel.swift in Sources */,
+				6AB994CF27C5404D0082D544 /* UIView+AutoLayout.swift in Sources */,
 				6A3E022927B95CF000529B33 /* TripInfoPresenter.swift in Sources */,
 				3891C5BC26AF376D00278903 /* TextField.swift in Sources */,
 				DD3252CB24085A71001FEC5F /* ChatPresenter.swift in Sources */,
 				381AE74626C5A5330078E9B1 /* CircleUserImageView.swift in Sources */,
 				A1C634F5247D662F00D8FC53 /* NewMessagePresenter.swift in Sources */,
 				A144651B254458540077425D /* OnboardingPageViewController.swift in Sources */,
+				6AB994C627C5401C0082D544 /* IndicatorView.swift in Sources */,
 				A1446523254458540077425D /* NameInputController.swift in Sources */,
 				38CD33A624890E340073AFFC /* BaseModelObject.swift in Sources */,
 				DDC7C71123F57E78002ABCD8 /* ServiceProvider.swift in Sources */,
