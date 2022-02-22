@@ -62,7 +62,7 @@ class ChatServiceImpl: ChatService {
                 debugPrint("FAILED TO OBSERVE CHANNELS - \(e)")
                 break
             case .success(let channels):
-                self?.merge(firebaseChannels: channels)
+                self?.merge(firebaseChannels: channels.1)
                 break
             }
         }

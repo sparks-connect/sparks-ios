@@ -9,6 +9,6 @@
 import Foundation
 
 struct TripPaginatedResponse {
-    var nextStartDate: Int64
+    var lastItem: Any?
     var trips: [Trip]
 }

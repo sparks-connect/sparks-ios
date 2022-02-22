@@ -35,15 +35,16 @@ protocol FirebaseAPI: AnyObject {
     func fetchNode(at path: String, completion: @escaping (Result<[String: Any]?, Error>) -> Void)
     func fetchNode<T: Codable>(type: T.Type, at collection: String, uid: String, completion: @escaping (Result<T?, Error>) -> Void)
     func observe<T: Codable>(type: T.Type, at collection: String, uid: String, completion: @escaping (Result<T?, Error>) -> Void) -> String
-    func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void)
+    func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<(Any?,[T]), Error>) -> Void)
     func fetchItems<T: Codable>(type: T.Type,
                                 at path: String,
                                 predicates: [Predicate],
                                 orderBy: [String]?,
                                 desc: Bool?,
                                 limit: Int?,
-                                completion: @escaping (Result<[T], Error>) -> Void)
-    func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) -> String
+                                startAfter: Any?,
+                                completion: @escaping (Result<(Any?,[T]), Error>) -> Void)
+    func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<(Any?, [T]), Error>) -> Void) -> String
     func setNode(path: String, values: [String: Any], mergeFields fields:[Any]?, completion: @escaping (Result<Any?, Error>) -> Void)
     func addNode(path: String, values: [String: Any], completion: @escaping (Result<String?, Error>) -> Void)
     func updateNode(path: String, values: [String: Any], completion: ((Result<Any?, Error>) -> Void)?)
@@ -75,7 +76,7 @@ fileprivate typealias AppleSignInResult = (Result<Any?, Error>) -> Void
 
 /// Provides easy wrapped access to Firestore API
 class FirebaseAPIImpl: NSObject, FirebaseAPI {
- 
+    
     private let database = Firestore.firestore()
     private lazy var listeners = [String : ListenerRegistration]()
     private var userObserveIdent: String?
@@ -191,8 +192,8 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
         return Timestamp(seconds: Int64(millis/1000), nanoseconds: 0)
     }
 
-    func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) {
-        fetchItems(type: type, at: path, predicates: predicates, orderBy: nil, desc: nil, limit: nil, completion: completion)
+    func fetchItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<(Any?,[T]), Error>) -> Void) {
+        fetchItems(type: type, at: path, predicates: predicates, orderBy: nil, desc: nil, limit: nil, startAfter: nil, completion: completion)
     }
     
     func fetchItems<T: Codable>(type: T.Type,
@@ -201,7 +202,8 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
                                 orderBy: [String]?,
                                 desc: Bool?,
                                 limit: Int?,
-                                completion: @escaping (Result<[T], Error>) -> Void) {
+                                startAfter: Any?,
+                                completion: @escaping (Result<(Any?,[T]), Error>) -> Void) {
 
         var ref: Query!
         if let order = orderBy {
@@ -213,6 +215,10 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
             
         } else {
             ref = database.collection(path)
+        }
+        
+        if let start = startAfter as? DocumentSnapshot {
+            ref.start(afterDocument: start)
         }
         
         if let limit = limit {
@@ -229,14 +235,14 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
             predicates.forEach { predicate in
                 ref = self.getQueryObj(for: ref, predicate: predicate)
             }
-
+            
             ref.getDocuments { [weak self] (snap, error) in
                 self?.process(snap: snap, error: error, completion: completion)
             }
         }
     }
 
-    func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<[T], Error>) -> Void) -> String {
+    func observeItems<T: Codable>(type: T.Type, at path: String, predicates: [Predicate], completion: @escaping (Result<(Any?,[T]), Error>) -> Void) -> String {
 
         let ref = database.collection(path)
 
@@ -309,10 +315,11 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
         }
     }
     
-    private func process<T: Codable>(snap: QuerySnapshot?, error: Error?, completion: @escaping (Result<[T], Error>) -> Void) {
+    private func process<T: Codable>(snap: QuerySnapshot?, error: Error?, completion: @escaping (Result<(Any?, [T]), Error>) -> Void) {
         if let e = error {
             completion(.failure(e))
         } else {
+            
             var resp = [T]()
             for document in snap?.documents ?? [] {
              var doc = document.data()
@@ -320,7 +327,7 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
                 guard let object = JSONDecoder.decode(T.self, from: doc) else { continue }
                 resp.append(object)
             }
-            completion(.success(resp))
+            completion(.success((snap?.documents.last, resp)))
         }
     }
 

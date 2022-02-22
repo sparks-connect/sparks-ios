@@ -43,6 +43,7 @@ class PlacesPresenter: BasePresenter<PlaceView>, GMSAutocompleteFetcherDelegate 
         // Create the fetcher.
         fetcher = GMSAutocompleteFetcher(filter: filter)
         fetcher?.delegate = self
+        
         fetcher?.provide(token)
     }
     
