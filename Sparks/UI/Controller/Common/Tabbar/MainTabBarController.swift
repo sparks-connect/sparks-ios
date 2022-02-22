@@ -123,6 +123,7 @@ class CreateTripContainer: BaseController {
     private var willAppearCalled: Bool = false
     override func configure() {
         super.configure()
+        self.view.backgroundColor = .clear
     }
     
     override func viewWillAppear(_ animated: Bool) {

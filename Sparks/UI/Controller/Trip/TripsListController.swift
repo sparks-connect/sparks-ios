@@ -23,7 +23,7 @@ class TripsListController: BaseController {
     
     override func configure() {
         super.configure()
-        self.navigationController?.title = "Sparks"
+        self.navigationItem.title = "Sparks"
         layout()
     }
     

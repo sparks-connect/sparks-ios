@@ -38,12 +38,13 @@ class TripCriteria: BaseModelObject {
         RealmUtils.save(object: criteria)
     }
     
-    func save(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both){
+    func save(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both, age: Age = .small){
         try? self.realm?.write {
             self.city = city
             self.startDate = startDate
             self.endDate = endDate
             self.gender = gender.rawValue
+            self.age = age.rawValue
         }
     }
     
