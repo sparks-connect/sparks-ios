@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         LocalStore.markFirstLaunch()
-        
+        //TripCriteria.reset()
         API.setup()
         print("==== DOCUMENTS DIRECTORY =================================")
         print(FileUtils.getDocumentsDirectory())

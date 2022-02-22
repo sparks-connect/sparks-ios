@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TripsService {
-    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
+    func fetch(limit: Int, lastItem: Any?, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void)
     func create(city: String,
                 lat: Double,
                 lng: Double,
@@ -38,25 +38,23 @@ class TripsServiceImpl: TripsService {
     }
     
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
-    func fetch(startDate: Int64?, limit: Int, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
+    func fetch(limit: Int, lastItem: Any?, completion:@escaping(Result<TripPaginatedResponse, Error>)->Void) {
     
-        let criteria = TripCriteria.predicates(startDate: startDate)
+        let criteria = TripCriteria.get
+        let predicates = criteria?.predicates() ?? TripCriteria.empty()
         
         firebase.fetchItems(type: Trip.self,
                             at: Trip.kPath,
-                            predicates: criteria.predicates,
-                            orderBy: criteria.sortKeys,
+                            predicates: predicates.predicates,
+                            orderBy: predicates.sortKeys,
                             desc: true,
-                            limit: limit) { response in
+                            limit: limit,
+                            startAfter: lastItem) {[weak self] response in
             
             switch response {
             case .success(let trips):
-                
-                let max = trips.max { t1, t2 in
-                    return t1.startDate > t2.startDate
-                }
-                
-                completion(.success(TripPaginatedResponse(nextStartDate: max?.startDate ?? 0, trips: trips)))
+                let result = self?.filterLocallyIfNeeded(criteria: criteria, trips: trips.1) ?? []
+                completion(.success(TripPaginatedResponse(lastItem: trips.0, trips: result)))
                 break
                 
             case .failure(let e):
@@ -64,6 +62,23 @@ class TripsServiceImpl: TripsService {
                 break
             }
         }
+    }
+    
+    private func filterLocallyIfNeeded(criteria: TripCriteria?, trips: [Trip]) -> [Trip] {
+        guard let criteria = criteria else {
+            return trips.shuffled()
+        }
+        
+        var result = [Trip]()
+        trips.forEach { trip in
+            let matchesEndDate = trip.endDate < criteria.endDate
+            let matchesCity = criteria.city.isEmpty || trip.city == criteria.city
+            let matchesGender = (criteria.gender == Gender.both.rawValue || trip.user?.gender == nil) || trip.user?.gender == criteria.gender
+            if (matchesEndDate && matchesCity && matchesGender) {
+                result.append(trip)
+            }
+        }
+        return result
     }
     
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
@@ -82,8 +97,8 @@ class TripsServiceImpl: TripsService {
         firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: [(Trip.CodingKeys.userId.rawValue, CompareType.equals, u.uid)]) {[weak self] response in
             switch response {
             case .success(let trips):
-                self?.myTrips = trips
-                completion(.success(trips))
+                self?.myTrips = trips.1
+                completion(.success(trips.1))
                 break
             case .failure(let e):
                 completion(.failure(e))

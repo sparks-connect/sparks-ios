@@ -7,15 +7,18 @@
 //
 
 import Foundation
+import RealmSwift
 
 protocol TripInfoView: BasePresenterView {
     func loadImage(url: URL?)
+    func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String)
     func navigate()
 }
 
 class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     
     private(set) var channelService: ChatService!
+    private var token: NotificationToken?
     private(set) var trip: Trip!
     var data: [PreviewModel]?{
         return self.preparePreview()
@@ -29,8 +32,37 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
+        self.view?.updateConnectButtonState(enabled: false, isConnected: false, text: "Loading ...")
         let url = URL(string: self.trip.user?.photoUrl ?? "")
         self.view?.loadImage(url: url)
+        self.observeChannels()
+    }
+    
+    func observeChannels() {
+        token = RealmUtils.observeChannels(forUser: self.trip!.userId!, completion: { channels, _, _, _ in
+            main {
+                if let first = channels.first {
+                    switch first.statusEnum {
+                    case .accepted:
+                        self.view?.updateConnectButtonState(enabled: true, isConnected: true, text: "Unfollow")
+                        break;
+                    case .requested:
+                        if first.createdBy == User.current?.uid {
+                            self.view?.updateConnectButtonState(enabled: false, isConnected: false, text: "Sent")
+                        } else {
+                            self.view?.updateConnectButtonState(enabled: true, isConnected: false, text: "Accept")
+                        }
+                        
+                        break;
+                    default:
+                        self.view?.updateConnectButtonState(enabled: true, isConnected: false, text: "Follow")
+                        break
+                    }
+                } else {
+                    self.view?.updateConnectButtonState(enabled: true, isConnected: false, text: "Follow")
+                }
+            }
+        })
     }
     
     func preparePreview() -> [PreviewModel] {
@@ -61,6 +93,7 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
             return
         }
         
+        self.view?.updateConnectButtonState(enabled: false, isConnected: false, text: "Sent")
         channelService.connectToUser(uid) {[weak self] response in
             self?.handleResponse(response: response, errorHandler: { error in
                 self?.view?.reloadView()
@@ -68,4 +101,7 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
         }
     }
 
+    deinit {
+        token?.invalidate()
+    }
 }

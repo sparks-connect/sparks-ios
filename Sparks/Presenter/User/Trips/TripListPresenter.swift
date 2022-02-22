@@ -19,29 +19,30 @@ class TripListPresenter: BasePresenter<TripListView> {
     var datasource: [Trip]?
     private var token: NotificationToken?
     private var userToken: NotificationToken?
-    private var startDate: Int64?
+    private var lastItem: Any?
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
-       // self.observePredicate()
-       // self.observeUserUpdate()
+        self.observePredicate()
+        self.observeUserUpdate()
     }
     
     override func willAppear() {
         super.willAppear()
-        self.fetchTrips()
+        if TripCriteria.get == nil {
+            self.fetchTrips()
+        }
     }
     
     func fetchTrips(){
-        main {
-            self.view?.showLoader(isLoading: true)
-        }
-        service.fetch(startDate: self.startDate , limit: 10) {[weak self] response in
+        self.view?.showLoader(isLoading: true)
+
+        service.fetch(limit: 10, lastItem: lastItem) {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
-                    self?.datasource = model.trips
-                    self?.startDate = model.nextStartDate
+                    self?.datasource = model.trips // TODO: Vishal, instead of setting this, we will need to append those items because of paging.
+                    self?.lastItem = model.lastItem
                 case .failure(_):
                     break
                 }
@@ -52,15 +53,15 @@ class TripListPresenter: BasePresenter<TripListView> {
     private func observePredicate() {
         token?.invalidate()
         token = RealmUtils.observe {[weak self] (change: RealmCollectionChange<Results<TripCriteria>>) in
-            switch change {
-            case .initial(let results):
-                self?.startDate = results.first?.startDate
-                self?.fetchTrips()
-            case .update(let results,_,_,_):
-                self?.startDate = results.first?.startDate
-                self?.fetchTrips()
-                break
-            default: break
+            main {
+                switch change {
+                case .initial(_):
+                    self?.fetchTrips()
+                case .update(_,_,_,_):
+                    self?.fetchTrips()
+                    break
+                default: break
+                }
             }
         }
     }

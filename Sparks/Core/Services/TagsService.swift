@@ -55,7 +55,7 @@ class TagsServiceImpl: TagsService {
                 RealmUtils.fetch(ProfileTag.self).forEach { tag in
                     RealmUtils.delete(object: tag)
                 }
-                res.forEach { tag in
+                res.1.forEach { tag in
                     RealmUtils.save(object: tag)
                 }
                 

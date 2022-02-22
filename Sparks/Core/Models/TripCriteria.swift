@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class TripCriteria: BaseModelObject {
     @objc dynamic private(set) var city: String = ""
@@ -33,32 +34,39 @@ class TripCriteria: BaseModelObject {
         try super.init(from: decoder)
     }
     
-    class func defaultCriteria() -> TripCriteria {
-        let object = TripCriteria()
-        object.uid = UUID().uuidString
-        return object
-    }
-    
-    func update(criteria: TripCriteria){
+    class func create(criteria: TripCriteria){
         RealmUtils.save(object: criteria)
     }
     
-    class func predicates(startDate: Int64?) -> (predicates: [Predicate], sortKeys: [String]) {
-        
-        let orderBy = startDate != nil ? [Trip.CodingKeys.startDate.rawValue] : [Trip.CodingKeys.randomQueryInt.rawValue]
-        var predicate: [Predicate] = []
-        
-        if let startDate = startDate {
-            predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, startDate))
-        } else {
-            guard let criteria = RealmUtils.fetch(TripCriteria.self).first else {
-                return ([(Trip.CodingKeys.randomQueryInt.rawValue, .greaterThanOrEqual, startDate ?? Int64.random(in: 1...1000000))], orderBy)
-            }
-            
-            predicate.append((Trip.CodingKeys.city.rawValue, .equals, criteria.city))
-            predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, criteria.startDate))
+    func save(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both){
+        try? self.realm?.write {
+            self.city = city
+            self.startDate = startDate
+            self.endDate = endDate
+            self.gender = gender.rawValue
         }
-        
-        return (predicate, orderBy)
+    }
+    
+    class func reset() {
+        if let criteria = TripCriteria.get, !criteria.isInvalidated {
+            RealmUtils.delete(object: criteria)
+        }
+    }
+    
+    class var get: TripCriteria? {
+        RealmUtils.fetch(TripCriteria.self).first
+    }
+    
+    class func empty() -> (predicates: [Predicate], sortKeys: [String]) {
+        return ([], [Trip.CodingKeys.randomQueryInt.rawValue])
+    }
+    
+    func predicates() -> (predicates: [Predicate], sortKeys: [String]) {
+        var predicate: [Predicate] = []
+        if !city.isEmpty {
+            predicate.append((Trip.CodingKeys.city.rawValue, .equals, self.city))
+        }
+        predicate.append((Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, self.startDate))
+        return (predicate, [Trip.CodingKeys.startDate.rawValue])
     }
 }

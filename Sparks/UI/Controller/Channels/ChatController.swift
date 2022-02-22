@@ -308,10 +308,10 @@ class ChatController: MessagesViewController, MessagesDataSource {
         return nil
     }
  
-    private var displays = false
+    private var displayed = false
     private func displayAcceptRejectAlertIfNeeeded() {
         guard let channel = self.presenter.channel else { return }
-        if !channel.isAccepted {
+        if !channel.isAccepted && !displayed {
             
             let user = channel.otherUsers.first?.displayName ?? ""
             let message = "Click 'Accept' to start chat or click 'Decline' to discard the request. \nYou won't be able to see each others photos until you both agree on unlock."
@@ -326,7 +326,7 @@ class ChatController: MessagesViewController, MessagesDataSource {
             
             controller.addAction(acceptButton)
             controller.addAction(rejectButton)
-            displays = true
+            self.displayed = true
             self.present(controller, animated: true, completion: nil)
         }
     }

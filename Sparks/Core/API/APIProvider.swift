@@ -22,8 +22,10 @@ class API {
     private init() {}
 
     class func setup() {
+        UserDefaults.standard.set(["en_US"], forKey: "AppleLanguages")
         Realm.Configuration.defaultConfiguration.deleteRealmIfMigrationNeeded = true
         GMSPlacesClient.provideAPIKey("AIzaSyDgFqRIsnj22oMHuOCenbqhJ7LaTDAC9vg")
+        
         FirebaseAPIImpl.setup()
         instance.firebase = FirebaseAPIImpl()
         instance.http = HttpAPIImpl()
