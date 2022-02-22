@@ -45,6 +45,12 @@ class TripCriteria: BaseModelObject {
         }
     }
     
+    class func reset() {
+        if let criteria = TripCriteria.get, !criteria.isInvalidated {
+            RealmUtils.delete(object: criteria)
+        }
+    }
+    
     class var get: TripCriteria? {
         RealmUtils.fetch(TripCriteria.self).first
     }

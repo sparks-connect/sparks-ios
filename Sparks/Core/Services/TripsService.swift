@@ -66,7 +66,7 @@ class TripsServiceImpl: TripsService {
     
     private func filterLocallyIfNeeded(criteria: TripCriteria?, trips: [Trip]) -> [Trip] {
         guard let criteria = criteria else {
-            return trips
+            return trips.shuffled()
         }
         
         var result = [Trip]()
