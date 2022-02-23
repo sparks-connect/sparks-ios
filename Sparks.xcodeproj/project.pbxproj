@@ -143,6 +143,7 @@
 		3891C5C326B2E15E00278903 /* PurchaseOptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891C5C226B2E15E00278903 /* PurchaseOptionsController.swift */; };
 		3891C5C526B9818900278903 /* UserPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891C5C426B9818900278903 /* UserPhoto.swift */; };
 		389764C1269F73C50037E8E4 /* OnboardingPageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389764C0269F73C50037E8E4 /* OnboardingPageDataSource.swift */; };
+		38C459D327C6831600ACFD4C /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C459D227C6831600ACFD4C /* PinterestLayout.swift */; };
 		38C6C4DD2795D9730038BB6B /* AssetSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C6C4DC2795D9730038BB6B /* AssetSelectViewController.swift */; };
 		38C6C4E32795DBFB0038BB6B /* PHAsset+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C6C4E22795DBFB0038BB6B /* PHAsset+Extentions.swift */; };
 		38C6C4E52795DC360038BB6B /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C6C4E42795DC360038BB6B /* URL+Extensions.swift */; };
@@ -453,6 +454,7 @@
 		3891C5C226B2E15E00278903 /* PurchaseOptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseOptionsController.swift; sourceTree = "<group>"; };
 		3891C5C426B9818900278903 /* UserPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPhoto.swift; sourceTree = "<group>"; };
 		389764C0269F73C50037E8E4 /* OnboardingPageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageDataSource.swift; sourceTree = "<group>"; };
+		38C459D227C6831600ACFD4C /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		38C6C4DC2795D9730038BB6B /* AssetSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectViewController.swift; sourceTree = "<group>"; };
 		38C6C4E22795DBFB0038BB6B /* PHAsset+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extentions.swift"; sourceTree = "<group>"; };
 		38C6C4E42795DC360038BB6B /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -1024,6 +1026,14 @@
 			path = Purchase;
 			sourceTree = "<group>";
 		};
+		38C459D127C6830A00ACFD4C /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				38C459D227C6831600ACFD4C /* PinterestLayout.swift */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
 		38C6C4DE2795D9FC0038BB6B /* Album */ = {
 			isa = PBXGroup;
 			children = (
@@ -1292,6 +1302,7 @@
 		DD3252D824085B3E001FEC5F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				38C459D127C6830A00ACFD4C /* Layouts */,
 				3891C5B226A9F10200278903 /* TagCollectionView */,
 				DD3252E024085B3E001FEC5F /* Cell */,
 				0C6E32E52445EDA0008528FE /* Card */,
@@ -1899,6 +1910,7 @@
 				DDB6436923F18E8B0092FA0B /* Consts.swift in Sources */,
 				6A5859D6278F591B00A64959 /* InstaService.swift in Sources */,
 				6A0DA76927A1CB2100A66A22 /* TripNameInputController.swift in Sources */,
+				38C459D327C6831600ACFD4C /* PinterestLayout.swift in Sources */,
 				A1446524254458540077425D /* ProfilePhotoAddController.swift in Sources */,
 				DD3252FD24085B3E001FEC5F /* GalleryView.swift in Sources */,
 				38C6C4F12795E4EA0038BB6B /* DateFormatter+Extensions.swift in Sources */,

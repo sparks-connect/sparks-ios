@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Koloda
 
 class ChannelRequestCell: TableViewCell {
     var channel: Channel?
@@ -63,60 +64,94 @@ class ChannelRequestsController: BaseController {
         return presenter
     }
     
-    lazy private var listView : ListView = {
-        let view = ListView(frame: .zero, style: .grouped)
+    lazy private(set) var closeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(Image.close.uiImage, for: .normal)
+        button.addTarget(self, action: #selector(didTapAtCloseButton), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy private var cardsView : KolodaView = {
+        let view = KolodaView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     override func configure() {
         super.configure()
-        self.view.addSubview(self.listView)
-        listView.snp.makeConstraints { make in
-            make.top.equalTo(32)
-            make.left.right.equalToSuperview()
-            make.bottom.equalTo(-32)
+        self.view.addSubview(self.cardsView)
+        cardsView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.7)
+            make.height.equalTo(cardsView.snp.width)
         }
+        
+        self.view.addSubview(closeButton)
+        closeButton.snp.makeConstraints({
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.right.equalToSuperview().inset(30)
+            $0.height.equalTo(30)
+            $0.width.equalTo(30)
+        })
+        closeButton.contentMode = .scaleAspectFill
+        closeButton.layer.cornerRadius = 15
+        closeButton.clipsToBounds = true
+        
         setupListView()
     }
     
+    @objc func didTapAtCloseButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     private func setupListView(){
-        listView.backgroundColor = .clear
-        listView.separatorStyle = .none
-        listView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
-        listView.cellClassIdentifiers = [ChannelRequestCell.description(): ChannelRequestCell.self]
-        listView.cellReuseIdentifier = {(indexPath) in return ChannelRequestCell.description() }
-        listView.heightForRow = {(indexPath) in return 150 }
-        listView.sectionCount = ({ return 1 })
-        listView.numberOfRows = {[weak self](section) in return self?.presenter.numbrOfChannels ?? 0 }
-        listView.parameterForRow = {[weak self](indexPath) in
-            let item = self?.presenter.channel(at: indexPath)
-            return item
-        }
-        listView.didSelectRow = {(indexPath) in
-//            let conversation = self.presenter.channel(at: indexPath)
-//            let chatController = ChatController(channelUid: conversation?.uid)
-//            self.navigationController?.pushViewController(chatController, animated: true)
-        }
         
-        listView.didTapEmptyListButton = {[weak self] in
-            let newMessageController = NewMessageController()
-            self?.present(newMessageController, animated: true, completion: nil)
-        }
+        cardsView.delegate = self
+        cardsView.dataSource = self
+        
+//        listView.backgroundColor = .clear
+//        listView.separatorStyle = .none
+//        listView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
+//        listView.cellClassIdentifiers = [ChannelRequestCell.description(): ChannelRequestCell.self]
+//        listView.cellReuseIdentifier = {(indexPath) in return ChannelRequestCell.description() }
+//        listView.heightForRow = {(indexPath) in return 150 }
+//        listView.sectionCount = ({ return 1 })
+//        listView.numberOfRows = {[weak self](section) in return self?.presenter.numbrOfChannels ?? 0 }
+//        listView.parameterForRow = {[weak self](indexPath) in
+//            let item = self?.presenter.channel(at: indexPath)
+//            return item
+//        }
+//        listView.didSelectRow = {(indexPath) in
+////            let conversation = self.presenter.channel(at: indexPath)
+////            let chatController = ChatController(channelUid: conversation?.uid)
+////            self.navigationController?.pushViewController(chatController, animated: true)
+//        }
+//
+//        listView.didTapEmptyListButton = {[weak self] in
+//            let newMessageController = NewMessageController()
+//            self?.present(newMessageController, animated: true, completion: nil)
+//        }
     }
     
     override func reloadView() {
         super.reloadView()
-        self.listView.reloadData()
+        //self.cardsView.reloadData()
     }
 }
 
 extension ChannelRequestsController: ChannelRequestsPresenterView {
     func reload(deletions: [Int], insertions: [Int], modifications: [Int]) {
-        self.listView.update(with: .automatic,
-                             section: 0,
-                             deletions: deletions.map({ IndexPath(row: $0, section: 0) }),
-                             insertions: insertions.map({ IndexPath(row: $0, section: 0) }),
-                             modifications: modifications.map({ IndexPath(row: $0, section: 0) }))
+        
+    }
+}
+
+extension ChannelRequestsController: KolodaViewDelegate, KolodaViewDataSource {
+    func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
+        return ImageView(url: self.presenter.channel(at: 0)?.otherUsers.first?.photoUrl)
+    }
+    
+    func kolodaNumberOfCards(_ koloda: KolodaView) -> Int {
+        return 4
     }
 }

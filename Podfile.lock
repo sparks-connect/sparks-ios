@@ -545,6 +545,8 @@ PODS:
     - InputBarAccessoryView/Core (= 5.4.0)
   - InputBarAccessoryView/Core (5.4.0)
   - KeychainAccess (4.2.2)
+  - Koloda (5.0.1):
+    - pop (~> 1.0)
   - leveldb-library (1.22.1)
   - MessageKit (3.7.0):
     - InputBarAccessoryView (~> 5.4.0)
@@ -553,6 +555,7 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - pop (1.0.12)
   - PromisesObjC (2.0.0)
   - PubNub (4.17.0):
     - PubNub/Core (= 4.17.0)
@@ -593,6 +596,7 @@ DEPENDENCIES:
   - GooglePlaces (= 6.0.0)
   - GoogleSignIn
   - KeychainAccess
+  - Koloda
   - MessageKit
   - PubNub
   - RealmSwift
@@ -640,9 +644,11 @@ SPEC REPOS:
     - GTMSessionFetcher
     - InputBarAccessoryView
     - KeychainAccess
+    - Koloda
     - leveldb-library
     - MessageKit
     - nanopb
+    - pop
     - PromisesObjC
     - PubNub
     - Realm
@@ -700,9 +706,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   InputBarAccessoryView: 74d471ab1fa1736806be50328df79257e52865a9
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Koloda: d07b9199a383abc5898b62aa945a599f5e7c0c4b
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   MessageKit: 8e76dd8d65ad44b49e1651c673497146416461e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   PubNub: 306896876c3089884067609ff25d628a547d2942
   Realm: fac5ecd031fcb81171627b74944c885662d4b266
@@ -716,6 +724,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 6483f569c3b4c1232a82bf1b0d23ff80239934dd
+PODFILE CHECKSUM: 400ae6c322c5e4bf6b5f3d9da978dbb050302faf
 
 COCOAPODS: 1.11.2

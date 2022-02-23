@@ -54,6 +54,8 @@ def  shared_pods
     # Vertical Swiper
     pod 'VerticalCardSwiper'
     
+    pod "Koloda"
+
     # Image Cropper
     pod 'TOCropViewController'
     
