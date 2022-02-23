@@ -148,9 +148,14 @@ class Channel: BaseModelObject {
     }
     
     func resetUnreadCount() {
-        try? self.realm?.write {
+        if self.realm?.isInWriteTransaction == true {
             self.unreadCount = 0
+        } else {
+            try? self.realm?.write {
+                self.unreadCount = 0
+            }
         }
+        
     }
     
     func save(messages: [Message]) {
@@ -262,9 +267,7 @@ extension Channel {
     }
     
     static var recievedRequestsPredicate: NSPredicate {
-        let time = LocalStore.lastRecievedChannelRequestTime
-        let installTime = LocalStore.firstLaunchTime
-        return NSPredicate(format: "createdBy != %@ AND status == %i AND createdAt > \(time) AND createdAt > \(installTime)",
+        return NSPredicate(format: "createdBy != %@ AND status == %i",
                            User.current?.uid ?? "",
                            ChannelState.requested.rawValue)
     }

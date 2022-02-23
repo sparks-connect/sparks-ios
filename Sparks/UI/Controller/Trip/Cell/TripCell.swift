@@ -43,6 +43,7 @@ class TripCell: UICollectionViewCell{
         btn.addTarget(self, action: #selector(fav(sender:)), for: .touchUpInside)
         btn.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         btn.setImage(UIImage(named: "like"), for: .normal)
+        btn.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         return btn
     }()
     
@@ -104,8 +105,10 @@ class TripCell: UICollectionViewCell{
     override init(frame: CGRect){
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.borderWidth = 2.0
+        self.contentView.borderWidth = 1.4
         self.contentView.borderColor = .white
+        self.contentView.layer.cornerRadius = 2
+        self.imgView.layer.cornerRadius = 2
         
         self.contentView.addSubview(imgView)
         imgView.snp.makeConstraints { make in

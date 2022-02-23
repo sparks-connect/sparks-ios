@@ -29,12 +29,7 @@ class ChannelRequestsPresenter: BasePresenter<ChannelRequestsPresenterView> {
             self?.dataSource = result
             LocalStore.markChannelsSeen(result.first?.createdAt ?? 0)
             UIApplication.appDelegate?.observeChannels()
-            
-            if let del = deletions, let ins = insertions, let mod = modifications {
-                self?.view?.reload(deletions: del, insertions: ins, modifications: mod)
-            } else {
-                self?.view?.reloadView()
-            }
+            self?.view?.reloadView()
         })
     }
     
@@ -42,9 +37,9 @@ class ChannelRequestsPresenter: BasePresenter<ChannelRequestsPresenterView> {
         return self.dataSource.count
     }
     
-    func channel(at indexPath: IndexPath) -> Channel? {
-        guard indexPath.row < dataSource.count else { return nil }
-        return dataSource[indexPath.row]
+    func channel(at index: Int) -> Channel? {
+        guard index < dataSource.count else { return nil }
+        return dataSource[index]
     }
     
     deinit {
