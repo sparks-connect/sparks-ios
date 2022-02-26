@@ -1,81 +1,51 @@
 //
-//  TripListPresenter.swift
+//  TripFavouritePresenter.swift
 //  Sparks
 //
-//  Created by Adroit Jimmy on 13/02/22.
+//  Created by Adroit Jimmy on 23/02/22.
 //  Copyright © 2022 AppWork. All rights reserved.
 //
 
 import Foundation
 import RealmSwift
 
-protocol TripListView: BasePresenterView {
-    func showLoader(isLoading: Bool)
+protocol TripFavView: BasePresenterView {
     func navigate(presenter: TripInfoPresenter)
 }
 
-class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
-    private let service = Service.trips
-    var datasource: [Trip]?
+class TripFavouritePresenter: BasePresenter<TripFavView>, ListPresenter {
     private var token: NotificationToken?
-    private var userToken: NotificationToken?
-    private var lastItem: Any?
-    
+    var datasource: [Trip]?
+    private let service = Service.trips
+
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
-        self.observePredicate()
-        self.observeUserUpdate()
+        observeUser()
     }
     
     override func willAppear() {
         super.willAppear()
-        if TripCriteria.get == nil {
-            self.fetchTrips()
-        }
+        fetchFavourites()
     }
     
-    func fetchTrips(){
-        self.view?.showLoader(isLoading: true)
-
-        service.fetch(limit: 10, lastItem: lastItem) {[weak self] response in
-            self?.handleResponse(response: response, preReloadHandler: {
-                switch response{
-                case .success(let model):
-                    self?.datasource = model.trips // TODO: Vishal, instead of setting this, we will need to append those items because of paging.
-                    self?.lastItem = model.lastItem
-                case .failure(_):
-                    break
-                }
-            }, reload: true)
-        }
-    }
-    
-    private func observePredicate() {
+    private func observeUser() {
         token?.invalidate()
-        token = RealmUtils.observe {[weak self] (change: RealmCollectionChange<Results<TripCriteria>>) in
+        token = RealmUtils.observeUserUpdates { [weak self] in
             main {
-                switch change {
-                case .initial(_):
-                    self?.fetchTrips()
-                case .update(_,_,_,_):
-                    self?.fetchTrips()
-                    break
-                default: break
-                }
+                self?.fetchFavourites()
             }
         }
     }
     
-    private func observeUserUpdate() {
-        userToken?.invalidate()
-        userToken = RealmUtils.observeUserUpdates {[weak self] in
-            self?.view?.reloadView()
-        }
+    private func fetchFavourites(){
+        self.datasource = User.current?.favourites.map({ $0 })
+        self.view?.reloadView()
     }
     
-    func configureCell(cell: TripCell, indexPath: IndexPath){
+    
+    func configureCell(cell: TripCell, indexPath: IndexPath) {
         guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
-        
+
         let stDate = trip.startDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let endDate = trip.endDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let date = "\(stDate) - \(endDate)"
@@ -88,7 +58,7 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
                        location: trip.city ?? "",
                        desc: trip.plan ?? "",
                        isFav: user.isTripFavourite(uid: trip.uid)
-                    )
+        )
         cell.makeFavourite = {[weak self] (indexPath) in
             self?.addToFavourite(indexPath: indexPath)
         }

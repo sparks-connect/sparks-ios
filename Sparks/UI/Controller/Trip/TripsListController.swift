@@ -16,7 +16,7 @@ class TripsListController: BaseController {
         return self.presenter
     }
     
-    private lazy var tripView: TripView = {
+    private lazy var tripView: TripView<TripListPresenter> = {
         let vw = TripView(presenter: self.presenter)
         return vw
     }()
@@ -29,7 +29,6 @@ class TripsListController: BaseController {
     
     override func didAppear() {
         super.didAppear()
-        (self.tabBarController as? CardTabBarController)?.setTabBarHidden(false, animated: true)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(authorizationChanged),
                                                name: Consts.Notifications.didChangeLocationPermissions,
@@ -92,6 +91,7 @@ extension TripsListController: TripListView {
     
     func navigate(presenter: TripInfoPresenter) {
         let controller = TripInfoController(presenter: presenter)
+        controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }

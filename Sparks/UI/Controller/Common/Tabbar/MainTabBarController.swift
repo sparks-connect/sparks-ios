@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 import SwiftUI
 
-class MainTabBarController: CardTabBarController {
+class MainTabBarController: UITabBarController {
     
     private var channelsToken: NotificationToken?
     private var count: Int = 0
@@ -24,14 +24,15 @@ class MainTabBarController: CardTabBarController {
     
     private let tripListController = UINavigationController(rootViewController: TripsListController())
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
-    private let addTripController = UINavigationController(rootViewController: CreateTripContainer())
-    private let favourites = UINavigationController(rootViewController: UIViewController())
+    private let addTripController = UINavigationController(rootViewController: TripsListController())
+    private let favourites = UINavigationController(rootViewController: TripFavouriteController())
     private let settingsController = UINavigationController(rootViewController: ProfileController())
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.delegate = self
         self.configureTabbar()
         // call super after configuration, otherwise App get crashed
-        super.viewDidLoad()
         observeChannels()
     }
     
@@ -44,18 +45,16 @@ class MainTabBarController: CardTabBarController {
     }
     
     private func configureTabbar() {
-//        self.tabBar.barTintColor = Color.purple.uiColor
-//        self.tabBar.tintColor = .white
-//        self.tabBar.isTranslucent = false
-        self.tabBarBackgroundColor = Color.buttonColor.uiColor
-        self.tintColor = .white
+        self.tabBar.barTintColor = Color.purple.uiColor
+        self.tabBar.tintColor = .white
+        self.tabBar.isTranslucent = false
         let trips = UITabBarItem(title: "Trips", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
         tripListController.tabBarItem = trips
         
         let connections = UITabBarItem(title: "Connections", image: UIImage(named: "ic_tab_connections"), selectedImage: UIImage(named: "ic_tab_connections"))
         channelListController.tabBarItem = connections
         
-        let createTrip = UITabBarItem(title: "", image: UIImage(named: "ic_plus"), selectedImage: UIImage(named: "ic_plus"))
+        let createTrip = UITabBarItem(title: "Create", image: UIImage(named: "ic_plus"), selectedImage: UIImage(named: "ic_plus"))
         addTripController.tabBarItem = createTrip
         
         let favs = UITabBarItem(title: "Favourites", image: UIImage(named: "ic_tab_favourite"), selectedImage: UIImage(named: "ic_tab_favourite"))
@@ -72,7 +71,6 @@ class MainTabBarController: CardTabBarController {
         
         
     }
-    
     
     private func addProfilePic() {
         if LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingPhoto == true {
@@ -118,24 +116,13 @@ class MainTabBarController: CardTabBarController {
     }
 }
 
-
-class CreateTripContainer: BaseController {
-    private var willAppearCalled: Bool = false
-    override func configure() {
-        super.configure()
-        self.view.backgroundColor = .clear
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if !willAppearCalled  {
+extension MainTabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if self.selectedIndex == 2 {
             let controller = CreateTripController()
-            controller.modalPresentationStyle = .fullScreen
-            self.present(controller, animated: true, completion: nil)
-            willAppearCalled = true
-        }else{
-            self.tabBarController?.selectedIndex = 0
-            willAppearCalled = false
+            controller.hidesBottomBarWhenPushed = true
+            controller.modalPresentationStyle = .overCurrentContext
+            viewController.present(controller, animated: true, completion: nil)
         }
     }
 }

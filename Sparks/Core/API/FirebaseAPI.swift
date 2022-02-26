@@ -510,7 +510,9 @@ extension FirebaseAPIImpl {
                     return
                 }
                 u.loggedIn = true
-                RealmUtils.save(object: u)
+                main {
+                    RealmUtils.save(object: u)
+                }
                 
                 DeepLinkHelper.generateLink(params: ["uid": u.uid, "name": u.displayName]) { (response) in
                     switch response {

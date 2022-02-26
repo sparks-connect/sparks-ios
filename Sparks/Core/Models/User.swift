@@ -198,6 +198,10 @@ class User: BaseModelObject, SenderType {
         })
     }
     
+    func getFavourites() -> [Trip] {
+        return self._favourites ?? []
+    }
+    
     required override init() {
         super.init()
     }

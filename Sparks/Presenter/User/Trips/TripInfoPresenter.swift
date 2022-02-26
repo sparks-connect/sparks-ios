@@ -39,7 +39,7 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     }
     
     func observeChannels() {
-        token = RealmUtils.observeChannels(forUser: self.trip!.userId!, completion: { channels, _, _, _ in
+        token = RealmUtils.observeChannels(forUser: self.trip!.user.uid!, completion: { channels, _, _, _ in
             main {
                 if let first = channels.first {
                     switch first.statusEnum {

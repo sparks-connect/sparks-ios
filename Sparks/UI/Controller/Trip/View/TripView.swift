@@ -9,9 +9,15 @@
 import Foundation
 import UIKit
 
-class TripView: UIView {
+protocol ListPresenter: AnyObject {
+    var datasource: [Trip]? {get set}
+    func configureCell(cell: TripCell, indexPath: IndexPath)
+    func didSelectCell(index: Int)
+}
+
+class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollectionViewDelegate{
     
-    var presenter: TripListPresenter!
+    var presenter: T!
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -28,7 +34,7 @@ class TripView: UIView {
     }()
     
     
-    init(presenter: TripListPresenter){
+    init(presenter: T){
         super.init(frame: .zero)
         self.presenter = presenter
         
@@ -46,9 +52,6 @@ class TripView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-extension TripView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.presenter.datasource?.count ?? 0
     }
@@ -60,5 +63,5 @@ extension TripView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.presenter.didSelectCell(index: indexPath.item)
     }
+    
 }
-
