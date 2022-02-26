@@ -40,9 +40,7 @@ class TripInfoController: BaseController {
     private lazy var profileButton: PrimaryButton = {
         let btn = PrimaryButton()
         btn.setTitle("View Profile", for: .normal)
-//        btn.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 22
-//        btn.setBackgroundColor(buttonColor, forState: .normal)
         return btn
     }()
     
@@ -142,6 +140,10 @@ class TripInfoController: BaseController {
 }
 
 extension TripInfoController: TripInfoView {
+    func setTitle(title: String) {
+        self.navigationItem.title = title
+    }
+    
     func loadImage(url: URL?) {
         self.imgView.sd_setImage(with: url, completed: nil)
     }

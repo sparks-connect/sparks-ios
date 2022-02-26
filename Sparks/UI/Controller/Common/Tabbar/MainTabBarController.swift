@@ -120,6 +120,7 @@ extension MainTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.selectedIndex == 2 {
             let controller = CreateTripController()
+            viewController.tabBarController?.tabBar.isHidden = true
             controller.hidesBottomBarWhenPushed = true
             controller.modalPresentationStyle = .overCurrentContext
             viewController.present(controller, animated: true, completion: nil)

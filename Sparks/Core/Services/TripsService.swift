@@ -22,6 +22,7 @@ protocol TripsService {
     func addToFavourites(trip: Trip,
                         completion:@escaping(Result<Any, Error>)->Void)
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
+    func fetchMyTrips(completion:@escaping(Result<[Trip], Error>)->Void)
 }
 
 class TripsServiceImpl: TripsService {

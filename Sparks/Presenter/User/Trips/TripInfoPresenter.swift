@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 protocol TripInfoView: BasePresenterView {
+    func setTitle(title: String)
     func loadImage(url: URL?)
     func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String)
     func navigate()
@@ -32,6 +33,7 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
+        self.view?.setTitle(title: self.trip.user?.firstName ?? "")
         self.view?.updateConnectButtonState(enabled: false, isConnected: false, text: "Loading ...")
         let url = URL(string: self.trip.user?.photoUrl ?? "")
         self.view?.loadImage(url: url)
@@ -39,7 +41,7 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     }
     
     func observeChannels() {
-        token = RealmUtils.observeChannels(forUser: self.trip!.user.uid!, completion: { channels, _, _, _ in
+        token = RealmUtils.observeChannels(forUser: self.trip.user?.uid ?? "", completion: { channels, _, _, _ in
             main {
                 if let first = channels.first {
                     switch first.statusEnum {

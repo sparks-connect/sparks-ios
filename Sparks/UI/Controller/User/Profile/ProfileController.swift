@@ -153,6 +153,15 @@ class ProfileController: BaseController {
         return profileEditButton
     }()
     
+    private lazy var myTripsButton: PrimaryButton = {
+        let btn = PrimaryButton()
+        btn.setTitle("My Trips", for: .normal)
+        btn.layer.cornerRadius = 22
+        btn.addTarget(self, action: #selector(onMyTrips), for: .touchUpInside)
+        return btn
+    }()
+    
+    
     private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
     override func configure() {
@@ -206,6 +215,17 @@ class ProfileController: BaseController {
         spacer = UIView()
         stackView.addArrangedSubview(spacer)
         spacer.snp.makeConstraints { make in
+            make.height.equalTo(16)
+        }
+        
+        stackView.addArrangedSubview(myTripsButton)
+        myTripsButton.snp.makeConstraints { make in
+            make.height.equalTo(44)
+        }
+        
+        spacer = UIView()
+        stackView.addArrangedSubview(spacer)
+        spacer.snp.makeConstraints { make in
             make.height.equalTo(12)
         }
         
@@ -253,6 +273,11 @@ class ProfileController: BaseController {
     @objc private func onProfileEdit(sender: UIBarButtonItem) {
         let settings = EditProfileViewController()
         self.navigationController?.pushViewController(settings, animated: true)
+    }
+    
+    @objc private func onMyTrips(){
+        let controller = MyTripsController()
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     var cell: UICollectionViewCell!
