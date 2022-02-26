@@ -45,16 +45,17 @@ class MainTabBarController: UITabBarController {
     }
     
     private func configureTabbar() {
-        self.tabBar.barTintColor = Color.purple.uiColor
+        self.tabBar.barTintColor = .black
         self.tabBar.tintColor = .white
         self.tabBar.isTranslucent = false
-        let trips = UITabBarItem(title: "Trips", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
+        let trips = UITabBarItem(title: "", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
+        trips.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 20)
         tripListController.tabBarItem = trips
         
         let connections = UITabBarItem(title: "Connections", image: UIImage(named: "ic_tab_connections"), selectedImage: UIImage(named: "ic_tab_connections"))
         channelListController.tabBarItem = connections
         
-        let createTrip = UITabBarItem(title: "Create", image: UIImage(named: "ic_plus"), selectedImage: UIImage(named: "ic_plus"))
+        let createTrip = UITabBarItem(title: "", image: nil, selectedImage: nil)
         addTripController.tabBarItem = createTrip
         
         let favs = UITabBarItem(title: "Favourites", image: UIImage(named: "ic_tab_favourite"), selectedImage: UIImage(named: "ic_tab_favourite"))
@@ -69,7 +70,16 @@ class MainTabBarController: UITabBarController {
             $0.title = nil
         })
         
-        
+        let view = CenterView(frame: CGRect(x: self.tabBar.center.x-24, y: 0, width: 48, height: 48))
+        self.tabBar.addSubview(view)
+        view.didTapButton = {[unowned self] in
+            self.createTrip()
+        }
+//        guard let tabBar = self.tabBar as? TabBar else { return }
+//        tabBar.didTapButton = { [unowned self] in
+//            self.createTrip()
+//        }
+
     }
     
     private func addProfilePic() {
@@ -117,13 +127,27 @@ class MainTabBarController: UITabBarController {
 }
 
 extension MainTabBarController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if self.selectedIndex == 2 {
-            let controller = CreateTripController()
-            viewController.tabBarController?.tabBar.isHidden = true
-            controller.hidesBottomBarWhenPushed = true
-            controller.modalPresentationStyle = .overCurrentContext
-            viewController.present(controller, animated: true, completion: nil)
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController) else {
+            return true
         }
+        
+        // Your middle tab bar item index.
+        // In my case it's 1.
+        if selectedIndex == 2 {
+            return false
+        }
+        
+        return true
     }
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        if self.selectedIndex == 2 {
+//            let controller = CreateTripController()
+//            viewController.tabBarController?.tabBar.isHidden = true
+//            controller.hidesBottomBarWhenPushed = true
+//            controller.modalPresentationStyle = .overCurrentContext
+//            viewController.present(controller, animated: true, completion: nil)
+//        }
+//    }
 }
