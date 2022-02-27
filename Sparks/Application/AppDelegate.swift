@@ -96,7 +96,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !result.isEmpty && !(self.topMostViewController is ChannelRequestsController) {
             DispatchQueue.main.async {
                 let contr = ChannelRequestsController()
-                self.topMostViewController?.present(contr, animated: true, completion: nil)
+                contr.modalPresentationStyle = .fullScreen
+                // self.topMostViewController?.present(contr, animated: false, completion: nil)
             }
         }
     }

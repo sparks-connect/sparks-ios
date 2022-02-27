@@ -15,16 +15,17 @@ protocol ListPresenter: AnyObject {
     func didSelectCell(index: Int)
 }
 
-class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollectionViewDelegate{
+class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollectionViewDelegate, PinterestLayoutDelegate {
     
     var presenter: T!
-    
+    let randomHeights: [CGFloat] = [300, 200, 280, 220]
+
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width * 0.44, height: 195)
-        layout.minimumLineSpacing = 20
-        layout.minimumInteritemSpacing = 12
+        let layout = PinterestLayout()
+        layout.delegate = self
+
         let colView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        colView.backgroundColor = .clear
         colView.translatesAutoresizingMaskIntoConstraints = false
         colView.dataSource = self
         colView.delegate = self
@@ -55,13 +56,22 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.presenter.datasource?.count ?? 0
     }
+    
+      
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TripCell else { return UICollectionViewCell() }
         self.presenter.configureCell(cell: cell, indexPath: indexPath)
         return cell
     }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.presenter.didSelectCell(index: indexPath.item)
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+      let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 2)) / 2
+      return CGSize(width: itemSize, height: itemSize)
     }
     
+    func collectionView(
+      _ collectionView: UICollectionView,
+      heightForPhotoAtIndexPath indexPath:IndexPath) -> CGFloat {
+          return randomHeights[Int.random(in: 0..<randomHeights.count)]
+    }
 }

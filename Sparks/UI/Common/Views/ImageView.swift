@@ -20,6 +20,12 @@ class ImageView : UIImageView {
         self.configure()
     }
     
+    init(url: String?) {
+        super.init(frame: CGRect.zero)
+        self.configure()
+        setImageFromUrl(url, placeholderImg: nil, completion: nil)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configure()
