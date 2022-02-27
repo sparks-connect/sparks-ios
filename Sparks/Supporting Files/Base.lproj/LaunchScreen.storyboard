@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Display-Bold.otf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SF-Pro-Display-Regular.otf">
+            <string>SFProDisplay-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -17,15 +25,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vwh-cK-eKO">
-                                <rect key="frame" x="79" y="397.5" width="256" height="101.5"/>
+                                <rect key="frame" x="175" y="416" width="64" height="64"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sparks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86X-pM-IJA">
+                                <rect key="frame" x="159.5" y="496" width="95.5" height="36"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find Travelmates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGB-jP-KNd">
+                                <rect key="frame" x="154" y="540" width="106" height="18"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="15"/>
+                                <color key="textColor" red="0.3411764705882353" green="0.30980392156862746" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by Appwork LLC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcQ-MN-Upm">
+                                <rect key="frame" x="142.5" y="855.5" width="129.5" height="14.5"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Regular" family="SF Pro Display" pointSize="12"/>
+                                <color key="textColor" red="0.3411764706" green="0.30980392159999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.094117647058823528" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Vwh-cK-eKO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="0FF-yf-SR7"/>
+                            <constraint firstItem="dcQ-MN-Upm" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="8" id="1vS-Ka-lGz"/>
+                            <constraint firstItem="86X-pM-IJA" firstAttribute="top" secondItem="Vwh-cK-eKO" secondAttribute="bottom" constant="16" id="7lg-u9-yzd"/>
+                            <constraint firstItem="CGB-jP-KNd" firstAttribute="centerX" secondItem="86X-pM-IJA" secondAttribute="centerX" id="9wg-vg-CbA"/>
+                            <constraint firstItem="dcQ-MN-Upm" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fj5-6d-04V"/>
+                            <constraint firstItem="CGB-jP-KNd" firstAttribute="top" secondItem="86X-pM-IJA" secondAttribute="bottom" constant="8" id="gYT-Uu-LmK"/>
+                            <constraint firstItem="86X-pM-IJA" firstAttribute="centerX" secondItem="Vwh-cK-eKO" secondAttribute="centerX" id="him-uv-vFd"/>
                             <constraint firstItem="Vwh-cK-eKO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="l7d-9b-xN1"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -34,6 +66,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_launchscreen" width="256" height="101.5"/>
+        <image name="ic_launchscreen" width="64" height="64"/>
     </resources>
 </document>
