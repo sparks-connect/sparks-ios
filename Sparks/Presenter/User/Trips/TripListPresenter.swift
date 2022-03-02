@@ -21,6 +21,10 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     private var userToken: NotificationToken?
     private var lastItem: Any?
     private var loadMore: Bool = true
+    var hasSearchFilters: Bool {
+        return TripCriteria.get != nil
+    }
+    
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         self.observePredicate()

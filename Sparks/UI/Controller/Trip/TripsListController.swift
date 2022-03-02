@@ -38,11 +38,20 @@ class TripsListController: BaseController {
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
+        if self.presenter.hasSearchFilters {
+            let btn = BadgedButtonItem(with: UIImage(named: "search"))
+            btn.setBadge(with: 0)
+            btn.tapAction = {
+                self.searchClicked()
+            }
+            return [btn]
+        }
         return [UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: #selector(searchClicked))]
     }
     
     override func reloadView() {
         super.reloadView()
+        self.configureNavigationBar()
         self.hideAnimatedActivityIndicatorView()
         self.tripView.reload()
     }
