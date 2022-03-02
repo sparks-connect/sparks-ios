@@ -20,7 +20,7 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     private var token: NotificationToken?
     private var userToken: NotificationToken?
     private var lastItem: Any?
-    
+    private var loadMore: Bool = true
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         self.observePredicate()
@@ -34,14 +34,23 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
         }
     }
     
-    func fetchTrips(){
-        self.view?.showLoader(isLoading: true)
-
-        service.fetch(limit: 10, lastItem: lastItem) {[weak self] response in
+    func fetchTrips(_ showLoader: Bool = true){
+        if !self.loadMore {
+            print("Stop Paging")
+            return
+        }
+        self.view?.showLoader(isLoading: showLoader)
+        service.fetch(limit: 10, lastItem: lastItem){[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
-                    self?.datasource = model.trips // TODO: Vishal, instead of setting this, we will need to append those items because of paging.
+                    if self?.lastItem == nil {
+                        self?.datasource = model.trips
+                    }else {
+                        let filtered = model.trips.filter({ self?.datasource?.contains($0) == false })
+                        self?.loadMore = filtered.count != 0
+                        self?.datasource?.append(contentsOf: filtered)
+                    }
                     self?.lastItem = model.lastItem
                 case .failure(_):
                     break
@@ -91,6 +100,18 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
                     )
         cell.makeFavourite = {[weak self] (indexPath) in
             self?.addToFavourite(indexPath: indexPath)
+        }
+    }
+    
+    func refreshList() {
+        self.loadMore = true
+        self.lastItem = nil
+        self.fetchTrips(false)
+    }
+    
+    func fetchNextPage() {
+        if self.lastItem != nil {
+            self.fetchTrips(false)
         }
     }
     

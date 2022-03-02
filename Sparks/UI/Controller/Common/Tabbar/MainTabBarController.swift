@@ -75,11 +75,6 @@ class MainTabBarController: UITabBarController {
         view.didTapButton = {[unowned self] in
             self.createTrip()
         }
-//        guard let tabBar = self.tabBar as? TabBar else { return }
-//        tabBar.didTapButton = { [unowned self] in
-//            self.createTrip()
-//        }
-
     }
     
     private func addProfilePic() {
@@ -141,13 +136,4 @@ extension MainTabBarController: UITabBarControllerDelegate {
         
         return true
     }
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        if self.selectedIndex == 2 {
-//            let controller = CreateTripController()
-//            viewController.tabBarController?.tabBar.isHidden = true
-//            controller.hidesBottomBarWhenPushed = true
-//            controller.modalPresentationStyle = .overCurrentContext
-//            viewController.present(controller, animated: true, completion: nil)
-//        }
-//    }
 }

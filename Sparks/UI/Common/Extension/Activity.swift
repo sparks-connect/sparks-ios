@@ -45,6 +45,7 @@ extension UIView {
     private var activityIndicatorView: UIActivityIndicatorView {
         let view: UIActivityIndicatorView = UIActivityIndicatorView(style: .large)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.color = .white
         view.tag = activityIndicatorViewTag
         return view
     }

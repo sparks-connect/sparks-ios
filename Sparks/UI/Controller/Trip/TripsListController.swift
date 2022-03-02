@@ -17,10 +17,10 @@ class TripsListController: BaseController {
     }
     
     private lazy var tripView: TripView<TripListPresenter> = {
-        let vw = TripView(presenter: self.presenter)
+        let vw = TripView(presenter: self.presenter, paging: true)
         return vw
     }()
-    
+        
     override func configure() {
         super.configure()
         self.navigationItem.title = "Sparks"
@@ -33,13 +33,7 @@ class TripsListController: BaseController {
                                                selector: #selector(authorizationChanged),
                                                name: Consts.Notifications.didChangeLocationPermissions,
                                                object: nil)
-        
-//        if !LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingLocation == true {
-//             let controller = LocationEnableController()
-//             controller.modalPresentationStyle = .overFullScreen
-//             self.present(controller, animated: true, completion: nil)
-//         }
-        
+        enableLocation()
         addProfilePic()
     }
     
@@ -67,14 +61,20 @@ class TripsListController: BaseController {
         self.present(TripSearchController(), animated: true, completion: nil)
     }
     
+    private func enableLocation(){
+        if !LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingLocation == true {
+            let controller = LocationEnableController()
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
     private func addProfilePic() {
-//        if  User.current?.isMissingLocation == false && User.current?.isMissingPhoto == true {
-        if User.current?.isMissingPhoto == true {
+        if  User.current?.isMissingLocation == false && User.current?.isMissingPhoto == true {
             let controller = ProfilePhotoAddController()
             controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true, completion: nil)
         }
-//        }
     }
     
     @objc private func authorizationChanged(notification: Notification) {
@@ -86,7 +86,9 @@ class TripsListController: BaseController {
 
 extension TripsListController: TripListView {
     func showLoader(isLoading: Bool) {
-        self.displayAnimatedActivityIndicatorView()
+        if isLoading {
+            self.displayAnimatedActivityIndicatorView()
+        }
     }
     
     func navigate(presenter: TripInfoPresenter) {

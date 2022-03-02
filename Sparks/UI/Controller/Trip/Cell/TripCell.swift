@@ -55,7 +55,7 @@ class TripCell: UICollectionViewCell{
         stack.alignment = .fill
         stack.distribution = .fillProportionally
         stack.axis = .vertical
-        stack.addRightShadow(with: 4, width: 4, color: UIColor.black.withAlphaComponent(0.5))
+        //stack.addRightShadow(with: 4, width: 4, color: UIColor.black.withAlphaComponent(0.5))
         stack.layoutMargins = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5)
         stack.isLayoutMarginsRelativeArrangement = true
         return stack
@@ -104,6 +104,7 @@ class TripCell: UICollectionViewCell{
     
     override init(frame: CGRect){
         super.init(frame: frame)
+        self.contentView.clipsToBounds = false
         self.contentView.backgroundColor = .clear
         self.contentView.borderWidth = 1.4
         self.contentView.borderColor = .white
