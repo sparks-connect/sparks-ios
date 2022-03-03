@@ -218,7 +218,7 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
         }
         
         if let start = startAfter as? DocumentSnapshot {
-            ref.start(afterDocument: start)
+            ref = ref.start(afterDocument: start)
         }
         
         if let limit = limit {

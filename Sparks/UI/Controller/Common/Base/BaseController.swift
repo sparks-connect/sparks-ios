@@ -52,7 +52,7 @@ class BaseController : UIViewController, BasePresenterView {
         
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationController?.navigationBar.barTintColor = Color.purple.uiColor
+        self.navigationController?.navigationBar.barTintColor = Color.background.uiColor
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         //self.navigationController?.navigationBar.isTranslucent = false

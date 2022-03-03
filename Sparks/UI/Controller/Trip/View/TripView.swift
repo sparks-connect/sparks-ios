@@ -27,7 +27,7 @@ extension ListPresenter {
     }
 }
 
-class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollectionViewDelegate, PinterestLayoutDelegate {
+class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollectionViewDelegate, PinterestLayoutDelegate, UICollectionViewDelegateFlowLayout {
     
     var presenter: T!
     let randomHeights: [CGFloat] = [300, 200, 280, 220]
@@ -42,8 +42,7 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let layout = PinterestLayout()
-        layout.delegate = self
+        let layout = UICollectionViewFlowLayout()
         
         let colView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         colView.backgroundColor = .clear
@@ -89,6 +88,7 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Datasource count = \(self.presenter.datasource?.count ?? 0)")
         return self.presenter.datasource?.count ?? 0
     }
       
@@ -103,7 +103,7 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 2)) / 2
+      let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right)) / 2
       return CGSize(width: itemSize, height: itemSize)
     }
     

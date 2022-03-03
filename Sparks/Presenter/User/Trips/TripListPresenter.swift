@@ -20,7 +20,9 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     private var token: NotificationToken?
     private var userToken: NotificationToken?
     private var lastItem: Any?
-    private var loadMore: Bool = true
+    private var loadMore: Bool {
+        return lastItem != nil
+    }
     var hasSearchFilters: Bool {
         return TripCriteria.get != nil
     }
@@ -31,29 +33,17 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
         self.observeUserUpdate()
     }
     
-    override func willAppear() {
-        super.willAppear()
-        if TripCriteria.get == nil {
-            self.fetchTrips()
-        }
-    }
-    
     func fetchTrips(_ showLoader: Bool = true){
-        if !self.loadMore {
-            print("Stop Paging")
-            return
-        }
+        
         self.view?.showLoader(isLoading: showLoader)
-        service.fetch(limit: 10, lastItem: lastItem){[weak self] response in
+        service.fetch(limit: 5, lastItem: lastItem){[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
                     if self?.lastItem == nil {
                         self?.datasource = model.trips
                     }else {
-                        let filtered = model.trips.filter({ self?.datasource?.contains($0) == false })
-                        self?.loadMore = filtered.count != 0
-                        self?.datasource?.append(contentsOf: filtered)
+                        self?.datasource?.append(contentsOf: model.trips)
                     }
                     self?.lastItem = model.lastItem
                 case .failure(_):
@@ -108,7 +98,6 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     }
     
     func refreshList() {
-        self.loadMore = true
         self.lastItem = nil
         self.fetchTrips(false)
     }
