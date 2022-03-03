@@ -21,12 +21,10 @@ class CenterView: UIView {
         middleButton.backgroundColor = #colorLiteral(red: 0.9843137255, green: 0.4117647059, blue: 0.3803921569, alpha: 1)
         middleButton.tintColor = .white
         middleButton.layer.cornerRadius = 34
-        middleButton.contentEdgeInsets = UIEdgeInsets(top: -10, left: -10, bottom: 10, right: 10)
         middleButton.clipsToBounds = false
         middleButton.addTarget(self, action: #selector(self.middleButtonAction), for: .touchUpInside)
         return middleButton
     }()
-    
     
     override init(frame: CGRect){
         super.init(frame: frame)
@@ -59,34 +57,22 @@ class CenterView: UIView {
     @objc func middleButtonAction(sender: UIButton) {
         didTapButton?()
     }
+}
+
+extension UITabBar {
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//
-//        if clipsToBounds || isHidden || alpha == 0 {
-//            return nil
-//        }
-//
-//        for subview in subviews.reversed() {
-//            let subPoint = subview.convert(point, from: self)
-//            if let result = subview.hitTest(subPoint, with: event) {
-//                return result
-//            }
-//        }
-//
-//        return nil
-//    }
+            if clipsToBounds || isHidden || alpha == 0 {
+                return nil
+            }
     
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let from = point
-        let to = middleButton.center
-        return sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)) <= 35 ? middleButton : super.hitTest(point, with: event)
-    }
+            for subview in subviews.reversed() {
+                let subPoint = subview.convert(point, from: self)
+                if let result = subview.hitTest(subPoint, with: event) {
+                    return result
+                }
+            }
     
-//    // MARK: - HitTest
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        guard !clipsToBounds && !isHidden && alpha > 0 else { return nil }
-//        let pointTarget = self.middleButton.convert(point, to: self)
-//        let extendedRect = CGRect(x: 0, y: -30, width: 48, height: 48)
-//        return extendedRect.contains(pointTarget) ? self.middleButton : super.hitTest(point, with: event)
-//    }
+            return nil
+        }
 }

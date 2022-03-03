@@ -104,6 +104,7 @@ class TripCell: UICollectionViewCell{
     
     override init(frame: CGRect){
         super.init(frame: frame)
+        self.contentView.clipsToBounds = false
         self.contentView.backgroundColor = .clear
         self.contentView.borderWidth = 1.4
         self.contentView.borderColor = .white

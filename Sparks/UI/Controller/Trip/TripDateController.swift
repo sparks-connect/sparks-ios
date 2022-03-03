@@ -24,9 +24,6 @@ class TripDateController: TripBaseController {
     private lazy var departureView: DateView = {
         let vw = DateView(tite: "Departure", img: UIImage(named: "depart") ?? .init(), selected: true)
         vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.layer.borderWidth = 1.6
-        vw.layer.cornerRadius = 16
-        vw.layer.borderColor = Consts.Colors.borderSelected.cgColor
         vw.addTapGesture(target: self, selector: #selector(dateChanged(_:)))
         return vw
     }()
@@ -34,9 +31,6 @@ class TripDateController: TripBaseController {
     private lazy var arrivalView: DateView = {
         let vw = DateView(tite: "Arrival", img: UIImage(named: "arrival") ?? .init(), selected: false)
         vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.layer.borderWidth = 0.8
-        vw.layer.cornerRadius = 16
-        vw.layer.borderColor = Consts.Colors.border.cgColor
         vw.addTapGesture(target: self, selector: #selector(dateChanged(_:)))
         return vw
     }()

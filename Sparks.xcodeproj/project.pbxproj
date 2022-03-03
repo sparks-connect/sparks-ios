@@ -204,6 +204,7 @@
 		6AB994CE27C5404D0082D544 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CB27C5404C0082D544 /* UIColor+Additions.swift */; };
 		6AB994CF27C5404D0082D544 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CC27C5404D0082D544 /* UIView+AutoLayout.swift */; };
 		6AB994D027C5404D0082D544 /* CGPoint+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB994CD27C5404D0082D544 /* CGPoint+Distance.swift */; };
+		6AF9E16527D014D10091DD94 /* BadgeButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF9E16427D014D10091DD94 /* BadgeButtonItem.swift */; };
 		A11D4222256BF60100FF20FC /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D4221256BF60100FF20FC /* BasePageViewController.swift */; };
 		A12A8ED624FF12CD00DB8912 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12A8ED524FF12CD00DB8912 /* AsyncOperation.swift */; };
 		A14013732558A51200D9E590 /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14013722558A51200D9E590 /* RadarView.swift */; };
@@ -525,6 +526,7 @@
 		6AB994CB27C5404C0082D544 /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
 		6AB994CC27C5404D0082D544 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
 		6AB994CD27C5404D0082D544 /* CGPoint+Distance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Distance.swift"; sourceTree = "<group>"; };
+		6AF9E16427D014D10091DD94 /* BadgeButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButtonItem.swift; sourceTree = "<group>"; };
 		6E2562D7BFBDC8CA917E467B /* Pods_SparksNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SparksNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86834E812D7C8D422FFBD688 /* Pods-appwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appwork.release.xcconfig"; path = "Target Support Files/Pods-appwork/Pods-appwork.release.xcconfig"; sourceTree = "<group>"; };
 		91770E7B439EB9F3DC383579 /* Pods-Sparks.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sparks.adhoc.xcconfig"; path = "Target Support Files/Pods-Sparks/Pods-Sparks.adhoc.xcconfig"; sourceTree = "<group>"; };
@@ -843,6 +845,7 @@
 			children = (
 				38291E182451AECB003D467B /* UITableView.swift */,
 				6A82EDF627CACA4900861970 /* TabBar.swift */,
+				6AF9E16427D014D10091DD94 /* BadgeButtonItem.swift */,
 				6A48A8E527BD66F200211F82 /* Activity.swift */,
 				A18D7F54246C1EC3006C0CB6 /* MessagesCollectionView.swift */,
 				382403C22473183600A696D7 /* UIFont+Extensions.swift */,
@@ -1839,6 +1842,7 @@
 				DD3255B8240EBE58001FEC5F /* LocationManager.swift in Sources */,
 				0CCC199224475538003FF86F /* Old+CardSwiperCell.swift in Sources */,
 				0CCDCEF3248B9B010052FB4E /* UserProfileCell.swift in Sources */,
+				6AF9E16527D014D10091DD94 /* BadgeButtonItem.swift in Sources */,
 				38C6C4E52795DC360038BB6B /* URL+Extensions.swift in Sources */,
 				A144651C254458540077425D /* LoginController.swift in Sources */,
 				0C6E32F22445F362008528FE /* CardTopTimerView.swift in Sources */,
