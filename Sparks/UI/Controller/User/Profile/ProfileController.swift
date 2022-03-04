@@ -81,9 +81,16 @@ class ProfileController: BaseController {
         view.addSubview(profileRightContainer)
         profileRightContainer.snp.makeConstraints { make in
             make.left.equalTo(profilePhotoContainer.snp.right)
-            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        view.addSubview(tripsRightContainer)
+        tripsRightContainer.snp.makeConstraints { make in
+            make.left.equalTo(profileRightContainer.snp.right).offset(-32)
             make.centerY.equalToSuperview()
         }
+        
         return view
     }()
     
@@ -93,6 +100,16 @@ class ProfileController: BaseController {
         view.axis = .vertical
         view.addArrangedSubview(labelConnections)
         view.addArrangedSubview(labelConnectionsTitle)
+        return view
+    }()
+    
+    lazy private var tripsRightContainer: UIStackView = {
+        let view = UIStackView()
+        view.distribution = .fill
+        view.axis = .vertical
+        view.addArrangedSubview(labelTrips)
+        view.addArrangedSubview(labelTripsTitle)
+        view.addTapGesture(target: self, selector: #selector(onMyTrips))
         return view
     }()
     
@@ -106,6 +123,24 @@ class ProfileController: BaseController {
     }()
     
     lazy private var labelConnections: Label = {
+        let view = Label()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.font(for: 20, style: .bold)
+        view.textColor = .white
+        view.textAlignment = .center
+        return view
+    }()
+    
+    lazy private var labelTripsTitle: Label = {
+        let view = Label()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.font(for: 17, style: .regular)
+        view.textAlignment = .center
+        view.textColor = .white
+        return view
+    }()
+    
+    lazy private var labelTrips: Label = {
         let view = Label()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.font(for: 20, style: .bold)
@@ -152,15 +187,6 @@ class ProfileController: BaseController {
         profileEditButton.addTarget(self, action: #selector(onProfileEdit), for: .touchUpInside)
         return profileEditButton
     }()
-    
-    private lazy var myTripsButton: PrimaryButton = {
-        let btn = PrimaryButton()
-        btn.setTitle("My Trips", for: .normal)
-        btn.layer.cornerRadius = 22
-        btn.addTarget(self, action: #selector(onMyTrips), for: .touchUpInside)
-        return btn
-    }()
-    
     
     private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
@@ -217,12 +243,7 @@ class ProfileController: BaseController {
         spacer.snp.makeConstraints { make in
             make.height.equalTo(16)
         }
-        
-        stackView.addArrangedSubview(myTripsButton)
-        myTripsButton.snp.makeConstraints { make in
-            make.height.equalTo(44)
-        }
-        
+
         spacer = UIView()
         stackView.addArrangedSubview(spacer)
         spacer.snp.makeConstraints { make in
@@ -246,7 +267,11 @@ class ProfileController: BaseController {
         let count = self.presenter.numberOfChannels
         self.labelConnections.text = "\(count)"
         self.labelConnectionsTitle.text = count > 1 ? "Matches" : "Match"
-        
+
+        let tripsCount = self.presenter.numberOfTrips
+        self.labelTrips.text = "\(tripsCount)"
+        self.labelTripsTitle.text = tripsCount > 1 ? "Trips" : "Trip"
+
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4

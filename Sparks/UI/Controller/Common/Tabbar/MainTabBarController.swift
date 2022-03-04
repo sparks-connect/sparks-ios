@@ -70,10 +70,10 @@ class MainTabBarController: UITabBarController {
             $0.title = nil
         })
         
-        let view = CenterView(frame: CGRect(x: self.tabBar.center.x-24, y: 0, width: 48, height: 48))
+        let view = CenterView(frame: CGRect(x: self.tabBar.center.x-24, y: 0, width: 68, height: 68))
         self.tabBar.addSubview(view)
         view.didTapButton = {[unowned self] in
-            self.createTrip()
+            self.openCreateTrip()
         }
     }
     
@@ -108,7 +108,7 @@ class MainTabBarController: UITabBarController {
         self.present(controller, animated: hasBalance, completion: nil)
     }
     
-    func createTrip(){
+    @objc func openCreateTrip(){
         let controller = CreateTripController()
         controller.modalPresentationStyle = .overFullScreen
         self.present(controller, animated: true, completion: nil)

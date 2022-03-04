@@ -19,18 +19,26 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     let itemsPerRow: CGFloat = 3
     private(set) lazy var selectedIndexPaths = [IndexPath]()
     private lazy var photos = [UserPhoto]()
-    
+    private let service = Service.trips
+    private lazy var trips = [Trip]()
+
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         observeUser()
+        getMyTrips()
     }
     
     private func observeUser() {
         token?.invalidate()
         token = RealmUtils.observeUserUpdates {
             self.photos = User.current?.photos.filter({ !$0.main }) ?? []
+            self.getMyTrips()
             self.view?.reloadView()
         }
+    }
+    
+    var numberOfTrips: Int {
+        return trips.count
     }
     
     var numberOfChannels: Int {
@@ -75,6 +83,18 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     func deletePhoto(photo: UserPhoto) {
         self.auth.deletePhoto(photo: photo) { [weak self] response in
             self?.handleResponse(response: response)
+        }
+    }
+    
+    func getMyTrips() {
+        service.fetchMyTrips { [weak self] (response) in
+            self?.handleResponse(response: response, preReloadHandler: {
+                switch response {
+                case .success(let trips):
+                    self?.trips = trips
+                case .failure(_): break
+                }
+            })
         }
     }
 }
