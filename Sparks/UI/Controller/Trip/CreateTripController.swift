@@ -141,7 +141,7 @@ class CreateTripController: BottomSheetController, BasePageViewController {
     }
     
     @objc func close(){
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
     
     func showBackButton(isShow: Bool) {

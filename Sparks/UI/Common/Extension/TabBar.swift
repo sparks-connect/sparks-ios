@@ -18,10 +18,10 @@ class CenterView: UIView {
         middleButton.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "ic_plus")!
         middleButton.setImage(image, for: .normal)
-        middleButton.backgroundColor = #colorLiteral(red: 0.9843137255, green: 0.4117647059, blue: 0.3803921569, alpha: 1)
+        middleButton.backgroundColor = Color.primary.uiColor
         middleButton.tintColor = .white
         middleButton.clipsToBounds = false
-        middleButton.layer.cornerRadius = 34
+        middleButton.layer.cornerRadius = 27
         middleButton.addTarget(self, action: #selector(self.middleButtonAction), for: .touchUpInside)
         return middleButton
     }()

@@ -49,19 +49,25 @@ class MainTabBarController: UITabBarController {
         self.tabBar.tintColor = .white
         self.tabBar.isTranslucent = false
         let trips = UITabBarItem(title: "", image: UIImage(named: "ic_tab_search"), selectedImage: UIImage(named: "ic_tab_search"))
-        trips.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 20)
+        trips.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 8)
+        trips.imageInsets = UIEdgeInsets.init(top: 8,left: 0,bottom: 0,right: 0)
+
         tripListController.tabBarItem = trips
         
         let connections = UITabBarItem(title: "Connections", image: UIImage(named: "ic_tab_connections"), selectedImage: UIImage(named: "ic_tab_connections"))
+        connections.imageInsets = UIEdgeInsets.init(top: 8,left: 0,bottom: 0,right: 0)
         channelListController.tabBarItem = connections
         
         let createTrip = UITabBarItem(title: "", image: nil, selectedImage: nil)
+        createTrip.imageInsets = UIEdgeInsets.init(top: 8,left: 0,bottom: 0,right: 0)
         addTripController.tabBarItem = createTrip
         
         let favs = UITabBarItem(title: "Favourites", image: UIImage(named: "ic_tab_favourite"), selectedImage: UIImage(named: "ic_tab_favourite"))
+        favs.imageInsets = UIEdgeInsets.init(top: 8,left: 0,bottom: 0,right: 0)
         favourites.tabBarItem = favs
         
-        let prof = UITabBarItem(title: "Profile", image: UIImage(named: "ic_profile"), selectedImage: UIImage(named: "ic_profile"))
+        let prof = UITabBarItem(title: "Profile", image: UIImage(named: "ic_tab_profile"), selectedImage: UIImage(named: "ic_tab_profile"))
+        prof.imageInsets = UIEdgeInsets.init(top: 8,left: 0,bottom: 0,right: 0)
         settingsController.tabBarItem = prof
         
         self.viewControllers = [tripListController, channelListController, addTripController, favourites, settingsController]
@@ -70,7 +76,7 @@ class MainTabBarController: UITabBarController {
             $0.title = nil
         })
         
-        let view = CenterView(frame: CGRect(x: self.tabBar.center.x-24, y: 0, width: 68, height: 68))
+        let view = CenterView(frame: CGRect(x: self.tabBar.center.x-24, y: 16, width: 54, height: 54))
         self.tabBar.addSubview(view)
         view.didTapButton = {[unowned self] in
             self.openCreateTrip()
@@ -111,7 +117,7 @@ class MainTabBarController: UITabBarController {
     @objc func openCreateTrip(){
         let controller = CreateTripController()
         controller.modalPresentationStyle = .overFullScreen
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: false, completion: nil)
     }
     
     func presentChannel(withID: String){
