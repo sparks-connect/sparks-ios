@@ -28,7 +28,7 @@ class TagsView<T: Tag>: BaseView, UICollectionViewDelegate, UICollectionViewData
     }
     
     var didSelectItem: ((IndexPath) -> Void)?
-    var cellSize: CGSize = CGSize(width: 150, height: 32)
+    var cellSize: CGSize = CGSize(width: UIScreen.main.bounds.size.width*0.35, height: 32)
     var equalSizeCount: Int = 2
     
     private(set) lazy var collectionView: UICollectionView = {

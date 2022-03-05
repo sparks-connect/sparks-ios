@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GrowingTextView
 
 @objc protocol OnKbdEditorViewControllerDelegate {
     @objc optional func onClose(customKey: String?)
@@ -20,9 +21,14 @@ enum OnKbdEditorInputKind {
     case text
     case multi
     case date
+    case multiLineText
     
     var isText: Bool {
         return self == .text
+    }
+    
+    var isMultiText: Bool {
+        return self == .multiLineText
     }
 }
 
@@ -48,6 +54,8 @@ class OnKbdEditorViewController: UIViewController {
     
     @IBOutlet private weak var inputViewBottom: NSLayoutConstraint!
     @IBOutlet private weak var txInput: UITextField!
+    @IBOutlet private weak var txtView: GrowingTextView!
+
     @IBOutlet private weak var hiddenInput: HiddenTextField!
     
     @IBOutlet private weak var lblViewTitle: UILabel!
@@ -104,9 +112,10 @@ class OnKbdEditorViewController: UIViewController {
         self.hiddenInput.inputView = self.input
         self.txInput.text = text
         self.hiddenInput.text = text
-        self.hiddenInput.isHidden = self.inputKind.isText
+        self.hiddenInput.isHidden = (self.inputKind.isText || self.inputKind.isMultiText)
         self.txInput.isHidden = !self.inputKind.isText
-        
+        self.txtView.isHidden = !self.inputKind.isMultiText
+
         self.datePicker.date = self.delegate?.onKbEditorDateValue?().toDate ?? Date()
         
         if let dataSource = self.delegate?.onKbEditorPickerDataSource?(),
@@ -115,6 +124,7 @@ class OnKbdEditorViewController: UIViewController {
         }
         
         configureInput(input: txInput)
+        configureInputView(input: txtView)
         configureInput(input: hiddenInput)
         
         self.lblViewTitle.text = self.viewTitle
@@ -122,6 +132,16 @@ class OnKbdEditorViewController: UIViewController {
     }
     
     private func configureInput(input: UITextField) {
+        input.autocorrectionType = .no
+        input.autocapitalizationType = .none
+        input.placeholder = self.placeholder
+        input.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: Color.purple.uiColorWithAlpha(0.6)]
+        )
+    }
+    
+    private func configureInputView(input: GrowingTextView) {
         input.autocorrectionType = .no
         input.autocapitalizationType = .none
         input.placeholder = self.placeholder
@@ -142,7 +162,9 @@ class OnKbdEditorViewController: UIViewController {
         
         if self.inputKind.isText {
             self.txInput.becomeFirstResponder()
-        } else {
+        }else if self.inputKind.isMultiText{
+            self.txtView.becomeFirstResponder()
+        }else {
             self.hiddenInput.becomeFirstResponder()
         }
     }
@@ -170,7 +192,7 @@ class OnKbdEditorViewController: UIViewController {
         
         dateValue = Int64(self.datePicker.date.milliseconds)
         
-        self.delegate?.onDone?(with: self.txInput.text, pickerValue: pickerValue, dateValue: dateValue, customKey: customKey)
+        self.delegate?.onDone?(with: self.inputKind.isMultiText ? self.txtView.text : self.txInput.text, pickerValue: pickerValue, dateValue: dateValue, customKey: customKey)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -201,5 +223,13 @@ extension OnKbdEditorViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.hiddenInput.text = self.delegate?.onKbEditorPickerDataSource?()[row]
+    }
+}
+
+extension OnKbdEditorViewController: GrowingTextViewDelegate {
+    func textViewDidChangeHeight(_ textView: GrowingTextView, height: CGFloat) {
+        UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: [.curveLinear], animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }

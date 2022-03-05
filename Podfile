@@ -65,6 +65,9 @@ def  shared_pods
     # Toast
     pod 'NotificationBannerSwift', '2.5.0'
     
+    # Growing TextView
+    pod 'GrowingTextView', '0.7.2'
+
     # Debugger
     pod 'FLEX', :configurations => ['Debug']
 end
