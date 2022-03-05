@@ -339,6 +339,7 @@ PODS:
     - abseil/base/config
     - abseil/meta/type_traits
   - Alamofire (4.7.3)
+  - AMPopTip (4.6.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -581,6 +582,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7.3)
+  - AMPopTip
   - FBSDKLoginKit
   - Firebase/Analytics
   - Firebase/Auth
@@ -612,6 +614,7 @@ SPEC REPOS:
   trunk:
     - abseil
     - Alamofire
+    - AMPopTip
     - AppAuth
     - BoringSSL-GRPC
     - FBAEMKit
@@ -674,6 +677,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AMPopTip: a9384bcc42013831dcce185d8687b0abf946496b
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   FBAEMKit: 4cea610d0bc1680572f2aad7b25db7a2f2690d82
@@ -724,6 +728,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 400ae6c322c5e4bf6b5f3d9da978dbb050302faf
+PODFILE CHECKSUM: 294b8d668f972bd7390b9b45b9bd9b3af3e338a1
 
 COCOAPODS: 1.11.2

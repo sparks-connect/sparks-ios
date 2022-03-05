@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AMPopTip
 
 class TripSearchController: BaseController {
     
@@ -136,6 +137,7 @@ class TripSearchController: BaseController {
     
     override func didAppear() {
         super.didAppear()
+        self.showTooltipOnce()
     }
     
     private func layout(){
@@ -297,7 +299,37 @@ class TripSearchController: BaseController {
         self.departureView.setDate(date: Date())
         self.arrivalView.setDate(date: Date())
     }
-
+    
+    private func showTooltipOnce(){
+        if StandardUserDefaults.resetKeyHere == false {
+            displayTooltip()
+            StandardUserDefaults.resetKeyHere = true
+        }
+       
+    }
+    
+    private func displayTooltip(){
+        let popTip = PopTip()
+        popTip.shouldShowMask = true
+        popTip.shouldDismissOnTap = true
+        popTip.shouldDismissOnTapOutside = true
+        popTip.bubbleColor = Color.purple.uiColor
+        popTip.show(text: "It will reset the applied filters and trips will get refreshed after resetting this...",
+                    direction: .auto,
+                    maxWidth: 300,
+                    in: view,
+                    from: resetButton.frame,
+                    duration: 10)
+        
+        popTip.entranceAnimationHandler = { completion in
+            popTip.transform = CGAffineTransform(rotationAngle: 0.3)
+            UIView.animate(withDuration: 0.5, animations: {
+                popTip.transform = .identity
+            }, completion: { (_) in
+                completion()
+            })
+        }
+    }
 }
 
 extension TripSearchController: OnKbdEditorViewControllerDelegate {

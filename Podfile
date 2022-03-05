@@ -59,6 +59,10 @@ def  shared_pods
     # Image Cropper
     pod 'TOCropViewController'
     
+    # Hint
+    pod 'AMPopTip'
+    
+    # Debugger
     pod 'FLEX', :configurations => ['Debug']
 end
 
