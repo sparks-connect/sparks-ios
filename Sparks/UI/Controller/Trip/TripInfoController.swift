@@ -40,6 +40,7 @@ class TripInfoController: BaseController {
     private lazy var profileButton: PrimaryButton = {
         let btn = PrimaryButton()
         btn.setTitle("View Profile", for: .normal)
+        btn.addTarget(self, action: #selector(viewProfile), for: .touchUpInside)
         btn.layer.cornerRadius = 22
         return btn
     }()
@@ -132,6 +133,10 @@ class TripInfoController: BaseController {
             }
 
         }
+    }
+    
+    @objc func viewProfile() {
+        self.presenter.viewProfile()
     }
     
     @objc func askToConnectClicked() {

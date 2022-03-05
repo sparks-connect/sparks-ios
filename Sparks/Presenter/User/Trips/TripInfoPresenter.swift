@@ -102,6 +102,15 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
             }, reload: true)
         }
     }
+    
+    func viewProfile() {
+        guard let uid = trip.userId else {
+            self.view?.reloadView()
+            return
+        }
+        let presenter = ProfilePresenter()
+        self.view?.navigate()
+    }
 
     deinit {
         token?.invalidate()

@@ -60,6 +60,7 @@ class User: BaseModelObject, SenderType {
         profileTags,
         instaID,
         instaToken,
+        instaUserName,
         referrer = "referredBy",
         _photos = "photos",
         _favourites = "favourites"
@@ -99,6 +100,8 @@ class User: BaseModelObject, SenderType {
     @objc dynamic private(set) var instaID: Int64 = 0
     /// insta access token
     @objc dynamic private(set) var instaToken: String?
+    /// insta user Name
+    @objc dynamic private(set) var instaUserName: String?
 
     
     private var _profileTags: [String]?
@@ -226,6 +229,7 @@ class User: BaseModelObject, SenderType {
         self.birthDate = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.birthDate) ?? 0
         self.instaID = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.instaID) ?? 0
         self.instaToken = try container.decodeIfPresent(String.self, forKey: CodingKeys.instaToken)
+        self.instaUserName = try container.decodeIfPresent(String.self, forKey: CodingKeys.instaUserName)
         self._profileTags = try container.decodeIfPresent([String]?.self, forKey: .profileTags) ?? nil
         self._deviceTokens = try container.decodeIfPresent([String]?.self, forKey: .deviceTokens) ?? nil
         self._photos = try container.decodeIfPresent([UserPhoto]?.self, forKey: ._photos) ?? []

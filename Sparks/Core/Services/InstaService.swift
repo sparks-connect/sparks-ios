@@ -14,6 +14,7 @@ enum InstaStep {
     case token
     case media
     case album
+    case user
     
     func baseURL() -> String {
         let apiBase = Consts.Insta.instaBaseUrl
@@ -28,6 +29,8 @@ enum InstaStep {
             return  graphBase + "me/media"
         case .album:
             return  graphBase + "me/media"
+        case .user:
+            return  graphBase + "me"
         }
     }
     
@@ -35,7 +38,22 @@ enum InstaStep {
         return URL(string: baseURL())!
     }
 }
-
+/* 
+class InstaProfile: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case username
+    }
+    var id: String?
+    var username: String?
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.username = try container.decode(String.self, forKey: .username)
+    }
+}
+*/
 class InstaInfo: Codable {
     private enum CodingKeys: String, CodingKey {
         case userId = "user_id"
@@ -83,16 +101,18 @@ enum MediaType: String, Codable {
 class InstaMedia: Codable {
     private enum CodingKeys: String, CodingKey {
         case id
+        case username
         case mediaUrl = "media_url"
         case mediaType = "media_type"
     }
     var id: String?
     var mediaUrl: String?
     var mediaType: MediaType?
-    
+    var username: String?
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
+        self.username = try container.decode(String.self, forKey: .username)
         self.mediaUrl = try container.decode(String.self, forKey: .mediaUrl)
         self.mediaType = try container.decode(MediaType.self, forKey: .mediaType)
 
@@ -157,7 +177,7 @@ class InstaServiceImpl: InstaService {
             return
         }
         let params: [String: Any] = ["access_token": user.instaToken ?? "",
-                                     "fields": "id,caption,media_url,media_type,children"]
+                                     "fields": "id,username,caption,media_url,media_type,children"]
         self.api.send(for: InstaStep.media.url(),
                          method: .get,
                          params: params,
@@ -166,6 +186,13 @@ class InstaServiceImpl: InstaService {
             case .success(let data):
                 if let rawData = data {
                     let instaData = try? JSONDecoder().decode(InstaData.self, from: rawData)
+                    guard let user = User.current,let info = instaData else {
+                        return
+                    }
+                    if let data = info.data, data.count > 0 {
+                        self.fireBaseApi.updateNode(path: user.path, values: [
+                            User.CodingKeys.instaUserName.rawValue: "@\(data[0].username ?? "")" ], completion: nil)
+                    }
                     completion(.success(instaData))
                 }else {
                     completion(.failure(CIError.unknown))
@@ -196,7 +223,35 @@ class InstaServiceImpl: InstaService {
             case .failure(_): break
             }
         }
-
     }
+    /*
+    func getUserName(){
+        guard let user = User.current else {
+            return
+        }
+        let params: [String: Any] = ["access_token": user.instaToken ?? "",
+                                     "fields": "id,username"]
+        
+        self.api.send(for: InstaStep.user.url(),
+                         method: .get,
+                         params: params,
+                         headers: nil) { result in
+            switch result {
+            case .success(let data):
+                if let rawData = data {
+                    let instaData = try? JSONDecoder().decode(InstaProfile.self, from: rawData)
+                    guard let user = User.current,let info = instaData else {
+                        return
+                    }
+                    self.fireBaseApi.updateNode(path: user.path, values: [
+                        User.CodingKeys.instaUserName.rawValue: info.username ?? ""], completion: nil)
+                    
+                }
+            case .failure(_):
+                break
+            }
+        }
+    }
+     */
     
 }

@@ -345,7 +345,7 @@ extension FirebaseAPIImpl {
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
 
         let fbLoginManager : LoginManager = LoginManager()
-        fbLoginManager.logIn(permissions: ["email"], from: controller) { (result, error) -> Void in
+        fbLoginManager.logIn(permissions: ["public_profile"], from: controller) { (result, error) -> Void in
             
             guard let result = result, let token = result.token, error == nil else {
                 completion(.failure(CIError.unauthorized))

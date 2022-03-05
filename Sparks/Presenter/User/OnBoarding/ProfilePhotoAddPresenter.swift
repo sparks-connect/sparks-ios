@@ -46,13 +46,12 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
                         photos.append(photo)
                     }
                 })
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-            
-            self?.handleResponse(response: response, preReloadHandler: {
                 self?.view?.navigate(assets: photos)
-            })
+            case .failure(_):
+                // process again
+                let url  = Service.insta.getAuthorizationURL()
+                self?.view?.showAuthorizationWindow(url: url)
+            }
         })
     }
     

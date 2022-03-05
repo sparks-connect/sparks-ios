@@ -62,11 +62,15 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         lbl.textColor = .white
         lbl.adjustsFontSizeToFitWidth = true
         lbl.minimumScaleFactor = 0.5
-        lbl.text = User.current?.fullName
+        lbl.text = self.userTitle
         return lbl
     }()
-    
-    var photoAssets = [PhotoAsset]()
+    var userTitle: String? = User.current?.firstName
+    var photoAssets = [PhotoAsset](){
+        didSet {
+            self.userTitle = User.current?.instaUserName
+        }
+    }
     private var selectedAssets = [PhotoAsset]()
     
     weak var delegate: AssetSelectViewControllerDelegate?
