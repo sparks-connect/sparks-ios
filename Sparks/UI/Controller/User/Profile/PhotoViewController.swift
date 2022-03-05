@@ -112,14 +112,16 @@ class PhotoViewController: BaseController {
         button.setImage(#imageLiteral(resourceName: "ic_dots"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(menuClicked(sender:)), for: .touchUpInside)
+        button.isHidden = !self.shouldDelete 
         return button
     }()
     
     private var photo: UserPhoto?
-    
-    init(image: UserPhoto) {
+    private var shouldDelete: Bool = true
+    init(image: UserPhoto, shouldDelete: Bool = true) {
         super.init(nibName: nil, bundle: nil)
         self.photo = image
+        self.shouldDelete = shouldDelete
     }
     
     required init?(coder: NSCoder) {

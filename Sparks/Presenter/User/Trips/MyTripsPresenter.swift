@@ -17,10 +17,18 @@ class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
     private var token: NotificationToken?
     var datasource: [Trip]?
     private let service = Service.trips
-    
+    var user = User.current
+    var isCurrentUser: Bool {
+        return self.user == User.current
+    }
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         observeUser()
+    }
+    
+    convenience init(user: User?) {
+        self.init()
+        self.user = user
     }
     
     override func willAppear() {
@@ -38,16 +46,30 @@ class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
     }
     
     private func fetchMyTrips(){
-        service.fetchMyTrips {[weak self] response in
-            self?.handleResponse(response: response, preReloadHandler: {
-                switch response{
-                case .success(let trips):
-                    self?.datasource = trips
-                case .failure(_):
-                    break
-                }
-            }, reload: true)
+        if self.isCurrentUser {
+            service.fetchMyTrips {[weak self] response in
+                self?.handleResponse(response: response, preReloadHandler: {
+                    switch response{
+                    case .success(let trips):
+                        self?.datasource = trips
+                    case .failure(_):
+                        break
+                    }
+                }, reload: true)
+            }
+        }else {
+            service.fetchTripsForUser(uid: self.user?.uid ?? "") {[weak self] response in
+                self?.handleResponse(response: response, preReloadHandler: {
+                    switch response{
+                    case .success(let trips):
+                        self?.datasource = trips
+                    case .failure(_):
+                        break
+                    }
+                }, reload: true)
+            }
         }
+        
     }
     
     func configureCell(cell: TripCell, indexPath: IndexPath) {

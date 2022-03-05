@@ -21,17 +21,25 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     private lazy var photos = [UserPhoto]()
     private let service = Service.trips
     private lazy var trips = [Trip]()
-
+    var user = User.current
+    var isCurrentUser: Bool {
+        return self.user == User.current
+    }
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         observeUser()
         getMyTrips()
     }
     
+    convenience init(user: User) {
+        self.init()
+        self.user = user
+    }
+    
     private func observeUser() {
         token?.invalidate()
         token = RealmUtils.observeUserUpdates {
-            self.photos = User.current?.photos.filter({ !$0.main }) ?? []
+            self.photos = self.user?.photos.filter({ !$0.main }) ?? []
             self.getMyTrips()
             self.view?.reloadView()
         }
@@ -64,7 +72,7 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     }
     
     var selectedPostIds: [String] {
-        guard let user = User.current else { return [] }
+        guard let user = self.user else { return [] }
         var result = [String]()
         for indexPath in selectedIndexPaths {
             guard indexPath.row < numberOfItems else { continue }
@@ -87,14 +95,26 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     }
     
     func getMyTrips() {
-        service.fetchMyTrips { [weak self] (response) in
-            self?.handleResponse(response: response, preReloadHandler: {
-                switch response {
-                case .success(let trips):
-                    self?.trips = trips
-                case .failure(_): break
-                }
-            })
+        if self.isCurrentUser {
+            service.fetchMyTrips() { [weak self] (response) in
+                self?.handleResponse(response: response, preReloadHandler: {
+                    switch response {
+                    case .success(let trips):
+                        self?.trips = trips
+                    case .failure(_): break
+                    }
+                })
+            }
+        }else {
+            service.fetchTripsForUser(uid: self.user?.uid  ?? "") { [weak self] (response) in
+                self?.handleResponse(response: response, preReloadHandler: {
+                    switch response {
+                    case .success(let trips):
+                        self?.trips = trips
+                    case .failure(_): break
+                    }
+                })
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 
 class MyTripsController: BaseController {
     
-    private let presenter = MyTripsPresenter()
+    private var presenter = MyTripsPresenter()
     override func getPresenter() -> Presenter {
         return self.presenter
     }
@@ -20,9 +20,14 @@ class MyTripsController: BaseController {
         return vw
     }()
     
+    convenience init(presenter: MyTripsPresenter) {
+        self.init()
+        self.presenter = presenter
+    }
+    
     override func configure(){
         super.configure()
-        self.navigationItem.title = "My Trips"
+        self.navigationItem.title = self.presenter.isCurrentUser ? "My Trips" : "Trips"
         
         self.view.addSubview(tripView)
         tripView.snp.makeConstraints { make in

@@ -153,8 +153,10 @@ extension TripInfoController: TripInfoView {
         self.imgView.sd_setImage(with: url, completed: nil)
     }
     
-    func navigate() {
-        
+    func navigate(presenter: ProfilePresenter) {
+        let profile = ProfileController(presenter: presenter)
+        profile.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(profile, animated: true)
     }
     
     func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String) {

@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import MapKit
 
 
 class ProfileController: BaseController {
     
     private var mainPhotoUpload = false
-    let presenter = ProfilePresenter()
+    var presenter = ProfilePresenter()
     override func getPresenter() -> Presenter {
         return self.presenter
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
-        return [UIBarButtonItem(image: #imageLiteral(resourceName: "ic_gear"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))]
+        return self.presenter.isCurrentUser ? [UIBarButtonItem(image: #imageLiteral(resourceName: "ic_gear"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))] : []
     }
     
     private lazy var collectionView: UICollectionView = {
@@ -60,7 +61,9 @@ class ProfileController: BaseController {
         profilePhoto.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(sender:))))
+        if self.presenter.isCurrentUser {
+            view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(sender:))))
+        }
         return view
     }()
     
@@ -185,11 +188,17 @@ class ProfileController: BaseController {
         profileEditButton.titleLabel?.font = Font.regular.uiFont(ofSize: 14)
         profileEditButton.setTitleColor(Color.lightPurple.uiColor, for: .normal)
         profileEditButton.addTarget(self, action: #selector(onProfileEdit), for: .touchUpInside)
+        profileEditButton.isHidden = !self.presenter.isCurrentUser
         return profileEditButton
     }()
     
     private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
+    convenience init(presenter: ProfilePresenter){
+        self.init()
+        self.presenter = presenter
+    }
+    
     override func configure() {
         super.configure()
         self.navigationItem.title = "Profile"
@@ -262,8 +271,9 @@ class ProfileController: BaseController {
     override func reloadView() {
         super.reloadView()
         self.collectionView.reloadData()
-        self.labelTitle.text = (User.current?.displayName ?? "No Name") + ", " + (User.current?.ageYear.description ?? "")
-        self.profilePhoto.set(user: User.current, channel: nil)
+        let user = self.presenter.user
+        self.labelTitle.text = (user?.displayName ?? "No Name") + ", " + (user?.ageYear.description ?? "")
+        self.profilePhoto.set(user: user, channel: nil)
         let count = self.presenter.numberOfChannels
         self.labelConnections.text = "\(count)"
         self.labelConnectionsTitle.text = count > 1 ? "Matches" : "Match"
@@ -276,7 +286,7 @@ class ProfileController: BaseController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
         
-        self.labelTags.attributedText = NSAttributedString(string: User.current?.tagsStr ?? "", attributes: [.paragraphStyle: paragraphStyle])
+        self.labelTags.attributedText = NSAttributedString(string: user?.tagsStr ?? "", attributes: [.paragraphStyle: paragraphStyle])
     }
     
     @objc private func profileImageTapped(sender: UITapGestureRecognizer) {
@@ -301,7 +311,7 @@ class ProfileController: BaseController {
     }
     
     @objc private func onMyTrips(){
-        let controller = MyTripsController()
+        let controller = MyTripsController(presenter: MyTripsPresenter(user: self.presenter.user))
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -314,19 +324,19 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.presenter.numberOfItems + 1
+        return self.presenter.isCurrentUser ? self.presenter.numberOfItems + 1 : self.presenter.numberOfItems
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.item == 0 {
+        if indexPath.item == 0 && self.presenter.isCurrentUser {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addPhotoCell", for: indexPath) as? MyProfileAddPhotoCollectionViewCell else {
                 return UICollectionViewCell()
             }
             return cell
         }
-        
-        let convertedIndexPath = IndexPath(item: indexPath.item - 1, section: indexPath.section)
+        let index = self.presenter.isCurrentUser ? indexPath.item - 1 : indexPath.item
+        let convertedIndexPath = IndexPath(item: index, section: indexPath.section)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell",
                                                             for: indexPath) as? MyProfilePhotoCollectionViewCell
               , let _url = self.presenter.photo(atIndexPath: convertedIndexPath)?.url, let url = URL(string: _url) else {
@@ -364,20 +374,18 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.row == 0 && self.presenter.isCurrentUser {
             mainPhotoUpload = false
             let controller = ProfilePhotoAddController()
             controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true, completion: nil)
             return
         }
-        
-        let ind = IndexPath(item: indexPath.item - 1, section: indexPath.section)
+        let index = self.presenter.isCurrentUser ? indexPath.item - 1 : indexPath.item
+        let ind = IndexPath(item: index, section: indexPath.section)
         guard let photo = self.presenter.photo(atIndexPath: ind) else { return }
-//        self.presenter.selectItem(at: indexPath)
-//        collectionView.reloadItems(at: [indexPath])
         self.cell = collectionView.cellForItem(at: ind)
-        let controller = PhotoViewController(image: photo)
+        let controller = PhotoViewController(image: photo, shouldDelete: self.presenter.isCurrentUser)
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .custom
         controller.delegate = self

@@ -13,7 +13,7 @@ protocol TripInfoView: BasePresenterView {
     func setTitle(title: String)
     func loadImage(url: URL?)
     func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String)
-    func navigate()
+    func navigate(presenter: ProfilePresenter)
 }
 
 class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
@@ -104,12 +104,11 @@ class TripInfoPresenter: BasePresenter<TripInfoView>, PreviewConfiguration {
     }
     
     func viewProfile() {
-        guard let uid = trip.userId else {
-            self.view?.reloadView()
+        guard let user = trip.user else {
             return
         }
-        let presenter = ProfilePresenter()
-        self.view?.navigate()
+        let presenter = ProfilePresenter(user: user)
+        self.view?.navigate(presenter: presenter)
     }
 
     deinit {
