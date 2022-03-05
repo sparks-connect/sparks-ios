@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class BaseController : UIViewController, BasePresenterView {
     
@@ -155,12 +156,15 @@ class BaseController : UIViewController, BasePresenterView {
     }
     
     func notifyError(message: String, okAction: (() -> Void)? = nil) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: {(action) in
-            okAction?()
-        })
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        //Ref - https://github.com/Daltron/NotificationBanner
+        let banner = GrowingNotificationBanner(title: "", subtitle: message, style: .warning)
+        banner.show()
+//        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Ok", style: .default, handler: {(action) in
+//            okAction?()
+//        })
+//        alert.addAction(action)
+//        self.present(alert, animated: true, completion: nil)
     }
     
     func reloadView() {} // Override in subclasses

@@ -549,6 +549,7 @@ PODS:
   - Koloda (5.0.1):
     - pop (~> 1.0)
   - leveldb-library (1.22.1)
+  - MarqueeLabel (4.0.5)
   - MessageKit (3.7.0):
     - InputBarAccessoryView (~> 5.4.0)
   - nanopb (2.30908.0):
@@ -556,6 +557,9 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - NotificationBannerSwift (2.5.0):
+    - MarqueeLabel (~> 4.0.0)
+    - SnapKit (~> 5.0.0)
   - pop (1.0.12)
   - PromisesObjC (2.0.0)
   - PubNub (4.17.0):
@@ -600,6 +604,7 @@ DEPENDENCIES:
   - KeychainAccess
   - Koloda
   - MessageKit
+  - NotificationBannerSwift (= 2.5.0)
   - PubNub
   - RealmSwift
   - RxCocoa (from `https://github.com/ReactiveX/RxSwift`, branch `main`)
@@ -649,8 +654,10 @@ SPEC REPOS:
     - KeychainAccess
     - Koloda
     - leveldb-library
+    - MarqueeLabel
     - MessageKit
     - nanopb
+    - NotificationBannerSwift
     - pop
     - PromisesObjC
     - PubNub
@@ -712,8 +719,10 @@ SPEC CHECKSUMS:
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   Koloda: d07b9199a383abc5898b62aa945a599f5e7c0c4b
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
+  MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   MessageKit: 8e76dd8d65ad44b49e1651c673497146416461e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  NotificationBannerSwift: 684966fa934c48b70eff8bbec93fccf8db603365
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   PubNub: 306896876c3089884067609ff25d628a547d2942
@@ -728,6 +737,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 294b8d668f972bd7390b9b45b9bd9b3af3e338a1
+PODFILE CHECKSUM: 52181f0652fa2571ed34502f031196a3b7b5d54b
 
 COCOAPODS: 1.11.2

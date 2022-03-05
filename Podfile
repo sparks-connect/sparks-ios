@@ -62,6 +62,9 @@ def  shared_pods
     # Hint
     pod 'AMPopTip'
     
+    # Toast
+    pod 'NotificationBannerSwift', '2.5.0'
+    
     # Debugger
     pod 'FLEX', :configurations => ['Debug']
 end
