@@ -68,7 +68,9 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     var userTitle: String? = User.current?.firstName
     var photoAssets = [PhotoAsset](){
         didSet {
-            self.userTitle = User.current?.instaUserName
+            if User.current?.instaUserName.isEmpty == false{
+                self.userTitle = User.current?.instaUserName
+            }
         }
     }
     private var selectedAssets = [PhotoAsset]()

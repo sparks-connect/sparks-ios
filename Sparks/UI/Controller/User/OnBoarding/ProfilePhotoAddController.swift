@@ -177,6 +177,7 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
                             let controller = AssetSelectViewController()
                             controller.assets = imageAsset
                             controller.delegate = self
+                            controller.modalPresentationStyle = .fullScreen
                             self.present(controller, animated: true, completion: nil)
                         }
                     }
