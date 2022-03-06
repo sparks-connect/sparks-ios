@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 
 protocol ListPresenter: AnyObject {
-    var datasource: [Trip]? {get set}
+    var datasource: [Trip] {get}
     func configureCell(cell: TripCell, indexPath: IndexPath)
     func didSelectCell(index: Int)
     func refreshList()
@@ -88,8 +88,7 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Datasource count = \(self.presenter.datasource?.count ?? 0)")
-        return self.presenter.datasource?.count ?? 0
+        return self.presenter.datasource.count
     }
       
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -120,14 +119,20 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
         }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         if !isEnablePaging { return }
         if refreshControl.isRefreshing { return }
-        if(collectionView.contentOffset.y >= (collectionView.contentSize.height - collectionView.bounds.size.height)) {
-            if !isPagingStarted {
-                print("add paging....")
-                isPagingStarted = true
-                self.presenter.fetchNextPage()
-            }
+        
+        if scrollView.scrolledToBottom && !isPagingStarted {
+            isPagingStarted = true
+            self.presenter.fetchNextPage()
         }
+    }
+}
+
+extension UIScrollView {
+    var scrolledToBottom: Bool {
+        let bottomEdge = contentSize.height + contentInset.bottom - bounds.height
+        return contentOffset.y >= bottomEdge
     }
 }

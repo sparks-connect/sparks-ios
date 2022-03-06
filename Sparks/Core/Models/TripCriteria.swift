@@ -16,6 +16,10 @@ class TripCriteria: BaseModelObject {
     @objc dynamic private(set) var gender: String = Gender.both.rawValue
     @objc dynamic private(set) var age: String = Age.small.rawValue
 
+    var ageEnum: Age {
+        return Age(rawValue: self.age) ?? .small
+    }
+    
     override init() {
         super.init()
     }

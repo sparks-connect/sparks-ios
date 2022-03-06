@@ -75,8 +75,13 @@ class TripsServiceImpl: TripsService {
         trips.forEach { trip in
             let matchesEndDate = trip.endDate < criteria.endDate
             let matchesCity = criteria.city.isEmpty || trip.city == criteria.city
+            var matchesAge = true
+            if let years = trip.user?.ageYear {
+                matchesAge = criteria.ageEnum.range.contains(years)
+            }
+            
             let matchesGender = (criteria.gender == Gender.both.rawValue || trip.user?.gender == nil) || trip.user?.gender == criteria.gender
-            if (matchesEndDate && matchesCity && matchesGender) {
+            if (matchesEndDate && matchesCity && matchesGender && matchesAge && trip.userId != User.current?.uid) {
                 result.append(trip)
             }
         }

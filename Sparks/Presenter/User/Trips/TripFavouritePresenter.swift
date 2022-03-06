@@ -15,7 +15,7 @@ protocol TripFavView: BasePresenterView {
 
 class TripFavouritePresenter: BasePresenter<TripFavView>, ListPresenter {
     private var token: NotificationToken?
-    var datasource: [Trip]?
+    private(set) var datasource = [Trip]()
     private let service = Service.trips
 
     override func onFirstViewAttach() {
@@ -38,14 +38,14 @@ class TripFavouritePresenter: BasePresenter<TripFavView>, ListPresenter {
     }
     
     private func fetchFavourites(){
-        self.datasource = User.current?.favourites.map({ $0 })
+        self.datasource = Array(User.current?.favourites.map({ $0 }) ?? [])
         self.view?.reloadView()
     }
     
     
     func configureCell(cell: TripCell, indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
-
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         let stDate = trip.startDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let endDate = trip.endDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let date = "\(stDate) - \(endDate)"
@@ -65,12 +65,14 @@ class TripFavouritePresenter: BasePresenter<TripFavView>, ListPresenter {
     }
     
     func didSelectCell(index: Int) {
-        guard let trip = self.datasource?[index] else {return}
+        
+        let trip = self.datasource[index]
         self.view?.navigate(presenter: TripInfoPresenter(trip: trip))
     }
     
     func addToFavourite(indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         if user.isTripFavourite(uid: trip.uid) {
             service.removeFromFavourites(uid: trip.uid) { result in
                 switch result {

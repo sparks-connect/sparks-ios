@@ -24,6 +24,7 @@ enum CompareType {
     case greaterThanOrEqual
     case arrayContains
     case pathEquals
+    case notEquals
 }
 
 typealias Predicate = (field: String, type: CompareType, value: Any)
@@ -132,6 +133,8 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
             return ref.whereField(predicate.field, arrayContains: predicate.value)
         case .pathEquals:
             return ref.whereField(predicate.field, isEqualTo: predicate.value)
+        case .notEquals:
+            return ref.whereField(predicate.field, isNotEqualTo: predicate.value)
         }
     }
 

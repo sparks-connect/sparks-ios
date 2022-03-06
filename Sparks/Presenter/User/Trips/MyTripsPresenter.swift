@@ -15,7 +15,7 @@ protocol MyTripView: BasePresenterView {
 
 class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
     private var token: NotificationToken?
-    var datasource: [Trip]?
+    private(set) var datasource: [Trip] = []
     private let service = Service.trips
     var user = User.current
     var isCurrentUser: Bool {
@@ -73,8 +73,8 @@ class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
     }
     
     func configureCell(cell: TripCell, indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
-        
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         let stDate = trip.startDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let endDate = trip.endDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let date = "\(stDate) - \(endDate)"
@@ -94,12 +94,13 @@ class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
     }
     
     func didSelectCell(index: Int) {
-        guard let trip = self.datasource?[index] else {return}
+        let trip = self.datasource[index]
         self.view?.navigate(presenter: TripInfoPresenter(trip: trip))
     }
     
     func addToFavourite(indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         if user.isTripFavourite(uid: trip.uid) {
             service.removeFromFavourites(uid: trip.uid) { result in
                 switch result {

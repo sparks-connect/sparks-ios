@@ -16,7 +16,7 @@ protocol TripListView: BasePresenterView {
 
 class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     private let service = Service.trips
-    var datasource: [Trip]?
+    private(set) var datasource: [Trip] = []
     private var token: NotificationToken?
     private var userToken: NotificationToken?
     private var lastItem: Any?
@@ -36,15 +36,11 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     func fetchTrips(_ showLoader: Bool = true){
         
         self.view?.showLoader(isLoading: showLoader)
-        service.fetch(limit: 5, lastItem: lastItem){[weak self] response in
+        service.fetch(limit: 10, lastItem: lastItem){[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
-                    if self?.lastItem == nil {
-                        self?.datasource = model.trips
-                    }else {
-                        self?.datasource?.append(contentsOf: model.trips)
-                    }
+                    self?.datasource.append(contentsOf: model.trips)
                     self?.lastItem = model.lastItem
                 case .failure(_):
                     break
@@ -57,6 +53,8 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
         token?.invalidate()
         token = RealmUtils.observe {[weak self] (change: RealmCollectionChange<Results<TripCriteria>>) in
             main {
+                self?.lastItem = nil
+                self?.datasource.removeAll()
                 switch change {
                 case .initial(_):
                     self?.fetchTrips()
@@ -77,8 +75,8 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     }
     
     func configureCell(cell: TripCell, indexPath: IndexPath){
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
-        
+        guard let user = User.current, indexPath.row < datasource.count else {return}
+        let trip = self.datasource[indexPath.item]
         let stDate = trip.startDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let endDate = trip.endDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let date = "\(stDate) - \(endDate)"
@@ -99,6 +97,7 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     
     func refreshList() {
         self.lastItem = nil
+        self.datasource.removeAll()
         self.fetchTrips(false)
     }
     
@@ -109,12 +108,13 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     }
     
     func didSelectCell(index: Int) {
-        guard let trip = self.datasource?[index] else {return}
+        let trip = self.datasource[index]
         self.view?.navigate(presenter: TripInfoPresenter(trip: trip))
     }
     
     func addToFavourite(indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         if user.isTripFavourite(uid: trip.uid) {
             service.removeFromFavourites(uid: trip.uid) { result in
                 switch result {

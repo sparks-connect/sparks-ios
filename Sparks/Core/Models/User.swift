@@ -16,6 +16,14 @@ enum Age: String, Codable, Tag {
     case mid = "32-50"
     case elder = "From 50"
     
+    var range: ClosedRange<Int> {
+        switch self {
+        case .small: return 18...32
+        case .mid: return 33...50
+        case .elder: return 51...80
+        }
+    }
+    
     func getLabel() -> String {
         return self.rawValue
     }
