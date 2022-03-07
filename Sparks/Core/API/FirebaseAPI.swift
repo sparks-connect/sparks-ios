@@ -548,6 +548,7 @@ extension FirebaseAPIImpl {
 
     func logOut() {
         NotificationCenter.default.post(name: Notification.Name("logout"), object: nil)
+        
         clearFbPermissions()
         RealmUtils.deleteAll()
         database.clearPersistence { (error) in

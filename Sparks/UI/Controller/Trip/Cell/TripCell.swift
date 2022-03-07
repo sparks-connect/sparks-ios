@@ -106,10 +106,8 @@ class TripCell: UICollectionViewCell{
         super.init(frame: frame)
         self.contentView.clipsToBounds = false
         self.contentView.backgroundColor = .clear
-        self.contentView.borderWidth = 1.4
+        self.contentView.borderWidth = 1
         self.contentView.borderColor = .white
-        self.contentView.layer.cornerRadius = 2
-        self.imgView.layer.cornerRadius = 2
         
         self.contentView.addSubview(imgView)
         imgView.snp.makeConstraints { make in
@@ -132,11 +130,11 @@ class TripCell: UICollectionViewCell{
         }
         
         self.contentView.addSubview(stackView)
-        let width = (UIScreen.main.bounds.width*0.44)/1.8
+        
         stackView.snp.makeConstraints { make in
             make.leading.equalTo(8)
             make.bottom.equalTo(-8)
-            make.width.equalTo(width)
+            make.width.equalToSuperview().multipliedBy(0.7)
         }
         
         stackView.addArrangedSubview(name)

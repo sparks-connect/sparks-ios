@@ -43,8 +43,11 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 4
         
         let colView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         colView.backgroundColor = .clear
         colView.translatesAutoresizingMaskIntoConstraints = false
         colView.alwaysBounceVertical = true
@@ -102,14 +105,8 @@ class TripView<T: ListPresenter>: UIView, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right) - 16) / 2.0
-        return CGSize(width: itemSize, height: itemSize)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout
-                        collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 16.0
+        let itemSize = collectionView.frame.width / 2.0 - 2
+        return CGSize(width: itemSize, height: itemSize * 1.3)
     }
     
     func collectionView(

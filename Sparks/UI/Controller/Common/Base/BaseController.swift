@@ -50,7 +50,16 @@ class BaseController : UIViewController, BasePresenterView {
     // MARK: ====== Navigation bar ===============================
     
     func configureNavigationBar() {
-        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = Color.background.uiColor
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.font(for: 16, style: .bold)
+        ]
+
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.navigationBar.barTintColor = Color.background.uiColor
