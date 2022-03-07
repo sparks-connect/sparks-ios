@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import RealmSwift
 
 class MemoryStore {
     
     struct MemoryKeys {
         static let userUid = "userUid"
     }
+    
+    private var notificatTokens = Set<NotificationToken>()
     
     static let sharedInstance = MemoryStore()
     
@@ -32,7 +35,17 @@ class MemoryStore {
         self.store.removeValue(forKey: key)
     }
     
+    func addToken(_ token: NotificationToken?) {
+        guard let _token = token else { return }
+        notificatTokens.remove(_token)
+        notificatTokens.insert(_token)
+    }
+    
     func clear() {
+        self.notificatTokens.forEach { token in
+            token.invalidate()
+        }
+        self.notificatTokens.removeAll()
         self.store.removeAll()
     }
 }

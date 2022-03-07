@@ -117,4 +117,9 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
             }
         }
     }
+    
+    deinit {
+        token?.invalidate()
+        token = nil
+    }
 }
