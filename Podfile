@@ -70,6 +70,9 @@ def  shared_pods
 
     # Debugger
     pod 'FLEX', :configurations => ['Debug']
+    
+    # Toast
+    pod 'Toast-Swift', '~> 5.0.1'
 end
 
 
