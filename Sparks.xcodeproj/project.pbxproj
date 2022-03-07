@@ -2225,7 +2225,7 @@
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.appwork.sparks";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2371,7 +2371,7 @@
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2402,7 +2402,7 @@
 				PRODUCT_NAME = Sparks;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.appwork.sparks";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
