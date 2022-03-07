@@ -23,7 +23,7 @@ class TripsListController: BaseController {
         
     override func configure() {
         super.configure()
-        self.navigationItem.title = "Sparks"
+        self.navigationItem.title = "Trips"
         layout()
     }
     
@@ -59,10 +59,9 @@ class TripsListController: BaseController {
     private func layout(){
         self.view.addSubview(tripView)
         tripView.snp.makeConstraints { make in
-            make.leading.equalTo(16)
-            make.trailing.equalTo(-16)
-            make.top.equalTo(16)
-            make.bottom.equalTo(-16)
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.topMargin).offset(8)
+            make.bottom.equalToSuperview()
         }
     }
     

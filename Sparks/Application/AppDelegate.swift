@@ -22,6 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        UITabBar.appearance().barTintColor = Color.fadedBackground.uiColor
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().tintColor = .white
+
+        UITabBar.appearance().isTranslucent = true
+        
         LocalStore.markFirstLaunch()
         //TripCriteria.reset()
         API.setup()
