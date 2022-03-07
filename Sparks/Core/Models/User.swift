@@ -41,6 +41,14 @@ enum Gender: String, Codable, Tag {
     func getLabel() -> String {
         return self.rawValue
     }
+    
+    var icon: UIImage? {
+        switch self {
+        case .both: return UIImage(named: "both")
+        case .male: return UIImage(named: "male")
+        case .female: return UIImage(named: "female")
+        }
+    }
 }
 
 struct UserConsts {

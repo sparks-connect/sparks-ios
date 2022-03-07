@@ -13,6 +13,8 @@ class TripCell: UICollectionViewCell{
     
     private var indexPath: IndexPath!
     var makeFavourite: ((IndexPath) -> Void)?
+    let fav = UIImage(named: "ic_heart_filled")
+    let noFav = UIImage(named: "like")
     
     private lazy var imgView: UIImageView = {
         let imageVw = UIImageView()
@@ -53,8 +55,8 @@ class TripCell: UICollectionViewCell{
         stack.layer.cornerRadius = 2
         stack.backgroundColor = Color.profile.uiColor
         stack.alignment = .fill
-        stack.distribution = .fillProportionally
         stack.axis = .vertical
+        stack.spacing = 4
         stack.addRightShadow(with: 4, width: 4, color: UIColor.black.withAlphaComponent(0.5))
         stack.layoutMargins = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5)
         stack.isLayoutMarginsRelativeArrangement = true
@@ -68,8 +70,8 @@ class TripCell: UICollectionViewCell{
         btn.titleLabel?.font = Font.bold.uiFont(ofSize: 12)
         btn.titleLabel?.lineBreakMode = .byTruncatingTail
         btn.titleLabel?.minimumScaleFactor = 0.8
+        btn.imageView?.contentMode = .scaleAspectFit
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
-        btn.setImage(UIImage(named: "name-ring"), for: .normal)
         btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 0)
         btn.contentHorizontalAlignment = .left
         return btn
@@ -82,6 +84,7 @@ class TripCell: UICollectionViewCell{
         btn.titleLabel?.font = Font.bold.uiFont(ofSize: 12)
         btn.titleLabel?.minimumScaleFactor = 0.8
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
+        btn.imageView?.contentMode = .scaleAspectFit
         btn.titleLabel?.lineBreakMode = .byTruncatingTail
         btn.setImage(UIImage(named: "takeoff"), for: .normal)
         btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 0)
@@ -137,19 +140,28 @@ class TripCell: UICollectionViewCell{
             make.width.equalToSuperview().multipliedBy(0.7)
         }
         
+        name.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+        
+        location.snp.makeConstraints { make in
+            make.height.equalTo(16)
+        }
+        
         stackView.addArrangedSubview(name)
         stackView.addArrangedSubview(location)
         stackView.addArrangedSubview(desc)
     }
     
-    func configure(indexPath: IndexPath, url: String, date: String, name: String, location: String, desc: String, isFav: Bool = false){
+    func configure(indexPath: IndexPath, url: String, date: String, name: String, location: String, desc: String, isFav: Bool = false, gender: Gender){
         imgView.sd_setImage(with: URL(string: url), completed: nil)
         self.indexPath = indexPath
         self.dateBtn.setTitle(date, for: .normal)
         self.name.setTitle(name, for: .normal)
         self.location.setTitle(location, for: .normal)
         self.desc.text = desc
-        self.likeBtn.setImage(isFav ? UIImage(named: "ic_heart_filled") : UIImage(named: "like"), for: .normal)
+        self.name.setImage(gender.icon, for: .normal)
+        self.likeBtn.setImage(isFav ? fav : noFav, for: .normal)
     }
     
     @objc func fav(sender: Any) {

@@ -36,7 +36,7 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     func fetchTrips(_ showLoader: Bool = true){
         
         self.view?.showLoader(isLoading: showLoader)
-        service.fetch(limit: 10, lastItem: lastItem){[weak self] response in
+        service.fetch(limit: 100, lastItem: lastItem){[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
@@ -88,7 +88,8 @@ class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
                        name: profile,
                        location: trip.city ?? "",
                        desc: trip.plan ?? "",
-                       isFav: user.isTripFavourite(uid: trip.uid)
+                       isFav: user.isTripFavourite(uid: trip.uid),
+                       gender: user.genderEnum ?? .both
                     )
         cell.makeFavourite = {[weak self] (indexPath) in
             self?.addToFavourite(indexPath: indexPath)

@@ -86,7 +86,8 @@ class MyTripsPresenter: BasePresenter<MyTripView>, ListPresenter {
                        name: profile,
                        location: trip.city ?? "",
                        desc: trip.plan ?? "",
-                       isFav: user.isTripFavourite(uid: trip.uid)
+                       isFav: user.isTripFavourite(uid: trip.uid),
+                       gender: user.genderEnum ?? .both
         )
         cell.makeFavourite = {[weak self] (indexPath) in
             self?.addToFavourite(indexPath: indexPath)
