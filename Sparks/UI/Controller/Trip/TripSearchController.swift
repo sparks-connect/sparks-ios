@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AMPopTip
+import Toast_Swift
 
 class TripSearchController: BaseController {
     
@@ -290,6 +291,7 @@ class TripSearchController: BaseController {
     @objc private func resetClicked(){
         self.presenter.reset()
         self.setDefaultValue()
+        self.view.makeToast("Success! Reset Filters is done! \n Trips will be refreshed!",position: .top)
     }
     
     private func setDefaultValue(){
