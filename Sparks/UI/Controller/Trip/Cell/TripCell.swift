@@ -109,8 +109,6 @@ class TripCell: UICollectionViewCell{
         super.init(frame: frame)
         self.contentView.clipsToBounds = false
         self.contentView.backgroundColor = .clear
-        self.contentView.borderWidth = 1
-        self.contentView.borderColor = .white
         
         self.contentView.addSubview(imgView)
         imgView.snp.makeConstraints { make in

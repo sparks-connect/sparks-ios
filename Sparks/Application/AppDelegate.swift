@@ -28,7 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = .white
 
         UITabBar.appearance().isTranslucent = true
-        
+        NotificationCenter.default.addObserver(forName: Notification.Name("logout"), object: nil, queue: .main) {[weak self] _ in
+            self?.mainTabbar = nil
+        }
         LocalStore.markFirstLaunch()
         //TripCriteria.reset()
         API.setup()
@@ -42,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppDelegate.updateRootViewController()
         self.setupNotification(application, completion: {(token, error) in })
         #if DEBUG
-        FLEXManager.shared.hideExplorer()
+        FLEXManager.shared.showExplorer()
         #endif
         debugPrint(Date().currentUTCDateStr)
         ApplicationDelegate.shared.application(

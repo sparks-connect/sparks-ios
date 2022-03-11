@@ -26,8 +26,7 @@ class TripFavouriteController: BaseController {
         
         self.view.addSubview(tripView)
         tripView.snp.makeConstraints { make in
-            make.leading.equalTo(16)
-            make.trailing.equalTo(-16)
+            make.left.right.equalToSuperview()
             make.top.equalTo(16)
             make.bottom.equalTo(-16)
         }
