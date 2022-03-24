@@ -89,7 +89,11 @@ class InstaLongLivedToken: Codable {
 
 class InstaData: Codable{
     var data: [InstaMedia]?
-    //var paging: [String: Any]?
+    var paging: Page?
+}
+
+class Page: Codable {
+    var next: String?
 }
 
 enum MediaType: String, Codable {
@@ -109,13 +113,13 @@ class InstaMedia: Codable {
     var mediaUrl: String?
     var mediaType: MediaType?
     var username: String?
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.username = try container.decode(String.self, forKey: .username)
         self.mediaUrl = try container.decode(String.self, forKey: .mediaUrl)
         self.mediaType = try container.decode(MediaType.self, forKey: .mediaType)
-
     }
 }
 
@@ -123,7 +127,7 @@ class InstaMedia: Codable {
 protocol InstaService {
     func getAuthorizationURL() -> URL
     func getAccessToken(code: String, completion: @escaping (Result<Any?, Error>) -> Void)
-    func getMedia(completion: @escaping (Result<InstaData?, Error>) -> Void)
+    func getMedia(next: String?, completion: @escaping (Result<InstaData?, Error>) -> Void)
     func saveLongLivedToken()
 }
 
@@ -171,13 +175,18 @@ class InstaServiceImpl: InstaService {
         }
     }
     
-    func getMedia(completion: @escaping (Result<InstaData?, Error>) -> Void) {
+    func getMedia(next: String?, completion: @escaping (Result<InstaData?, Error>) -> Void) {
         guard let user = User.current else {
             completion(.failure(CIError.unauthorized))
             return
         }
-        let params: [String: Any] = ["access_token": user.instaToken ?? "",
-                                     "fields": "id,username,caption,media_url,media_type,children"]
+        var params: [String: Any] = ["access_token": user.instaToken ?? "",
+                                     "limit": 20,
+                                     "fields": "id,username,caption,media_url,media_type,thumbnail_url"]
+        // For Paging....
+        if next != nil {
+            params["next"] = next
+        }
         self.api.send(for: InstaStep.media.url(),
                          method: .get,
                          params: params,
