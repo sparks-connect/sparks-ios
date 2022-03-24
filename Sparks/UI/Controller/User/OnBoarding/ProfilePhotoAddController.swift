@@ -51,7 +51,8 @@ class ProfilePhotoAddController: BaseController {
     
     private lazy var instaButton: UIButton = {
         let view = UIButton()
-        view.setTitle("Connect Instagram", for: .normal)
+        let title = User.current?.isMissingInstaToken ?? false ? "Connect Instagram" : "Instagram"
+        view.setTitle(title, for: .normal)
         view.setBackgroundImage(UIImage(named: "insta"), for: .normal)
         view.setTitleColor(UIColor.white, for: .normal)
         view.titleLabel?.font = UIFont.font(for: 14, style: .bold)
@@ -162,6 +163,7 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
         controller.photoAssets = assets
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
+        controller.maxSelectionCount = self.isMainPhoto ? 1 : 10
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -178,6 +180,7 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
                             let controller = AssetSelectViewController()
                             controller.assets = imageAsset
                             controller.delegate = self
+                            controller.maxSelectionCount = self.isMainPhoto ? 1 : 10
                             controller.modalPresentationStyle = .fullScreen
                             self.present(controller, animated: true, completion: nil)
                         }

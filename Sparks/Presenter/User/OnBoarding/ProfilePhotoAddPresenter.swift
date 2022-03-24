@@ -17,6 +17,7 @@ protocol ProfilePhotoAddView: BasePresenterView {
 }
 
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
+    var isProfilePic: Bool = false
     func uploadImage(image: UIImage) {
         guard  let data = image.compressed else { return }
         Service.auth.updatePhoto(data: data, main: true) { [weak self] response in
@@ -57,7 +58,7 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     
     func sendPhotos(photos: [PhotoAsset]){
         background {
-            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url }), mainIndex: nil) { [weak self] response in
+            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url }), mainIndex: self.isProfilePic ? 0 :  nil) { [weak self] response in
                 self?.handleResponse(response: response)
             }
         }

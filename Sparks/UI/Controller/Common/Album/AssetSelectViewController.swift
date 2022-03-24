@@ -39,7 +39,7 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     
     private lazy var exploringButton: PrimaryButton = {
         let view = PrimaryButton()
-        view.setTitle("Start exploring", for: .normal)
+        view.setTitle("Save", for: .normal)
         view.addTarget(self, action: #selector(startExploring), for: .touchUpInside)
         view.layer.cornerRadius = 32
         return view
