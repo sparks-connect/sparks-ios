@@ -57,7 +57,7 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     
     func sendPhotos(photos: [PhotoAsset]){
         background {
-            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url })) { [weak self] response in
+            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url }), mainIndex: nil) { [weak self] response in
                 self?.handleResponse(response: response)
             }
         }

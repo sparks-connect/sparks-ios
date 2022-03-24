@@ -66,6 +66,7 @@ protocol UserService {
                      completion: @escaping (Result<Any?, Error>) -> Void)
     
     func updatePhotos(urls: [URL],
+                      mainIndex: Int?,
                       completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
@@ -144,6 +145,7 @@ class UserServiceImpl: UserService {
     }
     
     func updatePhotos(urls: [URL],
+                      mainIndex: Int?,
                       completion: @escaping (Result<Any?, Error>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
@@ -208,7 +210,7 @@ class UserServiceImpl: UserService {
                 photos.append([
                     UserPhoto.CodingKeys.url.rawValue: u,
                     UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                    UserPhoto.CodingKeys.main.rawValue: !hasMain && i == 0,
+                    UserPhoto.CodingKeys.main.rawValue: i == mainIndex || (!hasMain && i == 0),
                     BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
                 ])
             }
