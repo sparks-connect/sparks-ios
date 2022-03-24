@@ -290,14 +290,11 @@ class ProfileController: BaseController {
     }
     
     @objc private func profileImageTapped(sender: UITapGestureRecognizer) {
-        
-        let controller = CreateTripController()
-        controller.modalPresentationStyle = .overFullScreen
-        self.present(controller, animated: true, completion: nil)
-        
-        return
         mainPhotoUpload = true
-        self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
+        let controller = ProfilePhotoAddController()
+        controller.modalPresentationStyle = .overFullScreen
+        controller.isMainPhoto = mainPhotoUpload
+        self.present(controller, animated: true, completion: nil)
     }
     
     @objc private func settingsClicked(sender: UIBarButtonItem) {
@@ -377,6 +374,7 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
         if indexPath.row == 0 && self.presenter.isCurrentUser {
             mainPhotoUpload = false
             let controller = ProfilePhotoAddController()
+            controller.isMainPhoto = mainPhotoUpload
             controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true, completion: nil)
             return

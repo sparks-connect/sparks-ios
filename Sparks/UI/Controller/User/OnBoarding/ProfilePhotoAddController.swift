@@ -18,7 +18,7 @@ class ProfilePhotoAddController: BaseController {
     override func getPresenter() -> Presenter {
         return self.presenter
     }
-    
+    var isMainPhoto: Bool = false
     private lazy var backBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +123,7 @@ class ProfilePhotoAddController: BaseController {
     }
     
     @objc private func instaClicked() {
+        self.presenter.isProfilePic = self.isMainPhoto
         guard let user = User.current else { return }
         if user.isMissingInstaToken {
             self.presenter.showInstaAuthorization()
