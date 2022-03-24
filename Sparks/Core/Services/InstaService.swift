@@ -180,17 +180,16 @@ class InstaServiceImpl: InstaService {
             completion(.failure(CIError.unauthorized))
             return
         }
-        var params: [String: Any] = ["access_token": user.instaToken ?? "",
-                                     "limit": 20,
+        let params: [String: Any] = ["access_token": user.instaToken ?? "",
+                                     "limit": 10,
                                      "fields": "id,username,caption,media_url,media_type,thumbnail_url"]
         // For Paging....
-        if next != nil {
-            params["next"] = next
-        }
-        self.api.send(for: InstaStep.media.url(),
-                         method: .get,
-                         params: params,
-                         headers: nil) { result in
+        // Use next as url
+        let base = InstaStep.media.url()
+        self.api.send(for: next != nil ? URL(string: next ?? "") ?? base : base,
+                     method: .get,
+                     params: next != nil ? nil : params,
+                     headers: nil) { result in
             switch result {
             case .success(let data):
                 if let rawData = data {

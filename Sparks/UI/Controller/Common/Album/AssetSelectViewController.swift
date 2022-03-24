@@ -12,7 +12,7 @@ import RxSwift
 
 protocol AssetSelectViewControllerDelegate: AnyObject {
     func assetsSelected(assets: [PhotoAsset])
-    func fetchNextPage()
+    func fetchNextPage(completion:@escaping (Bool, [PhotoAsset])-> Void)
 }
 
 class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
@@ -26,6 +26,7 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         return collection
     }()
     var maxSelectionCount = 10
+    var isInstaPagingEnabled: Bool = false
     var assets: PHFetchResult<PHAsset>? {
         didSet {
             self.photoAssets.removeAll()
@@ -220,9 +221,19 @@ extension AssetSelectViewController: UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.scrolledToBottom && !isPagingStarted {
+        if isInstaPagingEnabled {
+            startPaging(scroll: scrollView)
+        }
+    }
+    
+    func startPaging(scroll: UIScrollView){
+        if scroll.scrolledToBottom && !isPagingStarted {
             isPagingStarted = true
-            self.delegate?.fetchNextPage()
+            self.delegate?.fetchNextPage(completion:{ isPageAvailable, photos in
+                self.photoAssets.append(contentsOf: photos)
+                self.collectionView.reloadData()
+                self.isPagingStarted = !isPageAvailable
+            })
         }
     }
 }

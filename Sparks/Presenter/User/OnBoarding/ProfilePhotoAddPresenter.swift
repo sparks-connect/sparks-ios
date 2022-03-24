@@ -19,6 +19,7 @@ protocol ProfilePhotoAddView: BasePresenterView {
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     var isProfilePic: Bool = false
     var next: String? = nil
+    
     func uploadImage(image: UIImage) {
         guard  let data = image.compressed else { return }
         Service.auth.updatePhoto(data: data, main: true) { [weak self] response in
@@ -37,7 +38,7 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
         }
     }
     
-    func getMedia() {
+    func getMedia(_ handler:((Bool, [PhotoAsset])->Void)? = nil) {
         Service.insta.getMedia(next: self.next, completion: { [weak self] response in
             var photos = [PhotoAsset]()
             switch response {
@@ -49,8 +50,14 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
                         photos.append(photo)
                     }
                 })
-                self?.next = instaAsset?.paging?.next
-                self?.view?.navigate(assets: photos)
+                if handler != nil {
+                    let isPageAvailable = self?.next != instaAsset?.paging?.next
+                    self?.next = isPageAvailable ? instaAsset?.paging?.next : nil
+                    handler?(isPageAvailable, photos)
+                }else {
+                    self?.next = instaAsset?.paging?.next
+                    self?.view?.navigate(assets: photos)
+                }
             case .failure(_):
                 // process again
                 let url  = Service.insta.getAuthorizationURL()
@@ -59,9 +66,9 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
         })
     }
     
-    func fetchNextMedia(){
+    func fetchNextMedia(completion:@escaping (Bool, [PhotoAsset])->Void){
         if self.next != nil {
-            self.getMedia()
+            self.getMedia(completion)
         }
     }
     

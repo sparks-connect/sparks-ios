@@ -164,6 +164,7 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.maxSelectionCount = self.isMainPhoto ? 1 : 10
+        controller.isInstaPagingEnabled = true
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -221,8 +222,8 @@ extension ProfilePhotoAddController: AssetSelectViewControllerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func fetchNextPage() {
-        self.presenter.fetchNextMedia()
+    func fetchNextPage(completion:@escaping (Bool, [PhotoAsset])-> Void) {
+        self.presenter.fetchNextMedia(completion: completion)
     }
 }
 
