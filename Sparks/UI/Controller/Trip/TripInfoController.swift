@@ -25,6 +25,7 @@ class TripInfoController: BaseController {
     
     private lazy var preview: Preview<TripInfoPresenter> = {
         let view = Preview(presenter: self.presenter)
+        preview.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -39,6 +40,7 @@ class TripInfoController: BaseController {
     
     private lazy var profileButton: PrimaryButton = {
         let btn = PrimaryButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("View Profile", for: .normal)
         btn.addTarget(self, action: #selector(viewProfile), for: .touchUpInside)
         btn.layer.cornerRadius = 22
@@ -47,6 +49,7 @@ class TripInfoController: BaseController {
     
     private lazy var connectButton: PrimaryButton = {
         let btn = PrimaryButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Ask to connect", for: .normal)
         btn.addTarget(self, action: #selector(askToConnectClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 22
