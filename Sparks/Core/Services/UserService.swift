@@ -206,16 +206,30 @@ class UserServiceImpl: UserService {
         
         dispatchGroup.notify(queue: dispatchQueue) { [weak self] in
             
-            for (i, u) in newUrls.enumerated() {
+            for (u) in newUrls.enumerated() {
                 photos.append([
                     UserPhoto.CodingKeys.url.rawValue: u,
                     UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                    UserPhoto.CodingKeys.main.rawValue: i == mainIndex || (!hasMain && i == 0),
+                    UserPhoto.CodingKeys.main.rawValue: false,
                     BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
                 ])
             }
             
-            self?.api.updateNode(path: "\(path)", values: ["photos": photos], completion: completion)
+            var newPhotos: [[String: Any]] = []
+            
+            for (i, u) in photos.enumerated() {
+                
+                newPhotos.append(
+                    [
+                        UserPhoto.CodingKeys.url.rawValue: u,
+                        UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
+                        UserPhoto.CodingKeys.main.rawValue: i == mainIndex || (!hasMain && i == 0),
+                        BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
+                    ]
+                )
+            }
+            
+            self?.api.updateNode(path: "\(path)", values: ["photos": newPhotos], completion: completion)
         }
     }
     
