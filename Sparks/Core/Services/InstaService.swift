@@ -181,7 +181,7 @@ class InstaServiceImpl: InstaService {
             return
         }
         let params: [String: Any] = ["access_token": user.instaToken ?? "",
-                                     "limit": 10,
+                                     "limit": 40,
                                      "fields": "id,username,caption,media_url,media_type,thumbnail_url"]
         // For Paging....
         // Use next as url
