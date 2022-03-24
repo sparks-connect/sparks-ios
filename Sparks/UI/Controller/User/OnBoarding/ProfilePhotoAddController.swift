@@ -220,6 +220,10 @@ extension ProfilePhotoAddController: AssetSelectViewControllerDelegate {
         self.presenter.sendPhotos(photos: assets)
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func fetchNextPage() {
+        self.presenter.fetchNextMedia()
+    }
 }
 
 protocol Request: AnyObject {

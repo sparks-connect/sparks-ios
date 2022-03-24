@@ -11,9 +11,8 @@ import Photos
 import RxSwift
 
 protocol AssetSelectViewControllerDelegate: AnyObject {
-    
     func assetsSelected(assets: [PhotoAsset])
-    
+    func fetchNextPage()
 }
 
 class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
@@ -80,6 +79,7 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     private var previewItem: PhotoAsset?
     private var previewImageView: UIImageView?
     private var didSubmit = false
+    private var isPagingStarted: Bool = false
     
     override final func viewDidLoad() {
         super.viewDidLoad()
@@ -219,4 +219,10 @@ extension AssetSelectViewController: UICollectionViewDelegate {
         self.updateTitleForCount(self.selectedAssets.count)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.scrolledToBottom && !isPagingStarted {
+            isPagingStarted = true
+            self.delegate?.fetchNextPage()
+        }
+    }
 }

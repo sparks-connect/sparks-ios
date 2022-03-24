@@ -18,6 +18,7 @@ protocol ProfilePhotoAddView: BasePresenterView {
 
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     var isProfilePic: Bool = false
+    var next: String? = nil
     func uploadImage(image: UIImage) {
         guard  let data = image.compressed else { return }
         Service.auth.updatePhoto(data: data, main: true) { [weak self] response in
@@ -37,16 +38,18 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     }
     
     func getMedia() {
-        Service.insta.getMedia(completion: { [weak self] response in
+        Service.insta.getMedia(next: self.next, completion: { [weak self] response in
             var photos = [PhotoAsset]()
             switch response {
             case .success(let instaAsset):
                 instaAsset?.data?.forEach({ media in
-                    if let url = URL(string: media.mediaUrl ?? "") {
-                        let photo = PhotoAsset(withURL: url, id: media.id ?? "")
+                    let url = URL(string: media.mediaUrl ?? "")
+                    if  url != nil && media.mediaType != .video {
+                        let photo = PhotoAsset(withURL: url!, id: media.id ?? "")
                         photos.append(photo)
                     }
                 })
+                self?.next = instaAsset?.paging?.next
                 self?.view?.navigate(assets: photos)
             case .failure(_):
                 // process again
@@ -54,6 +57,12 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
                 self?.view?.showAuthorizationWindow(url: url)
             }
         })
+    }
+    
+    func fetchNextMedia(){
+        if self.next != nil {
+            self.getMedia()
+        }
     }
     
     func sendPhotos(photos: [PhotoAsset]){
