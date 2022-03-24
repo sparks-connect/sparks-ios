@@ -155,7 +155,7 @@ class UserServiceImpl: UserService {
             return
         }
         
-        var photos = [Any]()
+        var photos = [[String: Any]]()
         let path = user.path
         var newUrls = [String]()
         let userId = user.uid
@@ -217,11 +217,11 @@ class UserServiceImpl: UserService {
             
             var newPhotos: [[String: Any]] = []
             
-            for (i, u) in photos.enumerated() {
+            for (i, ph) in photos.enumerated() {
                 
                 newPhotos.append(
                     [
-                        UserPhoto.CodingKeys.url.rawValue: u,
+                        UserPhoto.CodingKeys.url.rawValue: ph[UserPhoto.CodingKeys.url.rawValue] ?? "",
                         UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
                         UserPhoto.CodingKeys.main.rawValue: i == mainIndex || (!hasMain && i == 0),
                         BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
@@ -229,7 +229,7 @@ class UserServiceImpl: UserService {
                 )
             }
             
-            self?.api.updateNode(path: "\(path)", values: ["photos": newPhotos], completion: completion)
+            self?.api.updateNode(path: "\(path)", values: ["photos": photos], completion: completion)
         }
     }
     
