@@ -66,6 +66,7 @@ protocol UserService {
                      completion: @escaping (Result<Any?, Error>) -> Void)
     
     func updatePhotos(urls: [URL],
+                      main: Bool,
                       completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
@@ -144,6 +145,7 @@ class UserServiceImpl: UserService {
     }
     
     func updatePhotos(urls: [URL],
+                      main: Bool,
                       completion: @escaping (Result<Any?, Error>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
