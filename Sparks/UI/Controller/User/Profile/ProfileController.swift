@@ -19,7 +19,7 @@ class ProfileController: BaseController {
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
-        return self.presenter.isCurrentUser ? [UIBarButtonItem(image: #imageLiteral(resourceName: "ic_gear"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))] : []
+        return self.presenter.isCurrentUser ? [UIBarButtonItem(image: UIImage(named: "side-menu"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))] : []
     }
     
     private lazy var collectionView: UICollectionView = {

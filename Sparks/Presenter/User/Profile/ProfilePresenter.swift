@@ -39,7 +39,7 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     private func observeUser() {
         token?.invalidate()
         token = RealmUtils.observeUserUpdates {
-            self.photos = self.user?.photos.filter({ !$0.main }) ?? []
+            self.photos = self.user?.photos.filter({ !$0.main }).sorted(by: { $0.createdAt > $1.createdAt }) ?? []
             self.getMyTrips()
             self.view?.reloadView()
         }
@@ -82,8 +82,10 @@ class ProfilePresenter: BasePresenter<MyProfileView> {
     }
     
     func uploadImage(image: UIImage, isMain: Bool) {
-        guard let data = image.compressed else { return }
-        self.auth.updatePhoto(data: data, main: isMain) { [weak self] (response) in
+        guard let url = FileUtils.addCacheImage(image) else {
+            return
+        }
+        self.auth.uploadPhotos(urls: [(url, isMain)]) { [weak self] (response) in
             self?.handleResponse(response: response)
         }
     }

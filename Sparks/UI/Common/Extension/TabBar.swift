@@ -33,7 +33,7 @@ class CenterView: UIView {
         middleButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        self.layer.shadowColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1).cgColor
+        self.layer.shadowColor = UIColor.darkText.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.shadowRadius = 4.0
         self.layer.shadowOpacity = 1

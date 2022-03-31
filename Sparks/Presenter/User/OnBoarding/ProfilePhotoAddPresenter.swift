@@ -21,8 +21,9 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     var next: String? = nil
     
     func uploadImage(image: UIImage) {
-        guard  let data = image.compressed else { return }
-        Service.auth.updatePhoto(data: data, main: true) { [weak self] response in
+        guard  let url = FileUtils.addCacheImage(image) else { return }
+        
+        Service.auth.uploadPhotos(urls: [(url, true)]) { [weak self] response in
             self?.handleResponse(response: response)
         }
     }
@@ -73,10 +74,14 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
     }
     
     func sendPhotos(photos: [PhotoAsset]){
-        background {
-            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url }), mainIndex: self.isProfilePic ? 0 :  nil) { [weak self] response in
-                self?.handleResponse(response: response)
-            }
+        
+        var _photos = [(url: URL, main: Bool)]()
+        for (i, p) in photos.enumerated() {
+            _photos.append((p.url!, isProfilePic && i == 0))
+        }
+        
+        Service.auth.uploadPhotos(urls: _photos) { [weak self] response in
+            self?.handleResponse(response: response)
         }
         
     }

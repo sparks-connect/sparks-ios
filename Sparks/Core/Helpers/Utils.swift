@@ -169,3 +169,16 @@ extension Date {
         return utcDateFormatter.string(from: self)
     }
 }
+
+extension FileUtils {
+    class func addCacheImage(_ image: UIImage) -> URL? {
+        guard let url = URL(string: getCacheDirectory()?.absoluteString ?? "" + "/images"),
+                let data = image.compressed else {
+            return nil
+        }
+        if createFile(at: url, data: data) {
+            return url
+        }
+        return nil
+    }
+}

@@ -168,8 +168,10 @@ class UserProPresenter: BasePresenter<UserProfileView> {
     }
     
     func uploadImage(image: UIImage) {
-        guard let data = image.compressed else { return }
-        self.auth.updatePhoto(data: data, main: imageIndex == 0) { [weak self] (response) in
+        guard let url = FileUtils.addCacheImage(image) else {
+            return
+        }
+        self.auth.uploadPhotos(urls: [(url, imageIndex == 0)]) { [weak self] (response) in
             self?.handleResponse(response: response)
         }
     }

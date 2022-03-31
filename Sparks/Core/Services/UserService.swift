@@ -58,15 +58,10 @@ protocol UserService {
     func restartGPSTracking(interval: TimeInterval)
     func startSignificantGPSMonitoring()
     
-    func updatePhoto(data: Data,
-                     main: Bool,
-                     completion: @escaping (Result<Any?, Error>) -> Void)
-    
     func deletePhoto(photo: UserPhoto,
                      completion: @escaping (Result<Any?, Error>) -> Void)
     
-    func updatePhotos(urls: [URL],
-                      mainIndex: Int?,
+    func uploadPhotos(urls: [(url: URL, main: Bool)],
                       completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
@@ -144,8 +139,7 @@ class UserServiceImpl: UserService {
         api.updateNode(path: user.path, values: values, completion: completion)
     }
     
-    func updatePhotos(urls: [URL],
-                      mainIndex: Int?,
+    func uploadPhotos(urls: [(url: URL, main: Bool)],
                       completion: @escaping (Result<Any?, Error>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
@@ -157,30 +151,25 @@ class UserServiceImpl: UserService {
         
         var photos = [[String: Any]]()
         let path = user.path
-        var newUrls = [String]()
+        var newUrls = [(url: String, main: Bool)]()
         let userId = user.uid
         
-        let userPhotos = user.photos
-        let hasMain = userPhotos.filter({ $0.main }).first !== nil
+        let isMainPhotoUpload = urls.count == 1 && urls.first?.main == true
         
-        for photo in user.photos {
-            if photo.main && mainIndex != nil {
-                continue
-            }
-            
-            photos.append([
-                UserPhoto.CodingKeys.url.rawValue: photo.url ?? "",
-                UserPhoto.CodingKeys.createdAt.rawValue: photo.createdAt,
-                UserPhoto.CodingKeys.main.rawValue: photo.main,
-                BaseModelObject.BaseCodingKeys.uid.rawValue: photo.uid,
-            ])
+        var userPhotos = Array(user.photos)
+        if (isMainPhotoUpload) {
+            userPhotos = Array(userPhotos.filter({ $0.main == false }))
+        }
+        
+        for photo in userPhotos {
+            photos.append(photo.values)
         }
         
         urls.forEach { url in
                 
             dispatchGroup.enter()
             dispatchQueue.async {
-                if let data = try? Data(contentsOf: url) {
+                if let data = try? Data(contentsOf: url.url) {
                     
                     API.storage.uploadFile(to: "users/\(userId)/profileimage\(UUID().uuidString).jpg",
                                            file: data,
@@ -189,7 +178,7 @@ class UserServiceImpl: UserService {
 
                         switch response {
                         case .success(let _url):
-                            newUrls.append(_url)
+                            newUrls.append((_url, url.main))
                             break
                         default: break
                         }
@@ -207,89 +196,18 @@ class UserServiceImpl: UserService {
         
         dispatchGroup.notify(queue: dispatchQueue) { [weak self] in
             
-            for u in newUrls {
+            for photo in newUrls {
                 photos.append([
-                    UserPhoto.CodingKeys.url.rawValue: u,
+                    UserPhoto.CodingKeys.url.rawValue: photo.url,
                     UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                    UserPhoto.CodingKeys.main.rawValue: false,
+                    UserPhoto.CodingKeys.main.rawValue: photo.main,
                     BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
                 ])
             }
             
-            var newPhotos: [[String: Any]] = []
             
-            for (i, ph) in photos.enumerated() {
-                
-                let u = ph[UserPhoto.CodingKeys.url.rawValue] as? String ?? ""
-                var main = false
-                if let mainInd = mainIndex {
-                    let mainUrl = newUrls[mainInd]
-                    main = mainUrl == u
-                }
-                
-                newPhotos.append(
-                    [
-                        UserPhoto.CodingKeys.url.rawValue: u,
-                        UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                        UserPhoto.CodingKeys.main.rawValue: main || (!hasMain && i == 0),
-                        BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
-                    ]
-                )
-            }
-            
-            self?.api.updateNode(path: "\(path)", values: ["photos": newPhotos], completion: completion)
+            self?.api.updateNode(path: "\(path)", values: ["photos": photos], completion: completion)
         }
-    }
-    
-    func updatePhoto(data: Data,
-                     main: Bool,
-                     completion: @escaping (Result<Any?, Error>) -> Void) {
-        guard let user = User.current else {
-            completion(.failure(CIError.unauthorized))
-            return
-        }
-        
-        let uuid = UUID().uuidString
-        
-        API.storage.uploadFile(to: "users/\(user.uid)/profileimage\(uuid).jpg",
-                               file: data,
-                               contentType: "image/jpeg",
-                               completion: {[weak self] (response) in
-
-                                switch response {
-                                case .success(let url):
-                                    var photos = [Any]()
-                                    
-                                    let missingMainPhoto = user.photos.filter({ $0.main }).isEmpty && main
-                                    
-                                    user.photos.forEach { photo in
-                                        
-                                        let isMain = main && photo.main
-                                        
-                                        photos.append([
-                                            UserPhoto.CodingKeys.url.rawValue: isMain ? url : (photo.url ?? ""),
-                                            UserPhoto.CodingKeys.createdAt.rawValue: isMain ? Date().timeIntervalAsImpreciseToken : photo.createdAt,
-                                            UserPhoto.CodingKeys.main.rawValue: isMain ? isMain :(missingMainPhoto ? true : photo.main),
-                                            BaseModelObject.BaseCodingKeys.uid.rawValue: photo.uid,
-                                        ])
-                                    }
-                                    
-                                    if !main || missingMainPhoto {
-                                        photos.append([
-                                            UserPhoto.CodingKeys.url.rawValue: url,
-                                            UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                                            UserPhoto.CodingKeys.main.rawValue: main,
-                                            BaseModelObject.BaseCodingKeys.uid.rawValue: uuid,
-                                        ])
-                                    }
-                                    
-                                    self?.api.updateNode(path: "\(user.path)", values: ["photos": photos], completion: completion)
-                                    break
-                                case .failure(let e):
-                                    completion(.failure(e))
-                                    break
-                                }
-        }, progressBlock: nil)
     }
     
     func deletePhoto(photo: UserPhoto,
