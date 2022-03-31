@@ -84,7 +84,9 @@ class RealmUtils {
             result = result?.sorted(byKeyPath: keyPath, ascending: ascending)
         }
 
-        return result?.observe(change)
+        let token = result?.observe(change)
+        MemoryStore.sharedInstance.addToken(token)
+        return token
     }
     
     class func observe<T: Object>(uid: String,
@@ -92,17 +94,20 @@ class RealmUtils {
         let realm = try? Realm()
         _ = realm?.refresh()
         let result = realm?.object(ofType: T.self, forPrimaryKey: uid)
-        return result?.observe(change)
+        let token = result?.observe(change)
+        MemoryStore.sharedInstance.addToken(token)
+        return token
     }
     
     @discardableResult class func observeUserUpdates(completion:@escaping()->Void) -> NotificationToken? {
-        return observe { (change: RealmCollectionChange<Results<User>>) in
+        let token = observe { (change: RealmCollectionChange<Results<User>>) in
             completion()
         }
+        return token
     }
     
     @discardableResult class func observeChannels(forUser uid: String, completion:@escaping(Array<Channel>, [Int]?, [Int]?, [Int]?)->Void) -> NotificationToken? {
-        return observe() { (change: RealmCollectionChange<Results<Channel>>) in
+        let token = observe() { (change: RealmCollectionChange<Results<Channel>>) in
             switch change {
             case .initial(let result):
                 completion(Array(result.filter({ $0.users.contains(where: { $0.uid == uid }) })),
@@ -119,10 +124,12 @@ class RealmUtils {
             default: break
             }
         }
+        
+        return token
     }
     
     class func observeChannelRequests(completion:@escaping(Array<Channel>, [Int]?, [Int]?, [Int]?)->Void) -> NotificationToken? {
-        return observe(predicate: Channel.recievedRequestsPredicate, sortedByKeyPath: "createdAt", ascending: false) { (change: RealmCollectionChange<Results<Channel>>) in
+        let token = observe(predicate: Channel.recievedRequestsPredicate, sortedByKeyPath: "createdAt", ascending: false) { (change: RealmCollectionChange<Results<Channel>>) in
             switch change {
             case .initial(let result):
                 completion(Array(result), nil, nil, nil)
@@ -133,12 +140,14 @@ class RealmUtils {
             default: break
             }
         }
+        
+        return token
     }
     
     class func deleteAll() {
         let realm = try? Realm()
         realm?.refresh()
-        
+        MemoryStore.sharedInstance.clear()
         try? realm?.write {
             realm?.deleteAll()
             realm?.refresh()

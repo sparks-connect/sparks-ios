@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "takeoff.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "takeoff@2x.png",
+      "filename" : "pin-3.pdf",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "takeooff@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

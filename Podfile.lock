@@ -339,6 +339,7 @@ PODS:
     - abseil/base/config
     - abseil/meta/type_traits
   - Alamofire (4.7.3)
+  - AMPopTip (4.6.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -513,6 +514,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.6.0):
     - GoogleUtilities/Logger
+  - GrowingTextView (0.7.2)
   - "gRPC-C++ (1.28.2)":
     - "gRPC-C++/Implementation (= 1.28.2)"
     - "gRPC-C++/Interface (= 1.28.2)"
@@ -548,6 +550,7 @@ PODS:
   - Koloda (5.0.1):
     - pop (~> 1.0)
   - leveldb-library (1.22.1)
+  - MarqueeLabel (4.0.5)
   - MessageKit (3.7.0):
     - InputBarAccessoryView (~> 5.4.0)
   - nanopb (2.30908.0):
@@ -555,6 +558,9 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - NotificationBannerSwift (2.5.0):
+    - MarqueeLabel (~> 4.0.0)
+    - SnapKit (~> 5.0.0)
   - pop (1.0.12)
   - PromisesObjC (2.0.0)
   - PubNub (4.17.0):
@@ -576,11 +582,13 @@ PODS:
   - SDWebImage/Core (5.12.1)
   - SnapKit (5.0.1)
   - SwiftLint (0.45.1)
+  - Toast-Swift (5.0.1)
   - TOCropViewController (2.6.0)
   - VerticalCardSwiper (2.3.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7.3)
+  - AMPopTip
   - FBSDKLoginKit
   - Firebase/Analytics
   - Firebase/Auth
@@ -595,9 +603,11 @@ DEPENDENCIES:
   - FLEX
   - GooglePlaces (= 6.0.0)
   - GoogleSignIn
+  - GrowingTextView (= 0.7.2)
   - KeychainAccess
   - Koloda
   - MessageKit
+  - NotificationBannerSwift (= 2.5.0)
   - PubNub
   - RealmSwift
   - RxCocoa (from `https://github.com/ReactiveX/RxSwift`, branch `main`)
@@ -605,6 +615,7 @@ DEPENDENCIES:
   - SDWebImage (~> 5.0)
   - SnapKit
   - SwiftLint
+  - Toast-Swift (~> 5.0.1)
   - TOCropViewController
   - VerticalCardSwiper
 
@@ -612,6 +623,7 @@ SPEC REPOS:
   trunk:
     - abseil
     - Alamofire
+    - AMPopTip
     - AppAuth
     - BoringSSL-GRPC
     - FBAEMKit
@@ -638,6 +650,7 @@ SPEC REPOS:
     - GooglePlaces
     - GoogleSignIn
     - GoogleUtilities
+    - GrowingTextView
     - "gRPC-C++"
     - gRPC-Core
     - GTMAppAuth
@@ -646,8 +659,10 @@ SPEC REPOS:
     - KeychainAccess
     - Koloda
     - leveldb-library
+    - MarqueeLabel
     - MessageKit
     - nanopb
+    - NotificationBannerSwift
     - pop
     - PromisesObjC
     - PubNub
@@ -658,6 +673,7 @@ SPEC REPOS:
     - SDWebImage
     - SnapKit
     - SwiftLint
+    - Toast-Swift
     - TOCropViewController
     - VerticalCardSwiper
 
@@ -674,6 +690,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AMPopTip: a9384bcc42013831dcce185d8687b0abf946496b
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   FBAEMKit: 4cea610d0bc1680572f2aad7b25db7a2f2690d82
@@ -700,6 +717,7 @@ SPEC CHECKSUMS:
   GooglePlaces: c97d96ae68594acb64035c9ca9f26fbfc1d23af1
   GoogleSignIn: c90b5bec45e780f54c6a8e1e3c182a86e3dda69d
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
+  GrowingTextView: 876bf42005b5e4a4fd740597db12caaf41f0fe6c
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
@@ -708,8 +726,10 @@ SPEC CHECKSUMS:
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   Koloda: d07b9199a383abc5898b62aa945a599f5e7c0c4b
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
+  MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   MessageKit: 8e76dd8d65ad44b49e1651c673497146416461e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  NotificationBannerSwift: 684966fa934c48b70eff8bbec93fccf8db603365
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   PubNub: 306896876c3089884067609ff25d628a547d2942
@@ -721,9 +741,10 @@ SPEC CHECKSUMS:
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   VerticalCardSwiper: 68df635b354500f86934ea044ade37a264c044c6
 
-PODFILE CHECKSUM: 400ae6c322c5e4bf6b5f3d9da978dbb050302faf
+PODFILE CHECKSUM: 8abd6f92f1da4279f9a2942e34036c27a858b3ca
 
 COCOAPODS: 1.11.2

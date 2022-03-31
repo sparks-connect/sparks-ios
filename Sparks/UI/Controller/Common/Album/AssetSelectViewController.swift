@@ -11,9 +11,8 @@ import Photos
 import RxSwift
 
 protocol AssetSelectViewControllerDelegate: AnyObject {
-    
     func assetsSelected(assets: [PhotoAsset])
-    
+    func fetchNextPage(completion:@escaping (Bool, [PhotoAsset])-> Void)
 }
 
 class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
@@ -27,6 +26,7 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         return collection
     }()
     var maxSelectionCount = 10
+    var isInstaPagingEnabled: Bool = false
     var assets: PHFetchResult<PHAsset>? {
         didSet {
             self.photoAssets.removeAll()
@@ -39,13 +39,40 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     
     private lazy var exploringButton: PrimaryButton = {
         let view = PrimaryButton()
-        view.setTitle("Start exploring", for: .normal)
+        view.setTitle("Save", for: .normal)
         view.addTarget(self, action: #selector(startExploring), for: .touchUpInside)
         view.layer.cornerRadius = 32
         return view
     }()
     
-    var photoAssets = [PhotoAsset]()
+    private lazy var backBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "back"), for: .normal)
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var titeLabel: Label = {
+        let lbl = Label()
+        lbl.textAlignment = .center
+        lbl.font =  UIFont.systemFont(ofSize: 18, weight:.bold)
+        lbl.numberOfLines = 0
+        lbl.textAlignment = .center
+        lbl.textColor = .white
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.minimumScaleFactor = 0.5
+        lbl.text = self.userTitle
+        return lbl
+    }()
+    var userTitle: String? = User.current?.firstName
+    var photoAssets = [PhotoAsset](){
+        didSet {
+            if User.current?.instaUserName.isEmpty == false{
+                self.userTitle = User.current?.instaUserName
+            }
+        }
+    }
     private var selectedAssets = [PhotoAsset]()
     
     weak var delegate: AssetSelectViewControllerDelegate?
@@ -53,15 +80,30 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
     private var previewItem: PhotoAsset?
     private var previewImageView: UIImageView?
     private var didSubmit = false
+    private var isPagingStarted: Bool = false
     
     override final func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.addSubview(backBtn)
+        self.view.addSubview(titeLabel)
         self.view.addSubview(collectionView)
         self.view.addSubview(exploringButton)
         
+        backBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(64)
+        }
+        
+        titeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(backBtn)
+            make.centerX.equalToSuperview()
+        }
+        
         collectionView.snp.makeConstraints({ make in
-            make.edges.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.top.equalTo(titeLabel.snp.bottom).offset(24)
         })
         
         exploringButton.snp.makeConstraints {
@@ -119,6 +161,10 @@ class AssetSelectViewController: BaseController, CollectionViewCellDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @objc private final func back(){
+        self.didSubmit = false
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension AssetSelectViewController: UICollectionViewDataSource {
@@ -174,4 +220,20 @@ extension AssetSelectViewController: UICollectionViewDelegate {
         self.updateTitleForCount(self.selectedAssets.count)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isInstaPagingEnabled {
+            startPaging(scroll: scrollView)
+        }
+    }
+    
+    func startPaging(scroll: UIScrollView){
+        if scroll.scrolledToBottom && !isPagingStarted {
+            isPagingStarted = true
+            self.delegate?.fetchNextPage(completion:{ isPageAvailable, photos in
+                self.photoAssets.append(contentsOf: photos)
+                self.collectionView.reloadData()
+                self.isPagingStarted = !isPageAvailable
+            })
+        }
+    }
 }

@@ -59,7 +59,20 @@ def  shared_pods
     # Image Cropper
     pod 'TOCropViewController'
     
+    # Hint
+    pod 'AMPopTip'
+    
+    # Toast
+    pod 'NotificationBannerSwift', '2.5.0'
+    
+    # Growing TextView
+    pod 'GrowingTextView', '0.7.2'
+
+    # Debugger
     pod 'FLEX', :configurations => ['Debug']
+    
+    # Toast
+    pod 'Toast-Swift', '~> 5.0.1'
 end
 
 

@@ -22,6 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        UITabBar.appearance().barTintColor = Color.fadedBackground.uiColor
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().tintColor = .white
+
+        UITabBar.appearance().isTranslucent = true
+        NotificationCenter.default.addObserver(forName: Notification.Name("logout"), object: nil, queue: .main) {[weak self] _ in
+            self?.mainTabbar = nil
+        }
         LocalStore.markFirstLaunch()
         //TripCriteria.reset()
         API.setup()
@@ -139,7 +148,7 @@ extension AppDelegate {
     static func updateRootViewController() {
         guard let instance = UIApplication.shared.delegate as? AppDelegate else { return }
         instance.window = UIWindow(frame: UIScreen.main.bounds)
-        instance.window?.rootViewController = instance.rootViewController
+        instance.window?.rootViewController = instance.rootViewController //UINavigationController(rootViewController: instance.rootViewController ?? MainTabBarController())
         instance.window?.makeKeyAndVisible()
 
         if User.isLoggedIn {

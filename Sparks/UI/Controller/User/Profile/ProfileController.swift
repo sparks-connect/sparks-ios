@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import MapKit
 
 
 class ProfileController: BaseController {
     
     private var mainPhotoUpload = false
-    let presenter = ProfilePresenter()
+    var presenter = ProfilePresenter()
     override func getPresenter() -> Presenter {
         return self.presenter
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
-        return [UIBarButtonItem(image: #imageLiteral(resourceName: "ic_gear"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))]
+        return self.presenter.isCurrentUser ? [UIBarButtonItem(image: #imageLiteral(resourceName: "ic_gear"), style: .plain, target: self, action: #selector(settingsClicked(sender:)))] : []
     }
     
     private lazy var collectionView: UICollectionView = {
@@ -60,7 +61,9 @@ class ProfileController: BaseController {
         profilePhoto.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(sender:))))
+        if self.presenter.isCurrentUser {
+            view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(sender:))))
+        }
         return view
     }()
     
@@ -81,9 +84,16 @@ class ProfileController: BaseController {
         view.addSubview(profileRightContainer)
         profileRightContainer.snp.makeConstraints { make in
             make.left.equalTo(profilePhotoContainer.snp.right)
-            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        view.addSubview(tripsRightContainer)
+        tripsRightContainer.snp.makeConstraints { make in
+            make.left.equalTo(profileRightContainer.snp.right).offset(-32)
             make.centerY.equalToSuperview()
         }
+        
         return view
     }()
     
@@ -93,6 +103,16 @@ class ProfileController: BaseController {
         view.axis = .vertical
         view.addArrangedSubview(labelConnections)
         view.addArrangedSubview(labelConnectionsTitle)
+        return view
+    }()
+    
+    lazy private var tripsRightContainer: UIStackView = {
+        let view = UIStackView()
+        view.distribution = .fill
+        view.axis = .vertical
+        view.addArrangedSubview(labelTrips)
+        view.addArrangedSubview(labelTripsTitle)
+        view.addTapGesture(target: self, selector: #selector(onMyTrips))
         return view
     }()
     
@@ -106,6 +126,24 @@ class ProfileController: BaseController {
     }()
     
     lazy private var labelConnections: Label = {
+        let view = Label()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.font(for: 20, style: .bold)
+        view.textColor = .white
+        view.textAlignment = .center
+        return view
+    }()
+    
+    lazy private var labelTripsTitle: Label = {
+        let view = Label()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.font(for: 17, style: .regular)
+        view.textAlignment = .center
+        view.textColor = .white
+        return view
+    }()
+    
+    lazy private var labelTrips: Label = {
         let view = Label()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.font(for: 20, style: .bold)
@@ -150,11 +188,17 @@ class ProfileController: BaseController {
         profileEditButton.titleLabel?.font = Font.regular.uiFont(ofSize: 14)
         profileEditButton.setTitleColor(Color.lightPurple.uiColor, for: .normal)
         profileEditButton.addTarget(self, action: #selector(onProfileEdit), for: .touchUpInside)
+        profileEditButton.isHidden = !self.presenter.isCurrentUser
         return profileEditButton
     }()
     
     private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
+    convenience init(presenter: ProfilePresenter){
+        self.init()
+        self.presenter = presenter
+    }
+    
     override func configure() {
         super.configure()
         self.navigationItem.title = "Profile"
@@ -206,6 +250,12 @@ class ProfileController: BaseController {
         spacer = UIView()
         stackView.addArrangedSubview(spacer)
         spacer.snp.makeConstraints { make in
+            make.height.equalTo(16)
+        }
+
+        spacer = UIView()
+        stackView.addArrangedSubview(spacer)
+        spacer.snp.makeConstraints { make in
             make.height.equalTo(12)
         }
         
@@ -221,28 +271,30 @@ class ProfileController: BaseController {
     override func reloadView() {
         super.reloadView()
         self.collectionView.reloadData()
-        self.labelTitle.text = (User.current?.displayName ?? "No Name") + ", " + (User.current?.ageYear.description ?? "")
-        self.profilePhoto.set(user: User.current, channel: nil)
+        let user = self.presenter.user
+        self.labelTitle.text = (user?.displayName ?? "No Name") + ", " + (user?.ageYear.description ?? "")
+        self.profilePhoto.set(user: user, channel: nil)
         let count = self.presenter.numberOfChannels
         self.labelConnections.text = "\(count)"
         self.labelConnectionsTitle.text = count > 1 ? "Matches" : "Match"
-        
+
+        let tripsCount = self.presenter.numberOfTrips
+        self.labelTrips.text = "\(tripsCount)"
+        self.labelTripsTitle.text = tripsCount > 1 ? "Trips" : "Trip"
+
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
         
-        self.labelTags.attributedText = NSAttributedString(string: User.current?.tagsStr ?? "", attributes: [.paragraphStyle: paragraphStyle])
+        self.labelTags.attributedText = NSAttributedString(string: user?.tagsStr ?? "", attributes: [.paragraphStyle: paragraphStyle])
     }
     
     @objc private func profileImageTapped(sender: UITapGestureRecognizer) {
-        
-        let controller = CreateTripController()
-        controller.modalPresentationStyle = .overFullScreen
-        self.present(controller, animated: true, completion: nil)
-        
-        return
         mainPhotoUpload = true
-        self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
+        let controller = ProfilePhotoAddController()
+        controller.modalPresentationStyle = .overFullScreen
+        controller.isMainPhoto = mainPhotoUpload
+        self.present(controller, animated: true, completion: nil)
     }
     
     @objc private func settingsClicked(sender: UIBarButtonItem) {
@@ -255,6 +307,11 @@ class ProfileController: BaseController {
         self.navigationController?.pushViewController(settings, animated: true)
     }
     
+    @objc private func onMyTrips(){
+        let controller = MyTripsController(presenter: MyTripsPresenter(user: self.presenter.user))
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     var cell: UICollectionViewCell!
 }
 
@@ -264,19 +321,19 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.presenter.numberOfItems + 1
+        return self.presenter.isCurrentUser ? self.presenter.numberOfItems + 1 : self.presenter.numberOfItems
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if indexPath.item == 0 {
+        if indexPath.item == 0 && self.presenter.isCurrentUser {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addPhotoCell", for: indexPath) as? MyProfileAddPhotoCollectionViewCell else {
                 return UICollectionViewCell()
             }
             return cell
         }
-        
-        let convertedIndexPath = IndexPath(item: indexPath.item - 1, section: indexPath.section)
+        let index = self.presenter.isCurrentUser ? indexPath.item - 1 : indexPath.item
+        let convertedIndexPath = IndexPath(item: index, section: indexPath.section)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell",
                                                             for: indexPath) as? MyProfilePhotoCollectionViewCell
               , let _url = self.presenter.photo(atIndexPath: convertedIndexPath)?.url, let url = URL(string: _url) else {
@@ -314,18 +371,19 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.row == 0 && self.presenter.isCurrentUser {
             mainPhotoUpload = false
-            self.cropper.showImagePicker(otherActions: [], title: "Crop photo")
+            let controller = ProfilePhotoAddController()
+            controller.isMainPhoto = mainPhotoUpload
+            controller.modalPresentationStyle = .overFullScreen
+            self.present(controller, animated: true, completion: nil)
             return
         }
-        
-        let ind = IndexPath(item: indexPath.item - 1, section: indexPath.section)
+        let index = self.presenter.isCurrentUser ? indexPath.item - 1 : indexPath.item
+        let ind = IndexPath(item: index, section: indexPath.section)
         guard let photo = self.presenter.photo(atIndexPath: ind) else { return }
-//        self.presenter.selectItem(at: indexPath)
-//        collectionView.reloadItems(at: [indexPath])
         self.cell = collectionView.cellForItem(at: ind)
-        let controller = PhotoViewController(image: photo)
+        let controller = PhotoViewController(image: photo, shouldDelete: self.presenter.isCurrentUser)
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .custom
         controller.delegate = self

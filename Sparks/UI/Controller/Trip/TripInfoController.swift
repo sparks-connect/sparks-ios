@@ -25,6 +25,7 @@ class TripInfoController: BaseController {
     
     private lazy var preview: Preview<TripInfoPresenter> = {
         let view = Preview(presenter: self.presenter)
+        preview.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -39,15 +40,16 @@ class TripInfoController: BaseController {
     
     private lazy var profileButton: PrimaryButton = {
         let btn = PrimaryButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("View Profile", for: .normal)
-//        btn.addTarget(self, action: #selector(nextClicked), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(viewProfile), for: .touchUpInside)
         btn.layer.cornerRadius = 22
-//        btn.setBackgroundColor(buttonColor, forState: .normal)
         return btn
     }()
     
     private lazy var connectButton: PrimaryButton = {
         let btn = PrimaryButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Ask to connect", for: .normal)
         btn.addTarget(self, action: #selector(askToConnectClicked), for: .touchUpInside)
         btn.layer.cornerRadius = 22
@@ -136,18 +138,28 @@ class TripInfoController: BaseController {
         }
     }
     
+    @objc func viewProfile() {
+        self.presenter.viewProfile()
+    }
+    
     @objc func askToConnectClicked() {
         self.presenter.askToConnect()
     }
 }
 
 extension TripInfoController: TripInfoView {
+    func setTitle(title: String) {
+        self.navigationItem.title = title
+    }
+    
     func loadImage(url: URL?) {
         self.imgView.sd_setImage(with: url, completed: nil)
     }
     
-    func navigate() {
-        
+    func navigate(presenter: ProfilePresenter) {
+        let profile = ProfileController(presenter: presenter)
+        profile.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(profile, animated: true)
     }
     
     func updateConnectButtonState(enabled: Bool, isConnected: Bool, text: String) {

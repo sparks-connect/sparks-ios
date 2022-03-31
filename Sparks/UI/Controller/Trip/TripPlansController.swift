@@ -55,7 +55,7 @@ class TripPlanController: TripBaseController{
     }
     
     @objc func navigateToEditor(){
-        self.loadFullnameEditMode(type: .name, value: planLabel.text ?? "")
+        self.loadFullnameEditMode(type: .plan, value: planLabel.text ?? "")
     }
     
     private func loadFullnameEditMode(type: EditKey, value: String) {

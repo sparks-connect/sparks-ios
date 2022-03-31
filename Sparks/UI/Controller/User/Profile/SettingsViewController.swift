@@ -94,6 +94,7 @@ extension SettingsViewController: SettingsView, TableViewCellDelegate {
     }
     
     func logout() {
+        self.tabBarController?.selectedIndex = 0
         Service.auth.logout()
         AppDelegate.updateRootViewController()
     }

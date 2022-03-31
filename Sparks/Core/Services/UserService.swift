@@ -66,6 +66,7 @@ protocol UserService {
                      completion: @escaping (Result<Any?, Error>) -> Void)
     
     func updatePhotos(urls: [URL],
+                      mainIndex: Int?,
                       completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
@@ -144,6 +145,7 @@ class UserServiceImpl: UserService {
     }
     
     func updatePhotos(urls: [URL],
+                      mainIndex: Int?,
                       completion: @escaping (Result<Any?, Error>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
@@ -153,7 +155,7 @@ class UserServiceImpl: UserService {
             return
         }
         
-        var photos = [Any]()
+        var photos = [[String: Any]]()
         let path = user.path
         var newUrls = [String]()
         let userId = user.uid
@@ -161,16 +163,17 @@ class UserServiceImpl: UserService {
         let userPhotos = user.photos
         let hasMain = userPhotos.filter({ $0.main }).first !== nil
         
-        user.photos.forEach { photo in
-            
-            if let u = photo.url {
-                photos.append([
-                    UserPhoto.CodingKeys.url.rawValue: u,
-                    UserPhoto.CodingKeys.createdAt.rawValue: photo.createdAt,
-                    UserPhoto.CodingKeys.main.rawValue: photo.main,
-                    BaseModelObject.BaseCodingKeys.uid.rawValue: photo.uid,
-                ])
+        for photo in user.photos {
+            if photo.main && mainIndex != nil {
+                continue
             }
+            
+            photos.append([
+                UserPhoto.CodingKeys.url.rawValue: photo.url ?? "",
+                UserPhoto.CodingKeys.createdAt.rawValue: photo.createdAt,
+                UserPhoto.CodingKeys.main.rawValue: photo.main,
+                BaseModelObject.BaseCodingKeys.uid.rawValue: photo.uid,
+            ])
         }
         
         urls.forEach { url in
@@ -204,16 +207,37 @@ class UserServiceImpl: UserService {
         
         dispatchGroup.notify(queue: dispatchQueue) { [weak self] in
             
-            for (i, u) in newUrls.enumerated() {
+            for u in newUrls {
                 photos.append([
                     UserPhoto.CodingKeys.url.rawValue: u,
                     UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
-                    UserPhoto.CodingKeys.main.rawValue: !hasMain && i == 0,
+                    UserPhoto.CodingKeys.main.rawValue: false,
                     BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
                 ])
             }
             
-            self?.api.updateNode(path: "\(path)", values: ["photos": photos], completion: completion)
+            var newPhotos: [[String: Any]] = []
+            
+            for (i, ph) in photos.enumerated() {
+                
+                let u = ph[UserPhoto.CodingKeys.url.rawValue] as? String ?? ""
+                var main = false
+                if let mainInd = mainIndex {
+                    let mainUrl = newUrls[mainInd]
+                    main = mainUrl == u
+                }
+                
+                newPhotos.append(
+                    [
+                        UserPhoto.CodingKeys.url.rawValue: u,
+                        UserPhoto.CodingKeys.createdAt.rawValue: Date().timeIntervalAsImpreciseToken,
+                        UserPhoto.CodingKeys.main.rawValue: main || (!hasMain && i == 0),
+                        BaseModelObject.BaseCodingKeys.uid.rawValue: UUID().uuidString,
+                    ]
+                )
+            }
+            
+            self?.api.updateNode(path: "\(path)", values: ["photos": newPhotos], completion: completion)
         }
     }
     

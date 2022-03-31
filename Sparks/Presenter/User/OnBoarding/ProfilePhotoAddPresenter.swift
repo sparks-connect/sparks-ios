@@ -17,6 +17,9 @@ protocol ProfilePhotoAddView: BasePresenterView {
 }
 
 class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
+    var isProfilePic: Bool = false
+    var next: String? = nil
+    
     func uploadImage(image: UIImage) {
         guard  let data = image.compressed else { return }
         Service.auth.updatePhoto(data: data, main: true) { [weak self] response in
@@ -35,30 +38,43 @@ class ProfilePhotoAddPresenter: BasePresenter<ProfilePhotoAddView> {
         }
     }
     
-    func getMedia() {
-        Service.insta.getMedia(completion: { [weak self] response in
+    func getMedia(_ handler:((Bool, [PhotoAsset])->Void)? = nil) {
+        Service.insta.getMedia(next: self.next, completion: { [weak self] response in
             var photos = [PhotoAsset]()
             switch response {
             case .success(let instaAsset):
                 instaAsset?.data?.forEach({ media in
-                    if let url = URL(string: media.mediaUrl ?? "") {
-                        let photo = PhotoAsset(withURL: url, id: media.id ?? "")
+                    let url = URL(string: media.mediaUrl ?? "")
+                    if  url != nil && media.mediaType != .video {
+                        let photo = PhotoAsset(withURL: url!, id: media.id ?? "")
                         photos.append(photo)
                     }
                 })
-            default:
-                break
+                if handler != nil {
+                    let isPageAvailable = self?.next != instaAsset?.paging?.next
+                    self?.next = isPageAvailable ? instaAsset?.paging?.next : nil
+                    handler?(isPageAvailable, photos)
+                }else {
+                    self?.next = instaAsset?.paging?.next
+                    self?.view?.navigate(assets: photos)
+                }
+            case .failure(_):
+                // process again
+                let url  = Service.insta.getAuthorizationURL()
+                self?.view?.showAuthorizationWindow(url: url)
             }
-            
-            self?.handleResponse(response: response, preReloadHandler: {
-                self?.view?.navigate(assets: photos)
-            })
         })
+    }
+    
+    func fetchNextMedia(completion:@escaping (Bool, [PhotoAsset])->Void){
+        if self.next != nil {
+            self.getMedia(completion)
+        }
     }
     
     func sendPhotos(photos: [PhotoAsset]){
         background {
-            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url })) { [weak self] response in
+            Service.auth.updatePhotos(urls: photos.compactMap({ $0.url }), mainIndex: self.isProfilePic ? 0 :  nil) { [weak self] response in
                 self?.handleResponse(response: response)
             }
         }

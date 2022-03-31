@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import WebKit
 import Photos
+import MapKit
 
 class ProfilePhotoAddController: BaseController {
     
@@ -17,6 +18,14 @@ class ProfilePhotoAddController: BaseController {
     override func getPresenter() -> Presenter {
         return self.presenter
     }
+    var isMainPhoto: Bool = false
+    private lazy var backBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "back"), for: .normal)
+        btn.addTarget(self, action: #selector(skipClicked), for: .touchUpInside)
+        return btn
+    }()
     
     private lazy var titleLabel : UILabel = {
         let view = Label()
@@ -42,7 +51,8 @@ class ProfilePhotoAddController: BaseController {
     
     private lazy var instaButton: UIButton = {
         let view = UIButton()
-        view.setTitle("Connect Instagram", for: .normal)
+        let title = User.current?.isMissingInstaToken ?? false ? "Connect Instagram" : "Instagram"
+        view.setTitle(title, for: .normal)
         view.setBackgroundImage(UIImage(named: "insta"), for: .normal)
         view.setTitleColor(UIColor.white, for: .normal)
         view.titleLabel?.font = UIFont.font(for: 14, style: .bold)
@@ -71,6 +81,7 @@ class ProfilePhotoAddController: BaseController {
     override func configure() {
         super.configure()
         self.layout()
+        self.presenter.isProfilePic = self.isMainPhoto
     }
     
     override func willAppear() {
@@ -78,10 +89,15 @@ class ProfilePhotoAddController: BaseController {
     }
     
     private func layout() {
-        
+        self.view.addSubview(backBtn)
         self.view.addSubview(titleLabel)
         self.view.addSubview(stackView)
         self.view.addSubview(skipButton)
+        
+        backBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(64)
+        }
         
         stackView.addArrangedSubview(instaButton)
         stackView.addArrangedSubview(galleryButton)
@@ -137,15 +153,18 @@ class ProfilePhotoAddController: BaseController {
 
 extension ProfilePhotoAddController: ProfilePhotoAddView {
     func showAuthorizationWindow(url: URL) {
-        let safariVC = SFSafariViewController(url: url)
-        safariVC.delegate = self
-        self.present(safariVC, animated: true, completion: nil)
+        let controller = WebViewController(url: url)
+        controller.request = self
+        self.present(controller, animated: true, completion: nil)
     }
     
     func navigate(assets: [PhotoAsset]) {
         let controller = AssetSelectViewController()
         controller.photoAssets = assets
         controller.delegate = self
+        controller.modalPresentationStyle = .fullScreen
+        controller.maxSelectionCount = self.isMainPhoto ? 1 : 10
+        controller.isInstaPagingEnabled = true
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -162,6 +181,8 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
                             let controller = AssetSelectViewController()
                             controller.assets = imageAsset
                             controller.delegate = self
+                            controller.maxSelectionCount = self.isMainPhoto ? 1 : 10
+                            controller.modalPresentationStyle = .fullScreen
                             self.present(controller, animated: true, completion: nil)
                         }
                     }
@@ -173,20 +194,25 @@ extension ProfilePhotoAddController: ProfilePhotoAddView {
     
 }
 
-extension ProfilePhotoAddController: SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo url: URL) {
-        if url.lastPathComponent != "authorize" {
-            if let callback = url.getQueryParameterValue(param: "u"),
-               let redirectURL = URL(string: callback),
-               let code = redirectURL.getQueryParameterValue(param: "code"){
+extension ProfilePhotoAddController: Request {
+    func validateRequest(request: URLRequest,controller: UIViewController) {
+        if let code = self.getTokenFromCallbackURL(request: request) {
+            controller.dismiss(animated: true) {
                 self.setAccessToken(code)
-                controller.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    
+    private func getTokenFromCallbackURL(request: URLRequest) -> String? {
+        let requestURLString = (request.url?.absoluteString)! as String
+        if requestURLString.starts(with: "\(Consts.Insta.redirectURI)?code=") {
+            
+            print("Response uri:",requestURLString)
+            if let range = requestURLString.range(of: "\(Consts.Insta.redirectURI)?code=") {
+                return String(requestURLString[range.upperBound...].dropLast(2))
+            }
+        }
+        return nil
     }
 }
 
@@ -194,5 +220,101 @@ extension ProfilePhotoAddController: AssetSelectViewControllerDelegate {
     func assetsSelected(assets: [PhotoAsset]) {
         self.presenter.sendPhotos(photos: assets)
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func fetchNextPage(completion:@escaping (Bool, [PhotoAsset])-> Void) {
+        self.presenter.fetchNextMedia(completion: completion)
+    }
+}
+
+protocol Request: AnyObject {
+    func validateRequest(request: URLRequest,controller: UIViewController)
+}
+
+class WebViewController: BaseController {
+    
+    private lazy var titeLabel: Label = {
+        let lbl = Label()
+        lbl.textAlignment = .center
+        lbl.font =  UIFont.systemFont(ofSize: 18, weight:.bold)
+        lbl.numberOfLines = 0
+        lbl.textAlignment = .center
+        lbl.textColor = .white
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.minimumScaleFactor = 0.5
+        lbl.text = Bundle.main.displayName ?? ""
+        return lbl
+    }()
+    
+    private lazy var closeBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "close"), for: .normal)
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+    
+    private lazy var webView: WKWebView = {
+        let web = WKWebView()
+        web.translatesAutoresizingMaskIntoConstraints = false
+        web.navigationDelegate = self
+        web.backgroundColor = .clear
+        return web
+    }()
+    private var requestURL: URL!
+    weak var request: Request?
+    
+    init(url: URL){
+        self.requestURL = url
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func configure() {
+        super.configure()
+        
+        self.view.addSubview(titeLabel)
+        titeLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(12)
+        }
+        
+        self.view.addSubview(closeBtn)
+        closeBtn.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(titeLabel)
+        }
+        
+        self.view.addSubview(webView)
+        webView.snp.makeConstraints { make in
+            make.top.equalTo(44)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        
+        webView.load(URLRequest(url: requestURL))
+    }
+    
+    @objc func back(){
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension WebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        self.request?.validateRequest(request: navigationAction.request,controller: self)
+        decisionHandler(WKNavigationActionPolicy.allow)
+    }
+}
+
+extension Bundle {
+    // Name of the app - title under the icon.
+    var displayName: String? {
+        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+        object(forInfoDictionaryKey: "CFBundleName") as? String
     }
 }

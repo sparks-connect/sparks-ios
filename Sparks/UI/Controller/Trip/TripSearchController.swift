@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import AMPopTip
+import Toast_Swift
 
 class TripSearchController: BaseController {
     
@@ -97,6 +99,38 @@ class TripSearchController: BaseController {
         return label
     }()
     
+    private lazy var departureView: DateView = {
+        let vw = DateView(tite: "Departure", img: UIImage(named: "depart") ?? .init(), selected: true)
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.addTapGesture(target: self, selector: #selector(dateChanged(_:)))
+        return vw
+    }()
+    
+    private lazy var arrivalView: DateView = {
+        let vw = DateView(tite: "Arrival", img: UIImage(named: "arrival") ?? .init(), selected: false)
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.addTapGesture(target: self, selector: #selector(dateChanged(_:)))
+        return vw
+    }()
+    
+    lazy var filterButton: PrimaryButton = {
+        let btn = PrimaryButton()
+        btn.setTitle("Filter", for: .normal)
+        btn.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
+        btn.layer.cornerRadius = 32
+        btn.setBackgroundColor(Color.green.uiColor, forState: .normal)
+        return btn
+    }()
+    
+    lazy var resetButton: PrimaryButton = {
+        let btn = PrimaryButton()
+        btn.setTitle("Reset", for: .normal)
+        btn.addTarget(self, action: #selector(resetClicked), for: .touchUpInside)
+        btn.layer.cornerRadius = 32
+        btn.setBackgroundColor(Color.red.uiColor, forState: .normal)
+        return btn
+    }()
+    
     override func configure() {
         super.configure()
         self.layout()
@@ -104,6 +138,7 @@ class TripSearchController: BaseController {
     
     override func didAppear() {
         super.didAppear()
+        self.showTooltipOnce()
     }
     
     private func layout(){
@@ -172,6 +207,39 @@ class TripSearchController: BaseController {
             make.leading.equalTo(24)
             make.top.equalTo(tagsGenderView.snp.bottom).offset(48)
         }
+        
+        self.view.addSubview(departureView)
+        departureView.snp.makeConstraints { make in
+            make.leading.equalTo(24)
+            make.width.equalToSuperview().multipliedBy(0.38)
+            make.height.equalToSuperview().multipliedBy(0.14)
+            make.top.equalTo(dateLabel.snp.bottom).offset(16)
+        }
+        
+        self.view.addSubview(arrivalView)
+        arrivalView.snp.makeConstraints { make in
+            make.trailing.equalTo(-24)
+            make.width.equalTo(departureView)
+            make.height.equalTo(departureView)
+            make.top.equalTo(dateLabel.snp.bottom).offset(16)
+        }
+        
+        self.view.addSubview(resetButton)
+        resetButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            $0.left.equalToSuperview().inset(32)
+            $0.right.equalToSuperview().inset(32)
+            $0.height.equalTo(64)
+        }
+        
+        self.view.addSubview(filterButton)
+        filterButton.snp.makeConstraints {
+            $0.bottom.equalTo(resetButton.snp.top).offset(-16)
+            $0.left.equalToSuperview().inset(32)
+            $0.right.equalToSuperview().inset(32)
+            $0.height.equalTo(64)
+        }
+
 
     }
     
@@ -184,9 +252,107 @@ class TripSearchController: BaseController {
     @objc private func close(){
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @objc func dateChanged(_ tapRecognizer: UITapGestureRecognizer){
+        if let vw = tapRecognizer.view as? DateView {
+            self.loadFullnameEditMode(source: vw)
+        }
+    }
+    
+    private func loadFullnameEditMode(source: DateView) {
+        let controller = OnKbdEditorViewController
+            .createModule(text: source.title.text,
+                          viewTitle: source.title.text ?? "",
+                          inputTitle: source.getKey.rawValue,
+                          placeholder: source.getKey.rawValue,
+                          customKey: source.getKey.rawValue,
+                          delegate: self)
+        controller.inputKind = source.getKey.inputKind
+        controller.modalPresentationStyle = .overFullScreen
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    @objc private func filterClicked(){
+        
+        guard let ageValue = self.tagsAgeView.currentSelections.last else { return }
+        let age = Age(rawValue: ageValue as! String)
+        
+        guard let genderValue = self.tagsGenderView.currentSelections.last else { return }
+        let gender = Gender(rawValue: genderValue as! String)
+        
+        let startDate = self.departureView.getDate
+        let endDate = self.arrivalView.getDate
+
+        self.presenter.save(age: age, gender: gender, startDate: startDate, endDate: endDate)
+        
+        self.close()
+    }
+    
+    @objc private func resetClicked(){
+        self.presenter.reset()
+        self.setDefaultValue()
+        self.view.makeToast("Success! Reset Filters is done! \n Trips will be refreshed!",position: .top)
+    }
+    
+    private func setDefaultValue(){
+        self.searchLabel.text = "Type city name..."
+        self.tagsAgeView.currentSelections = [Age.small.rawValue]
+        self.tagsGenderView.currentSelections = [Gender.male.rawValue]
+        self.departureView.setDate(date: Date())
+        self.arrivalView.setDate(date: Date())
+    }
+    
+    private func showTooltipOnce(){
+        if StandardUserDefaults.resetKeyHere == false {
+            displayTooltip()
+            StandardUserDefaults.resetKeyHere = true
+        }
+       
+    }
+    
+    private func displayTooltip(){
+        let popTip = PopTip()
+        popTip.shouldShowMask = true
+        popTip.shouldDismissOnTap = true
+        popTip.shouldDismissOnTapOutside = true
+        popTip.bubbleColor = Color.purple.uiColor
+        popTip.show(text: "It will reset the applied filters and trips will get refreshed after resetting this...",
+                    direction: .auto,
+                    maxWidth: 300,
+                    in: view,
+                    from: resetButton.frame,
+                    duration: 10)
+        
+        popTip.entranceAnimationHandler = { completion in
+            popTip.transform = CGAffineTransform(rotationAngle: 0.3)
+            UIView.animate(withDuration: 0.5, animations: {
+                popTip.transform = .identity
+            }, completion: { (_) in
+                completion()
+            })
+        }
+    }
+}
+
+extension TripSearchController: OnKbdEditorViewControllerDelegate {
+    func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
+        let vw = [departureView,arrivalView].filter({$0.getKey.rawValue == customKey}).first
+        vw?.setDate(date: dateValue.toDate)
+    }
 }
 
 extension TripSearchController: TripSearchView {
+    func updateView(age: Age?, gender: Gender?, startDate: Int64?, endDate: Int64?) {
+        self.tagsAgeView.currentSelections = [age?.rawValue ?? Age.small.rawValue]
+        self.tagsGenderView.currentSelections = [gender?.rawValue ?? Gender.male.rawValue]
+        if let start = startDate, start != 0 {
+            self.departureView.setDate(date: start.toDate)
+        }
+        if let end = endDate, endDate != 0 {
+            self.arrivalView.setDate(date: end.toDate)
+        }
+    }
+    
     func updateLocation(text: String?) {
         self.searchLabel.text = text
     }

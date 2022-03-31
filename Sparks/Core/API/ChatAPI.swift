@@ -229,15 +229,10 @@ protocol ChatStatusEvent {
 
 class ChatAPIImpl: ChatAPI {
     
-    let user: User?
-    init(user: User? = nil) {
-        self.user = user
-    }
-    
     private lazy var pubnub: PubNub = {
         let config = PNConfiguration(publishKey: Consts.PubNub.publish, subscribeKey: Consts.PubNub.subscribe)
         
-        if let uuid = user?.uid {
+        if let uuid = User.current?.uid {
             debugPrint("Configuring PubNub with \(uuid)")
             config.uuid = uuid
         }

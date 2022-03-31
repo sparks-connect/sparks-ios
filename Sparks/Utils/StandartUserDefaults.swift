@@ -14,6 +14,7 @@ final class StandardUserDefaults {
         case boolKeyHere
         case arrayKeyHere
         case walkthrough
+        case resetToolTip
     }
     
     static var boolKeyHere: Bool {
@@ -22,6 +23,15 @@ final class StandardUserDefaults {
         }
         set {
             set(newValue, forKey: .boolKeyHere)
+        }
+    }
+    
+    static var resetKeyHere: Bool {
+        get {
+            return bool(forKey: .resetToolTip)
+        }
+        set {
+            set(newValue, forKey: .resetToolTip)
         }
     }
     

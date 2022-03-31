@@ -14,18 +14,24 @@ class TripCriteria: BaseModelObject {
     @objc dynamic private(set) var startDate: Int64 = 0
     @objc dynamic private(set) var endDate: Int64 = 2524593600000000
     @objc dynamic private(set) var gender: String = Gender.both.rawValue
+    @objc dynamic private(set) var age: String = Age.small.rawValue
+
+    var ageEnum: Age {
+        return Age(rawValue: self.age) ?? .small
+    }
     
     override init() {
         super.init()
     }
     
-    init(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both) {
+    init(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both, age: Age = .small) {
         super.init()
         self.uid = UUID().uuidString
         self.city = city
         self.startDate = startDate
         self.endDate = endDate
         self.gender = gender.rawValue
+        self.age = age.rawValue
     }
     
     required init(from decoder: Decoder) throws {
@@ -36,12 +42,13 @@ class TripCriteria: BaseModelObject {
         RealmUtils.save(object: criteria)
     }
     
-    func save(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both){
+    func save(city: String, startDate: Int64 = 0, endDate: Int64 = 0, gender: Gender = .both, age: Age = .small){
         try? self.realm?.write {
             self.city = city
             self.startDate = startDate
             self.endDate = endDate
             self.gender = gender.rawValue
+            self.age = age.rawValue
         }
     }
     

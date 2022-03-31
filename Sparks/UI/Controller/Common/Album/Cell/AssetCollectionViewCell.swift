@@ -14,7 +14,6 @@ import MobileCoreServices
 class AssetCollectionViewCell: CollectionViewCell {
     
 //    @IBOutlet internal weak var imageView: UIImageView?
-    @IBOutlet weak var checkBoxView: UIImageView?
     @IBOutlet internal var detailView: UIView?
     @IBOutlet internal weak var detailLabel: UILabel?
     @IBOutlet weak var bottomDetailView: UIView?
@@ -30,17 +29,17 @@ class AssetCollectionViewCell: CollectionViewCell {
         }
         set {
             if newValue {
-                self.checkBoxView?.alpha = 1
+                self.checkBoxView.alpha = 1
                 UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveLinear, animations: {
-                    self.checkBoxView?.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2)
+                    self.checkBoxView.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2)
                     self.imageView.alpha = 0.5
                 })
             } else {
                 UIView.animate(withDuration: 0.25, animations: {
-                    self.checkBoxView?.alpha = 0
+                    self.checkBoxView.alpha = 0
                     self.imageView.alpha = 1
                 }) { (completed) in
-                    self.checkBoxView?.transform = CGAffineTransform.identity
+                    self.checkBoxView.transform = CGAffineTransform.identity
                 }
             }
             super.isSelected = newValue
@@ -53,7 +52,7 @@ class AssetCollectionViewCell: CollectionViewCell {
         self.imageView.contentMode = .scaleAspectFill
         self.imageView.backgroundColor = UIColor.purple
         
-        self.checkBoxView?.alpha = 0
+        self.checkBoxView.alpha = 0
         
     }
     

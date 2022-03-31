@@ -26,6 +26,10 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vwh-cK-eKO">
                                 <rect key="frame" x="175" y="416" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="nlc-uX-d2K"/>
+                                    <constraint firstAttribute="width" constant="64" id="yiu-Uj-TUc"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sparks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86X-pM-IJA">
                                 <rect key="frame" x="159.5" y="496" width="95.5" height="36"/>
@@ -66,6 +70,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_launchscreen" width="64" height="64"/>
+        <image name="ic_launchscreen" width="170.5" height="170.5"/>
     </resources>
 </document>

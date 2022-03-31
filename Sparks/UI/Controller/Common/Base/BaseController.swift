@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class BaseController : UIViewController, BasePresenterView {
     
@@ -49,10 +50,19 @@ class BaseController : UIViewController, BasePresenterView {
     // MARK: ====== Navigation bar ===============================
     
     func configureNavigationBar() {
-        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = Color.background.uiColor
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.font(for: 16, style: .bold)
+        ]
+
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationController?.navigationBar.barTintColor = Color.purple.uiColor
+        self.navigationController?.navigationBar.barTintColor = Color.background.uiColor
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         //self.navigationController?.navigationBar.isTranslucent = false
@@ -155,12 +165,15 @@ class BaseController : UIViewController, BasePresenterView {
     }
     
     func notifyError(message: String, okAction: (() -> Void)? = nil) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: {(action) in
-            okAction?()
-        })
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        //Ref - https://github.com/Daltron/NotificationBanner
+        let banner = GrowingNotificationBanner(title: "", subtitle: message, style: .warning)
+        banner.show()
+//        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Ok", style: .default, handler: {(action) in
+//            okAction?()
+//        })
+//        alert.addAction(action)
+//        self.present(alert, animated: true, completion: nil)
     }
     
     func reloadView() {} // Override in subclasses

@@ -29,6 +29,7 @@ class ProfileTagsPresenter: BasePresenter<ProfileTagsView> {
         userToken = RealmUtils.observeUserUpdates {
             self.view?.reloadView()
         }
+        MemoryStore.sharedInstance.addToken(userToken)
     }
     
     private func observeTags() {

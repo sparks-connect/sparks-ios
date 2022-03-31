@@ -51,6 +51,7 @@ class Preview<T: PreviewConfiguration>: UIView, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? PreviewCell else { return UITableViewCell() }
+        cell.selectionStyle = .none
         self.presenter.configure(cell: cell, indexPath: indexPath)
         return cell
     }

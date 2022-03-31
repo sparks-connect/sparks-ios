@@ -22,6 +22,8 @@ protocol TripsService {
     func addToFavourites(trip: Trip,
                         completion:@escaping(Result<Any, Error>)->Void)
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
+    func fetchMyTrips(completion:@escaping(Result<[Trip], Error>)->Void)
+    func fetchTripsForUser(uid: String, completion:@escaping(Result<[Trip], Error>)->Void)
 }
 
 class TripsServiceImpl: TripsService {
@@ -73,8 +75,13 @@ class TripsServiceImpl: TripsService {
         trips.forEach { trip in
             let matchesEndDate = trip.endDate < criteria.endDate
             let matchesCity = criteria.city.isEmpty || trip.city == criteria.city
+            var matchesAge = true
+            if let years = trip.user?.ageYear {
+                matchesAge = criteria.ageEnum.range.contains(years)
+            }
+            
             let matchesGender = (criteria.gender == Gender.both.rawValue || trip.user?.gender == nil) || trip.user?.gender == criteria.gender
-            if (matchesEndDate && matchesCity && matchesGender) {
+            if (matchesEndDate && matchesCity && matchesGender && matchesAge && trip.userId != User.current?.uid) {
                 result.append(trip)
             }
         }
@@ -94,10 +101,25 @@ class TripsServiceImpl: TripsService {
             return
         }
         
-        firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: [(Trip.CodingKeys.userId.rawValue, CompareType.equals, u.uid)]) {[weak self] response in
+        fetchTripsForUser(uid: u.uid) {[weak self] response in
             switch response {
             case .success(let trips):
-                self?.myTrips = trips.1
+                self?.myTrips = trips
+                completion(.success(trips))
+                break
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
+    }
+    
+    // https://cloud.google.com/firestore/docs/query-data/query-cursors
+    func fetchTripsForUser(uid: String, completion:@escaping(Result<[Trip], Error>)->Void) {
+        
+        firebase.fetchItems(type: Trip.self, at: Trip.kPath, predicates: [(Trip.CodingKeys.userId.rawValue, CompareType.equals, uid)]) { response in
+            switch response {
+            case .success(let trips):
                 completion(.success(trips.1))
                 break
             case .failure(let e):

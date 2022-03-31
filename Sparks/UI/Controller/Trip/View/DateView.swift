@@ -38,27 +38,30 @@ class DateView: UIView {
     var getKey: EditKey {
         EditKey(rawValue: self.title.text ?? "") ?? .departure
     }
-    
-    var getDate: Int64 = 0
+    var isSelected: Bool {
+        get {
+            return self.isSelected
+        }
+        set {
+            self.updateUI(isSelected: newValue)
+        }
+    }
+    var getDate: Int64 = Date().milliseconds
     
     init(tite: String, img: UIImage, selected: Bool){
         super.init(frame:.zero)
         layout()
-        
-        if selected {
-            self.title.textColor = Consts.Colors.dateSelected
-            self.date.textColor = Consts.Colors.dateSelected
-        }
-        
         self.title.text = tite
         self.imgView.image = img
         self.date.text = Date().toString("dd MMM, yyyy", localeIdentifier: Locale.current.identifier)
         self.getDate = Date().milliseconds
+        self.isSelected = selected
     }
     
     func setDate(date: Date){
         self.getDate = date.milliseconds
         self.date.text = date.toString("dd MMM, yyyy", localeIdentifier:  Locale.current.identifier)
+        self.isSelected = true
     }
     
     func layout(){
@@ -80,6 +83,24 @@ class DateView: UIView {
         date.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-12)
             make.centerX.equalToSuperview()
+        }
+    }
+    
+    func updateUI(isSelected: Bool = false){
+        self.layer.cornerRadius = 16
+        self.imgView.image = self.imgView.image?.withRenderingMode(.alwaysTemplate)
+        if isSelected {
+            self.layer.borderWidth = 1.6
+            self.layer.borderColor = Consts.Colors.borderSelected.cgColor
+            self.imgView.tintColor = Consts.Colors.borderSelected
+            self.title.textColor = Consts.Colors.dateSelected
+            self.date.textColor = Consts.Colors.dateSelected
+        }else {
+            self.layer.borderWidth = 0.8
+            self.imgView.tintColor = .white
+            self.layer.borderColor = Consts.Colors.border.cgColor
+            self.title.textColor = .white
+            self.date.textColor = .white
         }
     }
     

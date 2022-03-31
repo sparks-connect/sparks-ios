@@ -11,6 +11,14 @@ import CoreLocation
 
 class LocationEnableController: BaseController {
     
+    private lazy var backBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(named: "back"), for: .normal)
+        btn.addTarget(self, action: #selector(back), for: .touchUpInside)
+        return btn
+    }()
+
     private let titeLabel : Label = {
         let view = Label()
         view.textAlignment = .center
@@ -72,11 +80,17 @@ class LocationEnableController: BaseController {
     
     private func layout() {
         
+        view.addSubview(backBtn)
         view.addSubview(welcomeImg)
         view.addSubview(titeLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(allowButton)
         view.addSubview(manualButton)
+        
+        backBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(64)
+        }
 
         titeLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
@@ -119,13 +133,27 @@ class LocationEnableController: BaseController {
         }
     }
     
+    @objc private func back(){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @objc private func allowClicked() {
         LocationManager.sharedInstance.requestAuthorization()
     }
     
     @objc private func manualClicked() {
         let controller = PlacesController()
+        controller.delegate = self
         self.present(controller, animated: true, completion: nil)
     }
 
+}
+
+extension LocationEnableController: Place {
+    func getLocation(info: PlaceInfo) {
+        LocationManager.sharedInstance.delegate?.didUpdateTo(info.coordinates?.latitude ?? 0.0, info.coordinates?.longitude ?? 0.0)
+        main {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
 }

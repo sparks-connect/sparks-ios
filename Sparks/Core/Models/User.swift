@@ -16,6 +16,14 @@ enum Age: String, Codable, Tag {
     case mid = "32-50"
     case elder = "From 50"
     
+    var range: ClosedRange<Int> {
+        switch self {
+        case .small: return 18...32
+        case .mid: return 33...50
+        case .elder: return 51...80
+        }
+    }
+    
     func getLabel() -> String {
         return self.rawValue
     }
@@ -32,6 +40,14 @@ enum Gender: String, Codable, Tag {
     
     func getLabel() -> String {
         return self.rawValue
+    }
+    
+    var icon: UIImage? {
+        switch self {
+        case .both: return UIImage(named: "both")
+        case .male: return UIImage(named: "male")
+        case .female: return UIImage(named: "female")
+        }
     }
 }
 
@@ -60,6 +76,7 @@ class User: BaseModelObject, SenderType {
         profileTags,
         instaID,
         instaToken,
+        instaUserName,
         referrer = "referredBy",
         _photos = "photos",
         _favourites = "favourites"
@@ -99,6 +116,8 @@ class User: BaseModelObject, SenderType {
     @objc dynamic private(set) var instaID: Int64 = 0
     /// insta access token
     @objc dynamic private(set) var instaToken: String?
+    /// insta user Name
+    @objc dynamic private(set) var instaUserName: String?
 
     
     private var _profileTags: [String]?
@@ -198,6 +217,10 @@ class User: BaseModelObject, SenderType {
         })
     }
     
+    func getFavourites() -> [Trip] {
+        return self._favourites ?? []
+    }
+    
     required override init() {
         super.init()
     }
@@ -222,6 +245,7 @@ class User: BaseModelObject, SenderType {
         self.birthDate = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.birthDate) ?? 0
         self.instaID = try container.decodeIfPresent(Int64.self, forKey: CodingKeys.instaID) ?? 0
         self.instaToken = try container.decodeIfPresent(String.self, forKey: CodingKeys.instaToken)
+        self.instaUserName = try container.decodeIfPresent(String.self, forKey: CodingKeys.instaUserName)
         self._profileTags = try container.decodeIfPresent([String]?.self, forKey: .profileTags) ?? nil
         self._deviceTokens = try container.decodeIfPresent([String]?.self, forKey: .deviceTokens) ?? nil
         self._photos = try container.decodeIfPresent([UserPhoto]?.self, forKey: ._photos) ?? []
@@ -331,6 +355,10 @@ extension User {
     
     var isMissingName: Bool {
         self.firstName == nil || self.firstName?.isEmpty == true
+    }
+    
+    var isMissingLocation: Bool {
+        self.lat == 0.0 && self.lng == 0.0
     }
     
     var isMissingGender: Bool {

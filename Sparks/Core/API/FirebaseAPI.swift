@@ -24,6 +24,7 @@ enum CompareType {
     case greaterThanOrEqual
     case arrayContains
     case pathEquals
+    case notEquals
 }
 
 typealias Predicate = (field: String, type: CompareType, value: Any)
@@ -132,6 +133,8 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
             return ref.whereField(predicate.field, arrayContains: predicate.value)
         case .pathEquals:
             return ref.whereField(predicate.field, isEqualTo: predicate.value)
+        case .notEquals:
+            return ref.whereField(predicate.field, isNotEqualTo: predicate.value)
         }
     }
 
@@ -218,7 +221,7 @@ class FirebaseAPIImpl: NSObject, FirebaseAPI {
         }
         
         if let start = startAfter as? DocumentSnapshot {
-            ref.start(afterDocument: start)
+            ref = ref.start(afterDocument: start)
         }
         
         if let limit = limit {
@@ -345,7 +348,7 @@ extension FirebaseAPIImpl {
     func fbAuth(controller: UIViewController, completion: @escaping (Result<Any?, Error>) -> Void) {
 
         let fbLoginManager : LoginManager = LoginManager()
-        fbLoginManager.logIn(permissions: ["email"], from: controller) { (result, error) -> Void in
+        fbLoginManager.logIn(permissions: ["public_profile"], from: controller) { (result, error) -> Void in
             
             guard let result = result, let token = result.token, error == nil else {
                 completion(.failure(CIError.unauthorized))
@@ -510,7 +513,9 @@ extension FirebaseAPIImpl {
                     return
                 }
                 u.loggedIn = true
-                RealmUtils.save(object: u)
+                main {
+                    RealmUtils.save(object: u)
+                }
                 
                 DeepLinkHelper.generateLink(params: ["uid": u.uid, "name": u.displayName]) { (response) in
                     switch response {
@@ -543,6 +548,7 @@ extension FirebaseAPIImpl {
 
     func logOut() {
         NotificationCenter.default.post(name: Notification.Name("logout"), object: nil)
+        
         clearFbPermissions()
         RealmUtils.deleteAll()
         database.clearPersistence { (error) in

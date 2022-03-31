@@ -10,15 +10,22 @@ import Foundation
 import RealmSwift
 
 protocol TripListView: BasePresenterView {
+    func showLoader(isLoading: Bool)
     func navigate(presenter: TripInfoPresenter)
 }
 
-class TripListPresenter: BasePresenter<TripListView> {
+class TripListPresenter: BasePresenter<TripListView>, ListPresenter {
     private let service = Service.trips
-    var datasource: [Trip]?
+    private(set) var datasource: [Trip] = []
     private var token: NotificationToken?
     private var userToken: NotificationToken?
-    private var lastItem: Any?;
+    private var lastItem: Any?
+    private var loadMore: Bool {
+        return lastItem != nil
+    }
+    var hasSearchFilters: Bool {
+        return TripCriteria.get != nil
+    }
     
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,12 +33,14 @@ class TripListPresenter: BasePresenter<TripListView> {
         self.observeUserUpdate()
     }
     
-    func fetchTrips(){
-        service.fetch(limit: 10, lastItem: lastItem) {[weak self] response in
+    func fetchTrips(_ showLoader: Bool = true){
+        
+        self.view?.showLoader(isLoading: showLoader)
+        service.fetch(limit: 100, lastItem: lastItem){[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let model):
-                    self?.datasource = model.trips // TODO: Vishal, instead of setting this, we will need to append those items because of paging.
+                    self?.datasource.append(contentsOf: model.trips)
                     self?.lastItem = model.lastItem
                 case .failure(_):
                     break
@@ -43,13 +52,17 @@ class TripListPresenter: BasePresenter<TripListView> {
     private func observePredicate() {
         token?.invalidate()
         token = RealmUtils.observe {[weak self] (change: RealmCollectionChange<Results<TripCriteria>>) in
-            switch change {
-            case .initial(_):
-                self?.fetchTrips()
-            case .update(_,_,_,_):
-                self?.fetchTrips()
-                break
-            default: break
+            main {
+                self?.lastItem = nil
+                self?.datasource.removeAll()
+                switch change {
+                case .initial(_):
+                    self?.fetchTrips()
+                case .update(_,_,_,_):
+                    self?.fetchTrips()
+                    break
+                default: break
+                }
             }
         }
     }
@@ -62,8 +75,8 @@ class TripListPresenter: BasePresenter<TripListView> {
     }
     
     func configureCell(cell: TripCell, indexPath: IndexPath){
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
-        
+        guard let user = User.current, indexPath.row < datasource.count else {return}
+        let trip = self.datasource[indexPath.item]
         let stDate = trip.startDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let endDate = trip.endDate.toDate.toString("dd MMM", localeIdentifier: Locale.current.identifier)
         let date = "\(stDate) - \(endDate)"
@@ -75,20 +88,34 @@ class TripListPresenter: BasePresenter<TripListView> {
                        name: profile,
                        location: trip.city ?? "",
                        desc: trip.plan ?? "",
-                       isFav: user.isTripFavourite(uid: trip.uid)
+                       isFav: user.isTripFavourite(uid: trip.uid),
+                       gender: trip.user?.genderEnum ?? .both
                     )
         cell.makeFavourite = {[weak self] (indexPath) in
             self?.addToFavourite(indexPath: indexPath)
         }
     }
     
+    func refreshList() {
+        self.lastItem = nil
+        self.datasource.removeAll()
+        self.fetchTrips(false)
+    }
+    
+    func fetchNextPage() {
+        if self.lastItem != nil {
+            self.fetchTrips(false)
+        }
+    }
+    
     func didSelectCell(index: Int) {
-        guard let trip = self.datasource?[index] else {return}
+        let trip = self.datasource[index]
         self.view?.navigate(presenter: TripInfoPresenter(trip: trip))
     }
     
     func addToFavourite(indexPath: IndexPath) {
-        guard let user = User.current, let trip = self.datasource?[indexPath.item] else {return}
+        guard let user = User.current else {return}
+        let trip = self.datasource[indexPath.item]
         if user.isTripFavourite(uid: trip.uid) {
             service.removeFromFavourites(uid: trip.uid) { result in
                 switch result {

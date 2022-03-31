@@ -29,7 +29,7 @@ class API {
         FirebaseAPIImpl.setup()
         instance.firebase = FirebaseAPIImpl()
         instance.http = HttpAPIImpl()
-        instance.chat = ChatAPIImpl(user: User.current)
+        instance.chat = ChatAPIImpl()
         instance.storage = StorageAPIImpl()
     }
 
