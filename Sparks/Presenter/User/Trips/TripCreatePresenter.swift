@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NotificationBannerSwift
 
 protocol TripCreateView: BasePresenterView {
     func navigate()
@@ -41,10 +42,21 @@ class TripCreatePresenter: BasePresenter<TripCreateView> {
                             community: self.community,
                             plan: self.plan) { [weak self] (response) in
             completion(true)
-            self?.handleResponse(response: response, preReloadHandler: {
+            self?.handleResponse(response: response, preReloadHandler: {[weak self] in
+                switch response {
+                case .success(_):
+                    self?.showBanner()
+                case .failure(_):
+                    break
+                }
                 self?.view?.navigate()
             }, reload: false)
         }
+    }
+    
+    func showBanner(){
+        let banner = GrowingNotificationBanner(title: "", subtitle:"Congratulations 🛫\nTrip was created successfully. You can check it under your profile -> My trips", style: .success)
+        banner.show()
     }
     
     func preparePreview() -> [PreviewModel] {
