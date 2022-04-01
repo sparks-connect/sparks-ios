@@ -103,6 +103,7 @@ class ProfileController: BaseController {
         view.axis = .vertical
         view.addArrangedSubview(labelConnections)
         view.addArrangedSubview(labelConnectionsTitle)
+        view.addTapGesture(target: self, selector: #selector(onConnections))
         return view
     }()
     
@@ -305,6 +306,10 @@ class ProfileController: BaseController {
     @objc private func onProfileEdit(sender: UIBarButtonItem) {
         let settings = EditProfileViewController()
         self.navigationController?.pushViewController(settings, animated: true)
+    }
+    
+    @objc private func onConnections(){
+        self.tabBarController?.selectedIndex = 1
     }
     
     @objc private func onMyTrips(){
