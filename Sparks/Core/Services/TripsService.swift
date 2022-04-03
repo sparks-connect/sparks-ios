@@ -24,6 +24,9 @@ protocol TripsService {
     func removeFromFavourites(uid: String, completion:@escaping(Result<Any, Error>)->Void)
     func fetchMyTrips(completion:@escaping(Result<[Trip], Error>)->Void)
     func fetchTripsForUser(uid: String, completion:@escaping(Result<[Trip], Error>)->Void)
+    func fetchNew(completion:@escaping(Result<[Trip], Error>)->Void)
+    func fetchUpcoming(completion:@escaping(Result<[Trip], Error>)->Void)
+    func fetchInYourCity(completion:@escaping(Result<[Trip], Error>)->Void)
 }
 
 class TripsServiceImpl: TripsService {
@@ -37,6 +40,64 @@ class TripsServiceImpl: TripsService {
     
     private func invalidateMyTrips() {
         self.myTrips.removeAll()
+    }
+    
+    func fetchNew(completion:@escaping(Result<[Trip], Error>)->Void) {
+    
+        guard let userUid = User.current?.uid else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        let date = Date().milliseconds - (3600 * 24 * 5 * 1000)
+        
+        firebase.fetchItems(type: Trip.self,
+                            at: Trip.kPath,
+                            predicates: [(Trip.CodingKeys.createdAt.rawValue, .greaterThanOrEqual, date)],
+                            orderBy: [Trip.CodingKeys.createdAt.rawValue],
+                            desc: true,
+                            limit: 10,
+                            startAfter: nil) { response in
+            
+            switch response {
+            case .success(let trips):
+                completion(.success(trips.1.filter({ $0.userId != userUid })))
+                break
+                
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
+    }
+    
+    func fetchUpcoming(completion:@escaping(Result<[Trip], Error>)->Void) {
+    
+        guard let userUid = User.current?.uid else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        let date = Date().milliseconds
+        
+        firebase.fetchItems(type: Trip.self,
+                            at: Trip.kPath,
+                            predicates: [(Trip.CodingKeys.startDate.rawValue, .greaterThanOrEqual, date)],
+                            orderBy: [Trip.CodingKeys.startDate.rawValue],
+                            desc: false,
+                            limit: 10,
+                            startAfter: nil) { response in
+            
+            switch response {
+            case .success(let trips):
+                completion(.success(trips.1.filter({ $0.userId != userUid })))
+                break
+                
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
     }
     
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
@@ -114,6 +175,35 @@ class TripsServiceImpl: TripsService {
         }
     }
     
+    func fetchInYourCity(completion:@escaping(Result<[Trip], Error>)->Void) {
+    
+        guard let user = User.current else {
+            completion(.failure(CIError.unauthorized))
+            return
+        }
+        
+        let date = Date().milliseconds
+        
+        firebase.fetchItems(type: Trip.self,
+                            at: Trip.kPath,
+                            predicates: [(Trip.CodingKeys.city.rawValue, .equals, user.currentCity ?? ""), (Trip.CodingKeys.userId.rawValue, .notEquals, user.uid)],
+                            orderBy: [],
+                            desc: false,
+                            limit: 10,
+                            startAfter: nil) { response in
+            
+            switch response {
+            case .success(let trips):
+                completion(.success(trips.1.filter({ $0.startDate > date }).sorted(by: { $0.startDate < $1.startDate })))
+                break
+                
+            case .failure(let e):
+                completion(.failure(e))
+                break
+            }
+        }
+    }
+    
     // https://cloud.google.com/firestore/docs/query-data/query-cursors
     func fetchTripsForUser(uid: String, completion:@escaping(Result<[Trip], Error>)->Void) {
         
@@ -154,7 +244,8 @@ class TripsServiceImpl: TripsService {
             Trip.CodingKeys.community.rawValue: community.rawValue,
             Trip.CodingKeys.userId.rawValue: u.uid,
             Trip.CodingKeys.user.rawValue: u.values,
-            Trip.CodingKeys.randomQueryInt.rawValue: Int.random(in: 1...1000000)
+            Trip.CodingKeys.randomQueryInt.rawValue: Int.random(in: 1...1000000),
+            Trip.CodingKeys.createdAt.rawValue: Date().milliseconds
          ]
         
         if let plan = plan {

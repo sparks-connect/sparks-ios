@@ -87,7 +87,7 @@ class MainTabBarController: UITabBarController {
         centerButton.center.x = self.tabBar.center.x
     }
 
-    private let tripListController = UINavigationController(rootViewController: TripsListController())
+    private let tripListController = UINavigationController(rootViewController: HomeController())
     private let channelListController = UINavigationController(rootViewController: ChannelListController())
     private let addTripController = UINavigationController(rootViewController: TripsListController())
     private let favourites = UINavigationController(rootViewController: TripFavouriteController())

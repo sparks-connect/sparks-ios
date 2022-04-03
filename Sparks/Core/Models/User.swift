@@ -79,7 +79,8 @@ class User: BaseModelObject, SenderType {
         instaUserName,
         referrer = "referredBy",
         _photos = "photos",
-        _favourites = "favourites"
+        _favourites = "favourites",
+        currentCity
     }
     
     /// First name
@@ -118,7 +119,8 @@ class User: BaseModelObject, SenderType {
     @objc dynamic private(set) var instaToken: String?
     /// insta user Name
     @objc dynamic private(set) var instaUserName: String?
-
+    // current city
+    @objc dynamic private(set) var currentCity: String?
     
     private var _profileTags: [String]?
     private var _deviceTokens: [String]?
@@ -180,6 +182,7 @@ class User: BaseModelObject, SenderType {
         self._profileTags = user._profileTags
         self._photos = user._photos
         self._favourites = user._favourites
+        self.currentCity = user.currentCity
         self.convertPhotos()
         self.convertToken()
         self.convertTags()
@@ -250,7 +253,7 @@ class User: BaseModelObject, SenderType {
         self._deviceTokens = try container.decodeIfPresent([String]?.self, forKey: .deviceTokens) ?? nil
         self._photos = try container.decodeIfPresent([UserPhoto]?.self, forKey: ._photos) ?? []
         self._favourites = try container.decodeIfPresent([Trip]?.self, forKey: ._favourites) ?? []
-        
+        self.currentCity = try container.decodeIfPresent(String.self, forKey: CodingKeys.currentCity)
         self.convertTags()
         self.convertToken()
         self.convertPhotos()
@@ -437,7 +440,8 @@ extension User {
             User.CodingKeys.birthDate.rawValue: birthDate,
             BaseModelObject.BaseCodingKeys.uid.rawValue: uid,
             User.CodingKeys._photos.rawValue: photosMapArray,
-            User.CodingKeys.deviceTokens.rawValue: tokens
+            User.CodingKeys.deviceTokens.rawValue: tokens,
+            User.CodingKeys.currentCity.rawValue: currentCity ?? ""
         ]
     }
 }

@@ -127,6 +127,8 @@ class ListView: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         self.delegate = self
         self.dataSource = self
+        
+        self.setupRefreshControl()
     }
 
     override func reloadData() {

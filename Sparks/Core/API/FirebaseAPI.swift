@@ -501,7 +501,7 @@ extension FirebaseAPIImpl {
         if let uid = User.current?.uid { Crashlytics.crashlytics().setUserID(uid) }
         
         Auth.auth().currentUser?.getIDToken(completion: { (token, error) in
-            debugPrint("TOKEN = ", token ?? "")
+            debugPrint("UID: ", User.current?.uid ?? "", "TOKEN = ", token ?? "")
         })
         
         self.userObserveIdent = observe(type: User.self, at: User.kPath, uid: user.uid) {[weak self] (result) in
@@ -517,15 +517,15 @@ extension FirebaseAPIImpl {
                     RealmUtils.save(object: u)
                 }
                 
-                DeepLinkHelper.generateLink(params: ["uid": u.uid, "name": u.displayName]) { (response) in
-                    switch response {
-                    case .success(let url):
-                        u.dynamicLink = url
-                        break
-                    case .failure(let error):
-                        debugPrint(error)
-                    }
-                }
+//                DeepLinkHelper.generateLink(params: ["uid": u.uid, "name": u.displayName]) { (response) in
+//                    switch response {
+//                    case .success(let url):
+//                        u.dynamicLink = url
+//                        break
+//                    case .failure(let error):
+//                        debugPrint(error)
+//                    }
+//                }
                 
             default: break
             }

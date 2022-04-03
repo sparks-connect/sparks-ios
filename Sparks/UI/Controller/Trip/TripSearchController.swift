@@ -11,7 +11,13 @@ import UIKit
 import AMPopTip
 import Toast_Swift
 
+protocol TripSearchControllerDelegate: AnyObject {
+    func tripSearchControllerWillSearch()
+}
+
 class TripSearchController: BaseController {
+    
+    weak var delegate: TripSearchControllerDelegate?
     
     private let presenter = TripSearchPresenter()
     override func getPresenter() -> Presenter {
@@ -251,6 +257,9 @@ class TripSearchController: BaseController {
     
     @objc private func close(){
         self.dismiss(animated: true, completion: nil)
+        main(block: {
+            self.delegate?.tripSearchControllerWillSearch()
+        }, after: 0.5)
     }
     
     @objc func dateChanged(_ tapRecognizer: UITapGestureRecognizer){
@@ -286,6 +295,7 @@ class TripSearchController: BaseController {
         self.presenter.save(age: age, gender: gender, startDate: startDate, endDate: endDate)
         
         self.close()
+        
     }
     
     @objc private func resetClicked(){
