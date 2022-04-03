@@ -27,28 +27,6 @@ class TripsListController: BaseController {
         layout()
     }
     
-    override func didAppear() {
-        super.didAppear()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(authorizationChanged),
-                                               name: Consts.Notifications.didChangeLocationPermissions,
-                                               object: nil)
-        enableLocation()
-        addProfilePic()
-    }
-    
-    override func rightBarButtons() -> [UIBarButtonItem] {
-        if self.presenter.hasSearchFilters {
-            let btn = BadgedButtonItem(with: UIImage(named: "search"))
-            btn.setBadge(with: 0)
-            btn.tapAction = {
-                self.searchClicked()
-            }
-            return [btn]
-        }
-        return [UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: #selector(searchClicked))]
-    }
-    
     override func reloadView() {
         super.reloadView()
         self.configureNavigationBar()
@@ -65,31 +43,6 @@ class TripsListController: BaseController {
         }
     }
     
-    @objc private func searchClicked(){
-        self.present(TripSearchController(), animated: true, completion: nil)
-    }
-    
-    private func enableLocation(){
-        if !LocationManager.sharedInstance.isLocationServiceEnabled() && User.current?.isMissingLocation == true {
-            let controller = LocationEnableController()
-            controller.modalPresentationStyle = .overFullScreen
-            self.present(controller, animated: true, completion: nil)
-        }
-    }
-    
-    private func addProfilePic() {
-        if  User.current?.isMissingLocation == false && User.current?.isMissingPhoto == true {
-            let controller = ProfilePhotoAddController()
-            controller.modalPresentationStyle = .overFullScreen
-            self.present(controller, animated: true, completion: nil)
-        }
-    }
-    
-    @objc private func authorizationChanged(notification: Notification) {
-        main {
-            self.addProfilePic()
-        }
-    }
 }
 
 extension TripsListController: TripListView {

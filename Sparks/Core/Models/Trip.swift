@@ -52,6 +52,7 @@ class Trip: BaseModelObject {
     enum CodingKeys: String, CodingKey {
         case city,
              startDate,
+             createdAt,
              endDate,
              purpose,
              community,
@@ -66,6 +67,7 @@ class Trip: BaseModelObject {
     @objc dynamic private(set) var userId: String?
     @objc dynamic private(set) var city: String?
     @objc dynamic private(set) var purpose: Int = PurposeEnum.leisure.rawValue
+    @objc dynamic private(set) var createdAt: Int64 = 0
     @objc dynamic private(set) var startDate: Int64 = 0
     @objc dynamic private(set) var endDate: Int64 = 0
     @objc dynamic private(set) var community: Int = TripCommunityEnum.alone.rawValue
@@ -91,7 +93,8 @@ class Trip: BaseModelObject {
          community: TripCommunityEnum,
          plan: String?,
          randomQueryInt: Int,
-         user: User) {
+         user: User,
+         createdAt: Int64) {
         super.init()
         self.uid = uid
         self.city = city
@@ -105,6 +108,7 @@ class Trip: BaseModelObject {
         self.lat = lat
         self.lng = lng
         self.randomQueryInt = randomQueryInt
+        self.createdAt = createdAt
     }
     
     required init(from decoder: Decoder) throws {
@@ -122,6 +126,7 @@ class Trip: BaseModelObject {
         self.lat = try container.decodeIfPresent(Double.self, forKey: .lat) ?? 0
         self.lng = try container.decodeIfPresent(Double.self, forKey: .lng) ?? 0
         self.randomQueryInt = try container.decodeIfPresent(Int.self, forKey: .randomQueryInt) ?? 0
+        self.createdAt = try container.decodeIfPresent(Int64.self, forKey: .createdAt) ?? 0
     }
  
     var values: [String: Any] {
@@ -133,7 +138,8 @@ class Trip: BaseModelObject {
             Trip.CodingKeys.purpose.rawValue: self.purpose,
             Trip.CodingKeys.community.rawValue: self.community,
             Trip.CodingKeys.plan.rawValue: self.plan ?? "",
-            Trip.CodingKeys.user.rawValue: self.user?.values ?? [:]
+            Trip.CodingKeys.user.rawValue: self.user?.values ?? [:],
+            Trip.CodingKeys.createdAt.rawValue: self.createdAt
         ]
     }
 }

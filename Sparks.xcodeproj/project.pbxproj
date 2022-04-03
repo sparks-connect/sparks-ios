@@ -107,6 +107,9 @@
 		3848B95424238D91009EB035 /* ConnectUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3848B95324238D91009EB035 /* ConnectUserResponse.swift */; };
 		384C2F942450A3F700D38C1F /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384C2F932450A3F700D38C1F /* Realm.swift */; };
 		3851C97624C5D0BD00B8C920 /* NameInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3851C97524C5D0BD00B8C920 /* NameInputPresenter.swift */; };
+		385301F727F76CE500D22DFB /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385301F627F76CE500D22DFB /* HomeController.swift */; };
+		385301F927F76DAD00D22DFB /* TripsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385301F827F76DAD00D22DFB /* TripsTableViewCell.swift */; };
+		385301FB27F775F200D22DFB /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385301FA27F775F200D22DFB /* HomePresenter.swift */; };
 		385947012528EFC700B2A6B2 /* DeepLinkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385947002528EFC700B2A6B2 /* DeepLinkHelper.swift */; };
 		385947392528F2B700B2A6B2 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385947382528F2B700B2A6B2 /* Security.swift */; };
 		38594772252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38594771252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift */; };
@@ -426,6 +429,9 @@
 		3848B95324238D91009EB035 /* ConnectUserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserResponse.swift; sourceTree = "<group>"; };
 		384C2F932450A3F700D38C1F /* Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		3851C97524C5D0BD00B8C920 /* NameInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameInputPresenter.swift; sourceTree = "<group>"; };
+		385301F627F76CE500D22DFB /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		385301F827F76DAD00D22DFB /* TripsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsTableViewCell.swift; sourceTree = "<group>"; };
+		385301FA27F775F200D22DFB /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		385947002528EFC700B2A6B2 /* DeepLinkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHelper.swift; sourceTree = "<group>"; };
 		385947382528F2B700B2A6B2 /* Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 		38594771252901E900B2A6B2 /* AppDelegate+DynamicLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+DynamicLinks.swift"; sourceTree = "<group>"; };
@@ -1110,6 +1116,7 @@
 				6A3E022027B9021900529B33 /* TripPurposePresenter.swift */,
 				6A3E022227B904C300529B33 /* TripTravelPresenter.swift */,
 				6A3E022427B9058900529B33 /* TripPlanPresenter.swift */,
+				385301FA27F775F200D22DFB /* HomePresenter.swift */,
 			);
 			path = Trips;
 			sourceTree = "<group>";
@@ -1119,6 +1126,7 @@
 			children = (
 				6A5F773727BABC610094B4ED /* TripCell.swift */,
 				6A5F774427BABE1A0094B4ED /* PreviewCell.swift */,
+				385301F827F76DAD00D22DFB /* TripsTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1151,6 +1159,7 @@
 				6A5F774027BABDB30094B4ED /* TripTravelController.swift */,
 				6A090C4927AC52CE00FD0740 /* TripPlansController.swift */,
 				6A090C4B27AC5B6000FD0740 /* TripPreviewController.swift */,
+				385301F627F76CE500D22DFB /* HomeController.swift */,
 			);
 			path = Trip;
 			sourceTree = "<group>";
@@ -1908,6 +1917,7 @@
 				0CEA93C0242B9A380084D08E /* FirebaseConfigManager.swift in Sources */,
 				6A3E022527B9058900529B33 /* TripPlanPresenter.swift in Sources */,
 				0C91FE2324C3243900D5E0C9 /* CountryChooserPresenter.swift in Sources */,
+				385301F927F76DAD00D22DFB /* TripsTableViewCell.swift in Sources */,
 				380C730224951ADA00B77506 /* Data+Ext.swift in Sources */,
 				A1873F15248D412E002EFD13 /* NavigationBar.swift in Sources */,
 				6A3E021F27B8FF2E00529B33 /* TripDatePresenter.swift in Sources */,
@@ -1931,6 +1941,7 @@
 				0C6E32F42445F3AE008528FE /* CardBottomUserView.swift in Sources */,
 				A18E980624641C96006878A6 /* CurrentUserRequestCell.swift in Sources */,
 				38F057EA26D95ADC000E9781 /* ChannelRequestsController.swift in Sources */,
+				385301F727F76CE500D22DFB /* HomeController.swift in Sources */,
 				3804FAA826BBE65D0067A2BF /* ProfilePresenter.swift in Sources */,
 				3831EFED2445D78E00B41F99 /* Spinner.swift in Sources */,
 				A144653625448A3D0077425D /* BasePopupController.swift in Sources */,
@@ -1990,6 +2001,7 @@
 				38C6C4ED2795E4920038BB6B /* Array+Extensions.swift in Sources */,
 				A1D09D5D24FD7085001455FA /* GradientView.swift in Sources */,
 				385D57EE27627DE700D845F6 /* TripsService.swift in Sources */,
+				385301FB27F775F200D22DFB /* HomePresenter.swift in Sources */,
 				38C6C4EF2795E4BF0038BB6B /* String+Extensions.swift in Sources */,
 				0C39411D24D6E0CD00B09C85 /* Old+DiscoverPresenter.swift in Sources */,
 				6A88A2E327C6A33100B1B96B /* TripFavouritePresenter.swift in Sources */,
