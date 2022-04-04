@@ -8,11 +8,18 @@
 
 import UIKit
 
-extension TripCollection: TableViewCellParameter {
-    
+extension TripCollection: TableViewCellParameter {}
+
+protocol TripsTableViewCellDelegate: TableViewCellDelegate {
+    func willAddToFavourites(trip: Trip)
+    func didSelectTrip(trip: Trip)
 }
 
 class TripsTableViewCell: TableViewCell {
+    
+    var del: TripsTableViewCellDelegate? {
+        return self.delegate as? TripsTableViewCellDelegate
+    }
     
     private var object: TripCollection? {
         return self.parameter as? TripCollection
@@ -89,7 +96,7 @@ class TripsTableViewCell: TableViewCell {
                        gender: trip.user?.genderEnum ?? .both
                     )
         cell.makeFavourite = {[weak self] (indexPath) in
-            // self?.addToFavourite(indexPath: indexPath)
+            self?.del?.willAddToFavourites(trip: trip)
         }
     }
 }
@@ -111,6 +118,13 @@ extension TripsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.height, height: collectionView.frame.height )
+        return CGSize(width: collectionView.frame.width/2 - 2, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let object = self.object else { return }
+        guard indexPath.row < object.trips.count else {return}
+        let trip = object.trips[indexPath.item]
+        self.del?.didSelectTrip(trip: trip)
     }
 }

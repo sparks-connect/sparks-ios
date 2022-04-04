@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppDelegate.updateRootViewController()
         self.setupNotification(application, completion: {(token, error) in })
         #if DEBUG
-        FLEXManager.shared.showExplorer()
+        //FLEXManager.shared.showExplorer()
         #endif
         debugPrint(Date().currentUTCDateStr)
         ApplicationDelegate.shared.application(

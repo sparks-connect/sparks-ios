@@ -25,7 +25,7 @@ class TripInfoController: BaseController {
     
     private lazy var preview: Preview<TripInfoPresenter> = {
         let view = Preview(presenter: self.presenter)
-        preview.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     

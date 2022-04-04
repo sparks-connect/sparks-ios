@@ -45,11 +45,12 @@ class HomeController: BaseController {
         listView.refreshControlIsEnabled = { return true }
         listView.cellClassIdentifiers = [TripsTableViewCell.description(): TripsTableViewCell.self]
         listView.cellReuseIdentifier = {(indexPath) in return TripsTableViewCell.description() }
-        listView.heightForRow = {(indexPath) in return 300 }
+        listView.heightForRow = {(indexPath) in return 400 }
         listView.sectionCount = ({ return 1 })
+        listView.cellDelegate = {(indexPath) in return self }
         listView.numberOfRows = {[weak self](section) in return self?.presenter.numberOfItems ?? 0 }
         listView.parameterForRow = {[weak self](indexPath) in return self?.presenter.tripsAt(indexPath: indexPath) }
-        listView.willRefreshList = { self.presenter.fetchTrips() }
+        listView.willRefreshList = {[weak self] in self?.presenter.fetchTrips() }
     }
     
     override func rightBarButtons() -> [UIBarButtonItem] {
@@ -124,3 +125,14 @@ extension HomeController: TripSearchControllerDelegate {
     }
 }
 
+extension HomeController: TripsTableViewCellDelegate {
+    func willAddToFavourites(trip: Trip) {
+        self.presenter.addToFavourite(trip: trip)
+    }
+    
+    func didSelectTrip(trip: Trip) {
+        let controller = TripInfoController(presenter: TripInfoPresenter(trip: trip))
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+}

@@ -397,7 +397,7 @@ extension User {
         })
         
         if tags.isEmpty {
-            tags = "No interests selected 😞"
+            tags = "No interests 😞"
         }
         return tags
     }

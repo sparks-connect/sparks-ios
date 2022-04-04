@@ -56,7 +56,7 @@ class TripSearchController: BaseController {
         let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setBackgroundImage(UIImage(named: "close"), for: .normal)
-        btn.addTarget(self, action: #selector(close), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(justClose), for: .touchUpInside)
         return btn
     }()
     
@@ -253,6 +253,10 @@ class TripSearchController: BaseController {
         let places = PlacesController()
         places.delegate = self.presenter
         self.present(places, animated: false, completion: nil)
+    }
+    
+    @objc private func justClose(){
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func close(){
