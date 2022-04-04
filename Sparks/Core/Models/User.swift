@@ -190,9 +190,7 @@ class User: BaseModelObject, SenderType {
     }
     
     private func convertPhotos() {
-        self.photos.forEach { photo in
-            self.realm?.delete(photo)
-        }
+        self.realm?.delete(self.photos)
         self.photos.removeAll()
         self._photos?.forEach { (photo) in
             self.photos.append(photo)

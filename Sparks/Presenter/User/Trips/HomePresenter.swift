@@ -11,13 +11,15 @@ import RealmSwift
 
 protocol HomeView: BasePresenterView {
     func showLoader(isLoading: Bool)
-    //func navigate(presenter: TripInfoPresenter)
 }
 
 struct TripCollection {
     var header: String
     var trips: [Trip]
-    var order: Int
+    
+    mutating func addTrips(trips: [Trip]) {
+        self.trips.append(contentsOf: trips)
+    }
 }
 
 class HomePresenter: BasePresenter<HomeView> {
@@ -37,44 +39,58 @@ class HomePresenter: BasePresenter<HomeView> {
     }
     
     func fetchTrips(){
+        
         self.datasource.removeAll()
+        
+        self.datasource.append(TripCollection(header: "Recently added", trips: []))
+        self.datasource.append(TripCollection(header: "Upcoming", trips: []))
+        self.datasource.append(TripCollection(header: "In your city", trips: []))
+        
+        let dpGroup = DispatchGroup()
+        let queue = DispatchQueue.main
+        dpGroup.enter()
         service.fetchNew {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let result):
-                    self?.datasource.append(TripCollection(header: "Recently added", trips: result, order: 0))
+                    self?.datasource[0].addTrips(trips: result)
                 case .failure(_):
                     break
                 }
-            }, reload: true)
+                queue.async { dpGroup.leave() }
+                
+            }, reload: false)
         }
         
+        dpGroup.enter()
         service.fetchUpcoming {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let result):
-                    self?.datasource.append(TripCollection(header: "Upcoming", trips: result, order: 1))
+                    self?.datasource[1].addTrips(trips: result)
                 case .failure(_):
                     break
                 }
-            }, reload: true)
+                queue.async { dpGroup.leave() }
+            }, reload: false)
         }
         
+        dpGroup.enter()
         service.fetchInYourCity {[weak self] response in
             self?.handleResponse(response: response, preReloadHandler: {
                 switch response{
                 case .success(let result):
-                    self?.datasource.append(TripCollection(header: "In your city", trips: result, order: 2))
+                    self?.datasource[2].addTrips(trips: result)
                 case .failure(_):
                     break
                 }
-            }, reload: true)
+                queue.async { dpGroup.leave() }
+            }, reload: false)
         }
         
-    }
-    
-    var sortedDatasource: [TripCollection] {
-        return self.datasource.sorted(by: { $0.order < $1.order })
+        dpGroup.notify(queue: queue, execute: {[weak self] in
+            self?.view?.reloadView()
+        });
     }
     
     var numberOfItems: Int {
@@ -83,7 +99,7 @@ class HomePresenter: BasePresenter<HomeView> {
     
     func tripsAt(indexPath: IndexPath) -> TripCollection? {
         guard indexPath.row < datasource.count else { return nil }
-        return sortedDatasource[indexPath.row]
+        return datasource[indexPath.row]
     }
     
     private func observeUserUpdate() {

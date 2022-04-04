@@ -111,7 +111,9 @@ class HomeController: BaseController {
 
 extension HomeController: HomeView {
     func showLoader(isLoading: Bool) {
-    
+        if isLoading {
+            self.displayAnimatedActivityIndicatorView()
+        }
     }
     
 }
