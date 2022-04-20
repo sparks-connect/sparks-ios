@@ -62,8 +62,8 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func layout() {
-        contentView.addSubview(imageView)
         contentView.addSubview(smallImageView)
+        contentView.addSubview(imageView)
         contentView.addSubview(containerView)
         containerView.addSubview(imageViewCheck)
         contentView.addSubview(borderView)
@@ -94,7 +94,7 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
         self.isSelected = isSelected
         self.updateUI()
         self.imageView.sd_setImage(with: url) {[weak self] (_, error, _, _) in
-            self?.smallImageView.isHidden = error == nil
+            self?.smallImageView.isHidden = error == nil && self?.imageView.image != nil
             self?.lastError = error
         }
     }
