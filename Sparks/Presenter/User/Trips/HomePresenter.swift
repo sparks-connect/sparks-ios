@@ -16,9 +16,11 @@ protocol HomeView: BasePresenterView {
 struct TripCollection {
     var header: String
     var trips: [Trip]
+    private(set) var loaded = false
     
     mutating func addTrips(trips: [Trip]) {
         self.trips.append(contentsOf: trips)
+        self.loaded = true
     }
     
     mutating func setHeader(header: String) {
