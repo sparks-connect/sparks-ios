@@ -61,8 +61,8 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func layout() {
-        contentView.addSubview(imageView)
         contentView.addSubview(smallImageView)
+        contentView.addSubview(imageView)
         contentView.addSubview(containerView)
         containerView.addSubview(imageViewCheck)
         contentView.addSubview(borderView)
@@ -94,6 +94,7 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
         self.updateUI()
         self.imageView.setImageFromUrl(url?.absoluteString, placeholderImg: nil) {[weak self] image, error in
             self?.smallImageView.isHidden = error == nil
+            self?.smallImageView.isHidden = error == nil && self?.imageView.image != nil
             self?.lastError = error
         }
     }
