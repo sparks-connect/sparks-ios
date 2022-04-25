@@ -21,6 +21,9 @@ class TripSearchPresenter: BasePresenter<TripSearchView>, Place {
     override func onFirstViewAttach() {
         super.onFirstViewAttach()
         if criteria != nil {
+            if let city = criteria?.city {
+                self.getLocation(info: PlaceInfo(place: city, coordinates: nil))
+            }
             self.view?.updateView(age: Age(rawValue: self.criteria?.age ?? "") ?? .small ,
                                   gender: Gender(rawValue: self.criteria?.gender ?? ""),
                                   startDate: self.criteria?.startDate,
