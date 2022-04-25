@@ -125,6 +125,7 @@ class TripSearchController: BaseController {
         let vw = DateView(tite: "Arrival", img: UIImage(named: "arrival") ?? .init(), selected: false)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.addTapGesture(target: self, selector: #selector(dateChanged(_:)))
+        vw.setDate(date: Date().addMonth(n: 1))
         return vw
     }()
     
@@ -276,16 +277,10 @@ class TripSearchController: BaseController {
         self.dismiss(animated: true, completion: nil)
     }
     
+
     @objc private func resetLocation(){
         self.presenter.resetLocation()
         setLocationDefault()
-    }
-    
-    @objc private func close(){
-        self.dismiss(animated: true, completion: nil)
-        main(block: {
-            self.delegate?.tripSearchControllerWillSearch()
-        }, after: 0.5)
     }
     
     @objc func dateChanged(_ tapRecognizer: UITapGestureRecognizer){
@@ -318,9 +313,7 @@ class TripSearchController: BaseController {
         let startDate = self.departureView.getDate
         let endDate = self.arrivalView.getDate
 
-        self.presenter.save(age: age, gender: gender, startDate: startDate, endDate: endDate)
-        
-        self.close()
+        self.presenter.save(age: age, gender: gender, startDate: startDate, endDate: endDate)        
         
     }
     
@@ -340,7 +333,7 @@ class TripSearchController: BaseController {
         self.tagsAgeView.currentSelections = [Age.small.rawValue]
         self.tagsGenderView.currentSelections = [Gender.male.rawValue]
         self.departureView.setDate(date: Date())
-        self.arrivalView.setDate(date: Date())
+        self.arrivalView.setDate(date: Date().addMonth(n: 1))
     }
     
     private func showTooltipOnce(){
@@ -379,6 +372,9 @@ extension TripSearchController: OnKbdEditorViewControllerDelegate {
     func onDone(with text: String?, pickerValue: String?, dateValue: __int64_t, customKey: String?) {
         let vw = [departureView,arrivalView].filter({$0.getKey.rawValue == customKey}).first
         vw?.setDate(date: dateValue.toDate)
+        if vw == departureView{
+            arrivalView.setDate(date: dateValue.toDate.addMonth(n: 1))
+        }
     }
 }
 
@@ -397,5 +393,12 @@ extension TripSearchController: TripSearchView {
     func updateLocation(text: String?) {
         self.searchLabel.text = text
         self.locationResetIcon.isHidden = false
+    }
+    
+    @objc func close(){
+        self.dismiss(animated: true, completion: nil)
+        main(block: {
+            self.delegate?.tripSearchControllerWillSearch()
+        }, after: 0.5)
     }
 }
