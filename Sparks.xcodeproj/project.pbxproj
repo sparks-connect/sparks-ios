@@ -164,6 +164,7 @@
 		38F057EA26D95ADC000E9781 /* ChannelRequestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057E926D95ADC000E9781 /* ChannelRequestsController.swift */; };
 		38F057EC26DA9497000E9781 /* ChannelRequestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */; };
 		38F0D0DD244DE36B00530B01 /* ChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */; };
+		6A01EB7C2816F4C900DF0BE1 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A01EB7B2816F4C900DF0BE1 /* Date+extensions.swift */; };
 		6A02836927B4104500CBBCB5 /* PlacesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836827B4104500CBBCB5 /* PlacesPresenter.swift */; };
 		6A02836B27B4224300CBBCB5 /* TripNamePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836A27B4224300CBBCB5 /* TripNamePresenter.swift */; };
 		6A02836D27B428EA00CBBCB5 /* TripCreatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02836C27B428EA00CBBCB5 /* TripCreatePresenter.swift */; };
@@ -489,6 +490,7 @@
 		38F057EB26DA9497000E9781 /* ChannelRequestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRequestsPresenter.swift; sourceTree = "<group>"; };
 		38F0D0DC244DE36B00530B01 /* ChatRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomService.swift; sourceTree = "<group>"; };
 		3ECFBDC1E6D424A7166950EA /* Pods-SparksNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SparksNotificationExtension.debug.xcconfig"; path = "Target Support Files/Pods-SparksNotificationExtension/Pods-SparksNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6A01EB7B2816F4C900DF0BE1 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
 		6A02836827B4104500CBBCB5 /* PlacesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesPresenter.swift; sourceTree = "<group>"; };
 		6A02836A27B4224300CBBCB5 /* TripNamePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripNamePresenter.swift; sourceTree = "<group>"; };
 		6A02836C27B428EA00CBBCB5 /* TripCreatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCreatePresenter.swift; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 				38C6C4E42795DC360038BB6B /* URL+Extensions.swift */,
 				38C6C4E62795DD120038BB6B /* Image+Extensions.swift */,
 				38C6C4E82795DD3B0038BB6B /* Data+Extensions.swift */,
+				6A01EB7B2816F4C900DF0BE1 /* Date+extensions.swift */,
 				38C6C4EC2795E4920038BB6B /* Array+Extensions.swift */,
 				38C6C4EE2795E4BF0038BB6B /* String+Extensions.swift */,
 				38C6C4F02795E4EA0038BB6B /* DateFormatter+Extensions.swift */,
@@ -1926,6 +1929,7 @@
 				A144651E254458540077425D /* CountryChooserViewController.swift in Sources */,
 				0C1EC4782519D1E700FFEA60 /* IAPManager.swift in Sources */,
 				3848B95424238D91009EB035 /* ConnectUserResponse.swift in Sources */,
+				6A01EB7C2816F4C900DF0BE1 /* Date+extensions.swift in Sources */,
 				A12A8ED624FF12CD00DB8912 /* AsyncOperation.swift in Sources */,
 				6AB994CE27C5404D0082D544 /* UIColor+Additions.swift in Sources */,
 				0C1EC47D2519D49200FFEA60 /* SparkProductsManager.swift in Sources */,

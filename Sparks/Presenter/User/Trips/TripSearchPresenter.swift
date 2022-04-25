@@ -12,6 +12,7 @@ import CoreLocation
 protocol TripSearchView: BasePresenterView {
     func updateLocation(text: String?)
     func updateView(age: Age?, gender: Gender?, startDate: Int64?, endDate: Int64?)
+    func close()
 }
 
 class TripSearchPresenter: BasePresenter<TripSearchView>, Place {
@@ -59,6 +60,7 @@ class TripSearchPresenter: BasePresenter<TripSearchView>, Place {
         } else {
             criteria?.save(city: self.placeInfo?.place ?? "", startDate: startDate, endDate: endDate, gender: gender ?? Gender.both, age: age ?? .small)
         }
+        self.view?.close()
     }
     
     override func willDisappear() {
