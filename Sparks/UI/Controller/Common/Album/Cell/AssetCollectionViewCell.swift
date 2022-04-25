@@ -50,7 +50,7 @@ class AssetCollectionViewCell: CollectionViewCell {
         super.setup()
         
         self.imageView.contentMode = .scaleAspectFill
-        self.imageView.backgroundColor = UIColor.purple
+        self.imageView.backgroundColor = UIColor.clear
         
         self.checkBoxView.alpha = 0
         

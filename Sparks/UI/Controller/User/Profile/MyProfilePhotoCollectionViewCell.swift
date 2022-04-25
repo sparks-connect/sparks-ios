@@ -12,10 +12,9 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
     
     private var lastError: Error?
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
+    private let imageView: ImageView = {
+        let imageView = ImageView()
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -62,8 +61,8 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func layout() {
-        contentView.addSubview(imageView)
         contentView.addSubview(smallImageView)
+        contentView.addSubview(imageView)
         contentView.addSubview(containerView)
         containerView.addSubview(imageViewCheck)
         contentView.addSubview(borderView)
@@ -87,14 +86,15 @@ class MyProfilePhotoCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         isSelected = false
         imageView.image = nil
-        smallImageView.isHidden = false
+        smallImageView.isHidden = true
     }
     
     func setup(url: URL?, isSelected: Bool = false) {
         self.isSelected = isSelected
         self.updateUI()
-        self.imageView.sd_setImage(with: url) {[weak self] (_, error, _, _) in
+        self.imageView.setImageFromUrl(url?.absoluteString, placeholderImg: nil) {[weak self] image, error in
             self?.smallImageView.isHidden = error == nil
+            self?.smallImageView.isHidden = error == nil && self?.imageView.image != nil
             self?.lastError = error
         }
     }

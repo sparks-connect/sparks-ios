@@ -52,6 +52,15 @@ class TripSearchController: BaseController {
         return lbl
     }()
     
+    private lazy var locationResetIcon: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setBackgroundImage(UIImage(named: "loc-remove"), for: .normal)
+        btn.addTarget(self, action: #selector(resetLocation), for: .touchUpInside)
+        btn.isHidden = true
+        return btn
+    }()
+    
     private lazy var closeIcon: UIButton = {
         let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -174,11 +183,19 @@ class TripSearchController: BaseController {
             make.height.equalTo(closeIcon.snp.width).multipliedBy(1)
         }
         
+        searchContainer.addSubview(locationResetIcon)
+        locationResetIcon.snp.makeConstraints { make in
+            make.top.equalTo(16)
+            make.trailing.equalTo(closeIcon.snp.leading).offset(-16)
+            make.width.equalTo(24)
+            make.height.equalTo(locationResetIcon.snp.width).multipliedBy(1)
+        }
+        
         searchContainer.addSubview(searchLabel)
         searchLabel.snp.makeConstraints { make in
             make.leading.equalTo(searchIcon.snp.trailing).offset(16)
             make.centerY.equalTo(searchIcon)
-            make.trailing.equalTo(closeIcon.snp.leading).offset(-16)
+            make.trailing.equalTo(locationResetIcon.snp.leading).offset(-16)
         }
         
         self.view.addSubview(ageLabel)
@@ -260,6 +277,12 @@ class TripSearchController: BaseController {
         self.dismiss(animated: true, completion: nil)
     }
     
+
+    @objc private func resetLocation(){
+        self.presenter.resetLocation()
+        setLocationDefault()
+    }
+    
     @objc func dateChanged(_ tapRecognizer: UITapGestureRecognizer){
         if let vw = tapRecognizer.view as? DateView {
             self.loadFullnameEditMode(source: vw)
@@ -300,8 +323,13 @@ class TripSearchController: BaseController {
         self.view.makeToast("Success! Reset Filters is done! \n Trips will be refreshed!",position: .top)
     }
     
-    private func setDefaultValue(){
+    private func setLocationDefault(){
         self.searchLabel.text = "Type city name..."
+        self.locationResetIcon.isHidden = true
+    }
+    
+    private func setDefaultValue(){
+        setLocationDefault()
         self.tagsAgeView.currentSelections = [Age.small.rawValue]
         self.tagsGenderView.currentSelections = [Gender.male.rawValue]
         self.departureView.setDate(date: Date())
@@ -364,6 +392,7 @@ extension TripSearchController: TripSearchView {
     
     func updateLocation(text: String?) {
         self.searchLabel.text = text
+        self.locationResetIcon.isHidden = false
     }
     
     @objc func close(){

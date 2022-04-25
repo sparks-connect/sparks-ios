@@ -193,7 +193,7 @@ class ProfileController: BaseController {
         return profileEditButton
     }()
     
-    private let sectionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    private let sectionInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
 
     convenience init(presenter: ProfilePresenter){
         self.init()

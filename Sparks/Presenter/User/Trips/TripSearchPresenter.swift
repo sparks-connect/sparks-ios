@@ -37,6 +37,10 @@ class TripSearchPresenter: BasePresenter<TripSearchView>, Place {
         self.view?.updateLocation(text: info.place)
     }
     
+    func resetLocation(){
+        self.placeInfo = nil
+    }
+    
     func reset(){
         TripCriteria.reset()
         self.placeInfo = nil

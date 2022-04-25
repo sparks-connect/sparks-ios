@@ -45,7 +45,10 @@ class HomeController: BaseController {
         listView.refreshControlIsEnabled = { return true }
         listView.cellClassIdentifiers = [TripsTableViewCell.description(): TripsTableViewCell.self]
         listView.cellReuseIdentifier = {(indexPath) in return TripsTableViewCell.description() }
-        listView.heightForRow = {(indexPath) in return 400 }
+        listView.heightForRow = {[weak self](indexPath) in
+            let count = self?.presenter.tripsAt(indexPath: indexPath)?.trips.count ?? 0
+            return count > 0 ? 400 : 100
+        }
         listView.sectionCount = ({ return 1 })
         listView.cellDelegate = {(indexPath) in return self }
         listView.numberOfRows = {[weak self](section) in return self?.presenter.numberOfItems ?? 0 }

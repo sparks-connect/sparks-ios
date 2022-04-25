@@ -33,6 +33,18 @@ class TripsTableViewCell: TableViewCell {
         return view
     }()
     
+    lazy private var labelNoItems: Label = {
+        let view = Label()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.font(for: 18)
+        view.textColor = .white
+        view.isHidden = true
+        view.textAlignment = .center
+        view.textColor = Color.fadedLighter.uiColor
+        view.text = "No trips"
+        return view
+    }()
+    
     private lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -46,6 +58,7 @@ class TripsTableViewCell: TableViewCell {
     override func setup() {
         super.setup()
         self.backgroundColor = .clear
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(TripCell.self, forCellWithReuseIdentifier: TripCell.description())
@@ -55,8 +68,14 @@ class TripsTableViewCell: TableViewCell {
     
     override func configure(parameter: TableViewCellParameter?, delegate: TableViewCellDelegate?) {
         super.configure(parameter: parameter, delegate: delegate)
-        self.labelHeader.text = object?.header
-        self.collectionView.reloadData()
+        if let object = object {
+            self.labelHeader.text = object.header
+            if object.loaded {
+                self.labelNoItems.isHidden = object.trips.count > 0
+            }
+            
+            self.collectionView.reloadData()
+        }
     }
     
     private func layout() {
@@ -74,6 +93,14 @@ class TripsTableViewCell: TableViewCell {
             make.bottom.equalTo(-8)
             make.top.equalTo(labelHeader.snp.bottom).offset(16)
         }
+        
+        self.contentView.addSubview(labelNoItems)
+        labelNoItems.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(-8)
+            make.top.equalTo(labelHeader.snp.bottom).offset(16)
+        }
+        
     }
     
     private func configureCell(cell: TripCell, indexPath: IndexPath){
